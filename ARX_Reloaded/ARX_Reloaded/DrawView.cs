@@ -60,12 +60,12 @@ namespace ARX_Reloaded
         #endregion Points
 
 
-        public DrawView(int plateWidth, int plateHeight, PaintEventArgs e)
+        public DrawView(PaintEventArgs elem, Size pictureSize)
         {
-            pictureElement = e;
+            pictureElement = elem;
 
-            maxWidth = plateWidth;
-            maxHeight = plateHeight;
+            maxWidth = pictureSize.Width;
+            maxHeight = pictureSize.Height;
 
             #region Process points
             upWall = 0.05;

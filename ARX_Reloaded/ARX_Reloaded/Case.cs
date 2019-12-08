@@ -9,16 +9,24 @@ namespace ARX_Reloaded
     public class Case
     {
         private int state;
+        private bool visited;
 
         public Case()
         {
             state = 0;
+            visited = true;
         }
 
         public int State
         {
             get { return state; }
             set { state = value; }
+        }
+
+        public bool Visited
+        {
+            get { return visited; }
+            set { visited = value; }
         }
     }
 }

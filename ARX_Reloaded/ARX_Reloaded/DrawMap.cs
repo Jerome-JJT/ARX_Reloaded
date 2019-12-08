@@ -11,6 +11,7 @@ namespace ARX_Reloaded
     public class DrawMap
     {
         private PaintEventArgs pictureElement;
+        private Player player;
 
         private int pictureWidth;
         private int pictureHeight;
@@ -24,12 +25,14 @@ namespace ARX_Reloaded
         private double mapPathWidth;
         private double mapPathHeight;
 
-        public DrawMap(int picBoxWidth, int picBoxHeight, PaintEventArgs elem)
+        public DrawMap(PaintEventArgs elem, Size picBoxSize, Player player)
         {
             pictureElement = elem;
 
-            pictureWidth = picBoxWidth;
-            pictureHeight = picBoxHeight;
+            pictureWidth = picBoxSize.Width;
+            pictureHeight = picBoxSize.Height;
+
+            this.player = player;
         }
 
         public void DrawTotalMap(Map map)
@@ -47,15 +50,6 @@ namespace ARX_Reloaded
             {
                 for (int w = 0; w < mapLengthX; w++)
                 {
-                    /*
-                    Point[] upLeft = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1))
-                    };
-                    */
-
                     Point[] upMiddle = {
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*2),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
@@ -63,14 +57,6 @@ namespace ARX_Reloaded
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1))
                     };
 
-                    /*
-                    Point[] upRight = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*2),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*2),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1))
-                    };
-                    */
 
                     Point[] middleLeft = {
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
@@ -93,14 +79,6 @@ namespace ARX_Reloaded
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*2),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*2))
                     };
 
-                    /*
-                    Point[] downLeft = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*2)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*2)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3))
-                    };
-                    */
                     
                     Point[] downMiddle = {
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*2)),
@@ -109,55 +87,80 @@ namespace ARX_Reloaded
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3))
                     };
 
-                    /*
-                    Point[] downRight = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*2),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*2)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*2)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*2),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3))
-                    };
-                    */
-
-                    /*
-                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), upLeft);
-                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), upRight);
-                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), downLeft);
-                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), downRight);
-                    */
 
                     Color pathColor = Color.LawnGreen;
 
-                    if(map.Cases[h * mapLengthX + w].State != 0)
+                    if (map.Cases[h * mapLengthX + w].Visited == true)
                     {
-                        pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleMiddle);
-                    }
+                        if (map.Cases[h * mapLengthX + w].State != 0)
+                        {
+                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleMiddle);
+                        }
 
-                    if (map.Cases[h * mapLengthX + w].State == 2)
-                    {
-                        pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
-                    }
-                    else if (map.Cases[h * mapLengthX + w].State == 3)
-                    {
-                        pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
-                    }
-                    else if (map.Cases[h * mapLengthX + w].State == 4)
-                    {
-                        pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
-                        pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
-                    }
+                        if (map.Cases[h * mapLengthX + w].State == 2)
+                        {
+                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
+                        }
+                        else if (map.Cases[h * mapLengthX + w].State == 3)
+                        {
+                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
+                        }
+                        else if (map.Cases[h * mapLengthX + w].State == 4)
+                        {
+                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
+                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
+                        }
 
-                    if (w > 0 && map.Cases[h * mapLengthX + w].State != 0 && 
-                        (map.Cases[h * mapLengthX + w - 1].State == 2 || map.Cases[h * mapLengthX + w - 1].State == 4))
-                    {
-                        pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleLeft);
-                    }
-                    if (h > 0 && map.Cases[h * mapLengthX + w].State != 0 &&
-                        (map.Cases[h * mapLengthX + w - mapLengthX].State == 3 || map.Cases[h * mapLengthX + w - mapLengthX].State == 4))
-                    {
-                        pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), upMiddle);
+                        if (w > 0 && map.Cases[h * mapLengthX + w].State != 0 &&
+                            (map.Cases[h * mapLengthX + w - 1].State == 2 || map.Cases[h * mapLengthX + w - 1].State == 4))
+                        {
+                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleLeft);
+                        }
+                        if (h > 0 && map.Cases[h * mapLengthX + w].State != 0 &&
+                            (map.Cases[h * mapLengthX + w - mapLengthX].State == 3 || map.Cases[h * mapLengthX + w - mapLengthX].State == 4))
+                        {
+                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), upMiddle);
+                        }
                     }
                 }
             }
+
+            Point[] playerCursor = new Point[] { };
+
+            if (player.Rotation == 0)
+            {
+                playerCursor = new Point[] {
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.5), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.1)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.2), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.9)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.8), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.9))
+                };
+            }
+            else if (player.Rotation == 90)
+            {
+                playerCursor = new Point[] {
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.9), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.5)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.1), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.2)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.1), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.8))
+                };
+            }
+            else if (player.Rotation == 180)
+            {
+                playerCursor = new Point[] {
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.5), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.9)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.2), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.1)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.8), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.1))
+                };
+            }
+            else if (player.Rotation == 270)
+            {
+                playerCursor = new Point[] {
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.1), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.5)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.9), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.2)),
+                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.9), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.8))
+                };
+            }
+
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Red), playerCursor);
         }
     }
 }
