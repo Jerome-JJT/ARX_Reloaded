@@ -15,7 +15,9 @@ namespace ARX_Reloaded
         public FrmGame()
         {
             InitializeComponent();
+           
         }
+
 
 
         /*public double Map(double value, double fromLow, double fromHigh, double toLow, double toHigh)
@@ -23,52 +25,41 @@ namespace ARX_Reloaded
             return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
         }*/
 
-        private void draw(PaintEventArgs ee)
-        {
-            Point[] drawBackBlock = {
-                new Point(30,30),
-                new Point(70,45),
-                new Point(30,90)
-            };
 
-            ee.Graphics.FillPolygon(new SolidBrush(Color.NavajoWhite), drawBackBlock);
-        }
+        bool canGoLeft = true;
+        bool canGoRight = true;
+
+        bool couldGoLeft = true;
+        bool couldGoRight = true;
+        int vision = 2;
+
+        Map map = new Map();
+        
+
 
         private void picView_Paint(object sender, PaintEventArgs e)
         {
             DrawView drawing = new DrawView(picView.Size.Width, picView.Size.Height, e);
 
+            drawing.DrawTotalView(canGoLeft, canGoRight, couldGoLeft, couldGoRight, vision);
+        }
 
-            drawing.DrawFloor();
-            drawing.DrawCeiling();
+        private void picMap_Paint(object sender, PaintEventArgs e)
+        {
+            DrawMap drawing = new DrawMap(picMap.Size.Width, picMap.Size.Height, e);
 
-            drawing.DrawLeftWall();
-            drawing.DrawRightWall();
-
-            drawing.DrawLeftHall();
-            drawing.DrawRightHall();
-
-            //drawing.DrawLeftPanel();
-            drawing.DrawRightPanel();
-
-
-            drawing.DrawLeftBackWall();
-            drawing.DrawRightBackWall();
-
-            drawing.DrawLeftBackHall();
-            drawing.DrawRightBackHall();
-
-            //drawing.DrawLeftBackPanel();
-            drawing.DrawRightBackPanel();
-
-            drawing.DrawBackground();
-            //drawing.DrawBackBlock();
-            //drawing.DrawFrontBlock();
-
+            drawing.DrawTotalMap(map);
 
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            canGoLeft = false;
+            picView.Refresh();
+            
+        }
 
+        
     }
 }

@@ -10,53 +10,56 @@ namespace ARX_Reloaded
 {
     public class DrawView
     {
-        PaintEventArgs pictureElement;
+        private PaintEventArgs pictureElement;
 
         #region Points storage
-        int maxWidth;
-        int maxHeight;
+        private int maxWidth;
+        private int maxHeight;
 
 
         //First plan walls
-        double upWall;
-        double downWall;
+        private double upWall;
+        private double downWall;
 
-        double leftWall;
-        double rightWall;
+        private double leftWall;
+        private double rightWall;
 
 
         //Inside first walls (after first panels)
-        double upView;
-        double downView;
-        double horizonView;
+        private double upView;
+        private double downView;
+        private double horizonView;
 
-        double leftView;
-        double rightView;
+        private double leftView;
+        private double rightView;
 
 
         //Panels processing
-        double downLeftPanel;
-        double downRightPanel;
+        private double upLeftPanel;
+        private double upRightPanel;
+
+        private double downLeftPanel;
+        private double downRightPanel;
 
 
         //Background walls
-        double leftBackWall;
-        double rightBackWall;
+        private double leftBackWall;
+        private double rightBackWall;
 
-        double downBackWall;
+        private double downBackWall;
 
 
         //Last background
-        double leftBackView;
-        double rightBackView;
+        private double leftBackView;
+        private double rightBackView;
 
 
         //Background processing
-        double upBackView;
-        double downBackView;
+        private double upBackView;
+        private double downBackView;
         #endregion Points
 
-        
+
         public DrawView(int plateWidth, int plateHeight, PaintEventArgs e)
         {
             pictureElement = e;
@@ -75,38 +78,41 @@ namespace ARX_Reloaded
             //Inside first walls (after first panels)
             upView = 0.15;
             downView = 0.5;
-            horizonView = (upView + downView) / 2;
+            horizonView = (upView+downView)/2;
 
             leftView = 0.35;
-            rightView = 1 - leftView;
+            rightView = 1-leftView;
 
 
             //Panels processing
-            downLeftPanel = leftView - ((leftView - leftWall) / ((downWall - downView) / (1.0 - downView)));
-            downRightPanel = rightView + ((rightWall - rightView) / ((downWall - downView) / (1.0 - downView)));
+            upLeftPanel = leftView - ((leftView - leftWall) / ((upView-upWall) / (upView-0.0)));
+            upRightPanel = rightView + ((rightWall-rightView) / ((upView-upWall) / (upView-0.0)));
+
+            downLeftPanel = leftView - ((leftView-leftWall) / ((downWall-downView) / (1.0-downView)));
+            downRightPanel = rightView + ((rightWall-rightView) / ((downWall-downView) / (1.0-downView)));
 
 
             //Background walls
-            leftBackWall = 0.19 * (rightView - leftView) + leftView;
-            rightBackWall = 1 - leftBackWall;
+            leftBackWall = 0.19*(rightView-leftView)+leftView;
+            rightBackWall = 1-leftBackWall;
 
-            downBackWall = downWall - ((downWall - downView) * ((leftBackWall - leftWall) / (leftView - leftWall)));
+            downBackWall = downWall - ((downWall-downView) * ((leftBackWall-leftWall) / (leftView-leftWall)));
 
 
             //Last background
-            leftBackView = 0.18 * (rightBackWall - leftBackWall) + leftBackWall;
-            rightBackView = 1.0 - leftBackView;
+            leftBackView = 0.18*(rightBackWall-leftBackWall)+leftBackWall;
+            rightBackView = 1.0-leftBackView;
 
 
             //Background processing
             upBackView = 0.2;
-            downBackView = downWall - ((downWall - downView) * ((leftBackView - leftWall) / (leftView - leftWall)));
+            downBackView = downWall - ((downWall-downView) * ((leftBackView-leftWall) / (leftView-leftWall)));
             #endregion Process points
         }
 
 
 
-        public void DrawFloor()
+        private void drawFloor()
         {
             Point[] drawFloor = {
                 new Point(Convert.ToInt32(maxWidth*0),              Convert.ToInt32(maxHeight*horizonView)),
@@ -116,11 +122,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), drawFloor);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Black), drawFloor);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(00,00,00)), drawFloor);
         }
 
-
-        public void DrawCeiling()
+        private void drawCeiling()
         {
             Point[] drawCeiling = {
                 new Point(Convert.ToInt32(maxWidth*0),              Convert.ToInt32(maxHeight*0)),
@@ -130,10 +135,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Red), drawCeiling);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.AntiqueWhite), drawCeiling);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(250, 231, 215)), drawCeiling);
         }
 
-        public void DrawFrontBlock()
+        private void drawFrontBlock()
         {
             Point[] drawFrontBlock = {
                 new Point(Convert.ToInt32(maxWidth*leftWall),       Convert.ToInt32(maxHeight*upWall)),
@@ -143,10 +148,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Brown), drawFrontBlock);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DimGray), drawFrontBlock);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(128, 128, 128)), drawFrontBlock);
         }
 
-        public void DrawLeftWall()
+        private void drawLeftWall()
         {
             Point[] drawLeftWall = {
                 new Point(Convert.ToInt32(maxWidth*0),              Convert.ToInt32(maxHeight*upWall)),
@@ -156,10 +161,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Green), drawLeftWall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DimGray), drawLeftWall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(144, 144, 144)), drawLeftWall);
         }
 
-        public void DrawRightWall()
+        private void drawRightWall()
         {
             Point[] drawRightWall = {
                 new Point(Convert.ToInt32(maxWidth*1),              Convert.ToInt32(maxHeight*upWall)),
@@ -169,10 +174,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.LightGreen), drawRightWall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DimGray), drawRightWall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(144, 144, 144)), drawRightWall);
         }
 
-        public void DrawLeftHall()
+        private void drawLeftHall()
         {
             Point[] drawLeftHall = {
                 new Point(Convert.ToInt32(maxWidth*leftWall),       Convert.ToInt32(maxHeight*upWall)),
@@ -182,10 +187,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Orange), drawLeftHall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Gray), drawLeftHall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(128, 128, 128)), drawLeftHall);
         }
 
-        public void DrawRightHall()
+        private void drawRightHall()
         {
             Point[] drawRightHall = {
                 new Point(Convert.ToInt32(maxWidth*rightWall),      Convert.ToInt32(maxHeight*upWall)),
@@ -195,14 +200,14 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DarkOrange), drawRightHall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Gray), drawRightHall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(128, 128, 128)), drawRightHall);
         }
 
-        public void DrawLeftPanel()
+        private void drawLeftPanel()
         {
             Point[] drawLeftPanel = {
                 new Point(0, 0),
-                new Point(Convert.ToInt32(maxWidth*leftWall),       Convert.ToInt32(maxHeight*upWall)),
+                new Point(Convert.ToInt32(maxWidth*upLeftPanel),    Convert.ToInt32(maxHeight*0)),
                 new Point(Convert.ToInt32(maxWidth*leftView),       Convert.ToInt32(maxHeight*upView)),
                 new Point(Convert.ToInt32(maxWidth*leftView),       Convert.ToInt32(maxHeight*downView)),
                 new Point(Convert.ToInt32(maxWidth*leftWall),       Convert.ToInt32(maxHeight*downWall)),
@@ -211,14 +216,14 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Violet), drawLeftPanel);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Gray), drawLeftPanel);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(128, 128, 128)), drawLeftPanel);
         }
 
-        public void DrawRightPanel()
+        private void drawRightPanel()
         {
             Point[] drawRightPanel = {
-                new Point(Convert.ToInt32(maxWidth*rightWall),      Convert.ToInt32(maxHeight*upWall)),
-                new Point(Convert.ToInt32(maxWidth*1),              Convert.ToInt32(maxHeight*upWall)),
+                new Point(Convert.ToInt32(maxWidth*upRightPanel),   Convert.ToInt32(maxHeight*0)),
+                new Point(Convert.ToInt32(maxWidth*1),              Convert.ToInt32(maxHeight*0)),
                 new Point(Convert.ToInt32(maxWidth*1),              Convert.ToInt32(maxHeight*1)),
                 new Point(Convert.ToInt32(maxWidth*downRightPanel), Convert.ToInt32(maxHeight*1)),
                 new Point(Convert.ToInt32(maxWidth*rightView),      Convert.ToInt32(maxHeight*downView)),
@@ -226,10 +231,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Magenta), drawRightPanel);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Gray), drawRightPanel);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(128, 128, 128)), drawRightPanel);
         }
 
-        public void DrawBackBlock()
+        private void drawBackBlock()
         {
             Point[] drawBackBlock = {
                 new Point(Convert.ToInt32(maxWidth*leftBackWall),       Convert.ToInt32(maxHeight*upView)),
@@ -241,7 +246,7 @@ namespace ARX_Reloaded
             pictureElement.Graphics.FillPolygon(new SolidBrush(Color.SaddleBrown), drawBackBlock);
         }
 
-        public void DrawLeftBackWall()
+        private void drawLeftBackWall()
         {
             Point[] drawLeftBackWall = {
                 new Point(Convert.ToInt32(maxWidth*leftView),       Convert.ToInt32(maxHeight*upView)),
@@ -251,10 +256,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Cyan), drawLeftBackWall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DarkGray), drawLeftBackWall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(94, 94, 94)), drawLeftBackWall);
         }
 
-        public void DrawRightBackWall()
+        private void drawRightBackWall()
         {
             Point[] drawRightBackWall = {
                 new Point(Convert.ToInt32(maxWidth*rightView),      Convert.ToInt32(maxHeight*upView)),
@@ -264,10 +269,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DarkCyan), drawRightBackWall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DarkGray), drawRightBackWall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(94, 94, 94)), drawRightBackWall);
         }
 
-        public void DrawLeftBackHall()
+        private void drawLeftBackHall()
         {
             Point[] drawLeftBackHall = {
                 new Point(Convert.ToInt32(maxWidth*leftBackWall),   Convert.ToInt32(maxHeight*upView)),
@@ -277,10 +282,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Indigo), drawLeftBackHall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.SlateGray), drawLeftBackHall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(78, 78, 78)), drawLeftBackHall);
         }
 
-        public void DrawRightBackHall()
+        private void drawRightBackHall()
         {
             Point[] drawRightBackHall = {
                 new Point(Convert.ToInt32(maxWidth*rightBackWall),  Convert.ToInt32(maxHeight*upView)),
@@ -290,10 +295,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Navy), drawRightBackHall);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.SlateGray), drawRightBackHall);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(78, 78, 78)), drawRightBackHall);
         }
 
-        public void DrawLeftBackPanel()
+        private void drawLeftBackPanel()
         {
             Point[] drawLeftBackPanel = {
                 new Point(Convert.ToInt32(maxWidth*leftView),       Convert.ToInt32(maxHeight*upView)),
@@ -303,10 +308,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.LightGray), drawLeftBackPanel);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.SlateGray), drawLeftBackPanel);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(78, 78, 78)), drawLeftBackPanel);
         }
 
-        public void DrawRightBackPanel()
+        private void drawRightBackPanel()
         {
             Point[] drawRightBackPanel = {
                 new Point(Convert.ToInt32(maxWidth*rightView),      Convert.ToInt32(maxHeight*upView)),
@@ -316,10 +321,10 @@ namespace ARX_Reloaded
             };
 
             //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.LightGray), drawRightBackPanel);
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.SlateGray), drawRightBackPanel);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(78, 78, 78)), drawRightBackPanel);
         }
 
-        public void DrawBackground()
+        private void drawBackground()
         {
             Point[] drawBackground = {
                 new Point(Convert.ToInt32(maxWidth*leftBackView),   Convert.ToInt32(maxHeight*upBackView)),
@@ -328,9 +333,68 @@ namespace ARX_Reloaded
                 new Point(Convert.ToInt32(maxWidth*leftBackView),   Convert.ToInt32(maxHeight*downBackView))
             };
 
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.DarkSlateGray), drawBackground);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(16,16,16)), drawBackground);
         }
 
+        public void DrawTotalView(bool canGoLeft, bool canGoRight, bool couldGoLeft, bool couldGoRight, int vision)
+        {
+            drawFloor();
+            drawCeiling();
 
+            drawLeftHall();
+            drawRightHall();
+
+            if (canGoLeft)
+            {
+                drawLeftWall();
+            }
+            else
+            {
+                drawLeftPanel();
+            }
+
+            if (canGoRight)
+            {
+                drawRightWall();
+            }
+            else
+            {
+                drawRightPanel();
+            }
+
+            drawLeftBackHall();
+            drawRightBackHall();
+
+            if (couldGoLeft)
+            {
+                drawLeftBackWall();
+            }
+            else
+            {
+                drawLeftBackPanel();
+            }
+
+            if (couldGoRight)
+            {
+                drawRightBackWall();
+            }
+            else
+            {
+                drawRightBackPanel();
+            }
+
+            if (vision == 0)
+            {
+                drawFrontBlock();
+            }
+            else if (vision == 1)
+            {
+                drawBackBlock();
+            }
+            else
+            {
+                drawBackground();
+            }
+        }
     }
 }
