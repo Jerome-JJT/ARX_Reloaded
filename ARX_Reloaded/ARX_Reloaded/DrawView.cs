@@ -71,16 +71,16 @@ namespace ARX_Reloaded
             upWall = 0.05;
             downWall = 0.77;
 
-            leftWall = 0.2;
+            leftWall = 0.21;
             rightWall = 1 - leftWall;
 
 
             //Inside first walls (after first panels)
-            upView = 0.15;
+            upView = 0.13;
             downView = 0.5;
             horizonView = (upView+downView)/2;
 
-            leftView = 0.35;
+            leftView = 0.36;
             rightView = 1-leftView;
 
 
@@ -93,19 +93,19 @@ namespace ARX_Reloaded
 
 
             //Background walls
-            leftBackWall = 0.19*(rightView-leftView)+leftView;
+            leftBackWall = 0.24*(rightView-leftView)+leftView;
             rightBackWall = 1-leftBackWall;
 
             downBackWall = downWall - ((downWall-downView) * ((leftBackWall-leftWall) / (leftView-leftWall)));
 
 
             //Last background
-            leftBackView = 0.18*(rightBackWall-leftBackWall)+leftBackWall;
+            leftBackView = 0.19*(rightBackWall-leftBackWall)+leftBackWall;
             rightBackView = 1.0-leftBackView;
 
 
             //Background processing
-            upBackView = 0.2;
+            upBackView = 0.18;
             downBackView = downWall - ((downWall-downView) * ((leftBackView-leftWall) / (leftView-leftWall)));
             #endregion Process points
         }
@@ -333,7 +333,7 @@ namespace ARX_Reloaded
                 new Point(Convert.ToInt32(maxWidth*leftBackView),   Convert.ToInt32(maxHeight*downBackView))
             };
 
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(16,16,16)), drawBackground);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(12,12,12)), drawBackground);
         }
 
         public void DrawTotalView(bool canGoLeft, bool canGoRight, bool couldGoLeft, bool couldGoRight, int vision)

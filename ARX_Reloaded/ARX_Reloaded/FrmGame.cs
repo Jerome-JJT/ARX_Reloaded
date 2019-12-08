@@ -84,6 +84,8 @@ namespace ARX_Reloaded
         {
             Movement.Goto(ref player, map, direction, chkPacmanMoves.Checked);
 
+            map.Cases[player.Y * map.Width + player.X].Visited = true;
+
             picMap.Refresh();
             picView.Refresh();
         }

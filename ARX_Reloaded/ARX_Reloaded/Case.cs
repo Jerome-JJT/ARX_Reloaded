@@ -14,7 +14,7 @@ namespace ARX_Reloaded
         public Case()
         {
             state = 0;
-            visited = true;
+            visited = false;
         }
 
         public int State

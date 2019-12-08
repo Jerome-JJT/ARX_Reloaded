@@ -256,12 +256,13 @@ namespace ARX_Reloaded
                     canGoLeft = true;
                 }
 
-                if ((map.Cases[player.Y * map.Width + player.X + 1].State == 3 || map.Cases[player.Y * map.Width + player.X + 1].State == 4))
+                if (player.X < map.Width - 1 && 
+                    (map.Cases[player.Y * map.Width + player.X + 1].State == 3 || map.Cases[player.Y * map.Width + player.X + 1].State == 4))
                 {
                     couldGoRight = true;
                 }
 
-                if (player.X < map.Width && player.Y > 0 &&
+                if (player.X < map.Width - 1 && player.Y > 0 &&
                     (map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == 4))
                 {
                     couldGoLeft = true;
@@ -271,7 +272,7 @@ namespace ARX_Reloaded
                 {
                     vision = 1;
 
-                    if (player.X < map.Width &&
+                    if (player.X < map.Width - 1 &&
                     (map.Cases[player.Y * map.Width + player.X + 1].State == 2 || map.Cases[player.Y * map.Width + player.X + 1].State == 4))
                     {
                         vision = 2;
@@ -280,6 +281,90 @@ namespace ARX_Reloaded
                 else
                 {
                     vision = 0;
+                }
+            }
+            else if (player.Rotation == 180)
+            {
+                if (player.X > 0 &&
+                    (map.Cases[player.Y * map.Width + player.X - 1].State == 2 || map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                {
+                    canGoRight = true;
+                }
+
+                if ((map.Cases[player.Y * map.Width + player.X].State == 2 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                {
+                    canGoLeft = true;
+                }
+
+                if (player.X > 0 && player.Y < map.Height - 1 &&
+                    (map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == 2 || map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == 4))
+                {
+                    couldGoRight = true;
+                }
+
+                if (player.Y < map.Height - 1 &&
+                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == 2 || map.Cases[player.Y * map.Width + player.X + map.Width].State == 4))
+                {
+                    couldGoLeft = true;
+                }
+
+                if ((map.Cases[player.Y * map.Width + player.X].State == 3 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                {
+                    vision = 1;
+
+                    if (player.Y < map.Height &&
+                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == 3 || map.Cases[player.Y * map.Width + player.X + map.Width].State == 4))
+                    {
+                        vision = 2;
+                    }
+                }
+                else
+                {
+                    vision = 0;
+                }
+            }
+            else
+            {
+                if (player.Rotation == 270)
+                {
+                    if (player.Y > 0 &&
+                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                    {
+                        canGoRight = true;
+                    }
+
+                    if ((map.Cases[player.Y * map.Width + player.X].State == 3 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                    {
+                        canGoLeft = true;
+                    }
+
+                    if (player.X > 0 && player.Y > 0 &&
+                        (map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == 4))
+                    {
+                        couldGoRight = true;
+                    }
+
+                    if (player.X > 0 &&
+                        (map.Cases[player.Y * map.Width + player.X - 1].State == 3 || map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                    {
+                        couldGoLeft = true;
+                    }
+
+                    if (player.X > 0 &&
+                        (map.Cases[player.Y * map.Width + player.X - 1].State == 2 || map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                    {
+                        vision = 1;
+
+                        if (player.X > 1 &&
+                        (map.Cases[player.Y * map.Width + player.X - 2].State == 2 || map.Cases[player.Y * map.Width + player.X - 2].State == 4))
+                        {
+                            vision = 2;
+                        }
+                    }
+                    else
+                    {
+                        vision = 0;
+                    }
                 }
             }
         }
