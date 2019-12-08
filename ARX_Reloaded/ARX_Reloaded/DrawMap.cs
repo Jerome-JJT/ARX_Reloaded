@@ -31,8 +31,8 @@ namespace ARX_Reloaded
             maxWidth = plateWidth;
             maxHeight = plateHeight;
 
-            mapWidth = 30;
-            mapHeight = 30;
+            mapWidth = 5;
+            mapHeight = 5;
 
             boxWidth = maxWidth / mapWidth;
             boxHeight = maxHeight / mapHeight;
@@ -111,47 +111,53 @@ namespace ARX_Reloaded
                     };
 
 
-                    //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Black), upLeft);
+                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), upLeft);
                     //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), upMiddle);
-                    //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Black), upRight);
+                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), upRight);
 
                     //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Magenta), middleLeft);
                     //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Maroon), middleMiddle);
 
 
-                    //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Black), downLeft);
+                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), downLeft);
 
-                    //pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Black), downRight);
+                    pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Blue), downRight);
 
                     Color pathColor = Color.LawnGreen;
 
-                    if(totalMap.Cases[h*30+w].value != 0)
+                    if(totalMap.Cases[h * 5 + w].value != 0)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleMiddle);
                     }
 
-                    if (totalMap.Cases[h * 30 + w].value == 2)
+                    if (totalMap.Cases[h * 5 + w].value == 2)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                     }
-                    else if (totalMap.Cases[h * 30 + w].value == 3)
+                    else if (totalMap.Cases[h * 5 + w].value == 3)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                     }
-                    else if (totalMap.Cases[h * 30 + w].value == 4)
+                    else if (totalMap.Cases[h * 5 + w].value == 4)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                     }
 
-                    if (w > 0 && (totalMap.Cases[h * 30 + w - 1].value == 2 || totalMap.Cases[h * 30 + w - 1].value == 4))
+                    if (w > 0 && totalMap.Cases[h * 5 + w].value != 0 && 
+                        (totalMap.Cases[h * 5 + w - 1].value == 2 || totalMap.Cases[h * 5 + w - 1].value == 4))
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleLeft);
                     }
-                    if (h > 0 && (totalMap.Cases[h * 30 + w - 30].value == 3 || totalMap.Cases[h * 30 + w - 30].value == 4))
+                    if (h > 0 && totalMap.Cases[h * 5 + w].value != 0 &&
+                        (totalMap.Cases[h * 5 + w - 5].value == 3 || totalMap.Cases[h * 5 + w - 5].value == 4))
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), upMiddle);
                     }
+
+                    pictureElement.Graphics.DrawString($"{h*5+w}", new Font("Arial", 14), Brushes.White, 
+                        new Point(Convert.ToInt32(w * boxWidth + miniBoxWidth * 1), 
+                        Convert.ToInt32(h * boxHeight + miniBoxHeight * 1)));
                 }
             }
         }

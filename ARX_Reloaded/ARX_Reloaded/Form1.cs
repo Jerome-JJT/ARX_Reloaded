@@ -57,7 +57,8 @@ namespace ARX_Reloaded
         {
             canGoLeft = false;
             picView.Refresh();
-            
+
+            map.GenerateMap(picMap);
         }
 
         
