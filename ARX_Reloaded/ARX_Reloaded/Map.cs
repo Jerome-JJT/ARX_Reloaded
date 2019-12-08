@@ -9,48 +9,17 @@ namespace ARX_Reloaded
 {
     public class Map
     {
-        /*List<int> oldMap = new List<int>
-        {
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,2,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-        };*/
-
-        int mapWidth = 5;
-        int mapHeight = 5;
+        int mapWidth;
+        int mapHeight;
 
         public List<Case> Cases = new List<Case>();
         private Stack<int> active = new Stack<int>();
 
-        public Map()
+        public Map(int width, int height)
         {
+            mapWidth = width;
+            mapHeight = height;
+
             for (int i = 0; i < mapWidth * mapHeight; i++)
             {
                 Cases.Add(new Case());
@@ -62,26 +31,13 @@ namespace ARX_Reloaded
             Random rand = new Random();
 
             active.Push(rand.Next(Cases.Count()));
-            //active.Push(12);
-
             Cases[active.Last()].value = 1;
-
-
-
-
-            Console.WriteLine($"Start {active.Last()}");
-
-
 
 
             while (active.Count() > 0)
             {
                 int futurDirection = emptyAdj(active.First());
-                //int futurDirection = 0;
 
-
-                Console.WriteLine($"Go from {active.First()}");
-                Console.WriteLine($"Go to {futurDirection}");
 
                 if (futurDirection == -1)
                 {
@@ -90,8 +46,8 @@ namespace ARX_Reloaded
 
                 else if (futurDirection == 0)
                 {
-                    Cases[active.First() - 5].value = 3;
-                    active.Push(active.First() - 5);
+                    Cases[active.First() - mapHeight].value = 3;
+                    active.Push(active.First() - mapHeight);
                 }
 
                 else if (futurDirection == 90)
@@ -120,8 +76,8 @@ namespace ARX_Reloaded
                         Cases[active.First()].value = 3;
                     }
 
-                    Cases[active.First() + 5].value = 1;
-                    active.Push(active.First() + 5);
+                    Cases[active.First() + mapHeight].value = 1;
+                    active.Push(active.First() + mapHeight);
                 }
 
                 else if (futurDirection == 270)
@@ -130,25 +86,9 @@ namespace ARX_Reloaded
                     active.Push(active.First() - 1);
                 }
 
-                pic.Refresh();
-                foreach (var one in active)
-                {
-                    Console.Write($"{one} ");
-                }
-                Console.WriteLine("hh");
-                System.Threading.Thread.Sleep(1);
+                //pic.Refresh();
             }
         }
-
-        /*public void Shuffle<T>(this Stack<T> stack)
-        {
-            Random rnd = new Random();
-            var values = stack.ToArray();
-            stack.Clear();
-            foreach (var value in values.OrderBy(x => rnd.Next()))
-                stack.Push(value);
-
-        }*/
 
 
         private void Shuffle<T>(IList<T> list)
@@ -191,7 +131,6 @@ namespace ARX_Reloaded
                 {
                     return 270;
                 }
-                Console.WriteLine($"Cant go to {test}");
             }    
             
             return -1;
