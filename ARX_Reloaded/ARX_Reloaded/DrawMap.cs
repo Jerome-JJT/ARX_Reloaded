@@ -30,19 +30,19 @@ namespace ARX_Reloaded
 
             maxWidth = plateWidth;
             maxHeight = plateHeight;
+        }
 
-            mapWidth = 5;
-            mapHeight = 5;
+        public void DrawTotalMap(Map totalMap)
+        {
+            mapWidth = totalMap.mapWidth;
+            mapHeight = totalMap.mapHeight;
 
             boxWidth = maxWidth / mapWidth;
             boxHeight = maxHeight / mapHeight;
 
             miniBoxWidth = boxWidth / 3;
             miniBoxHeight = boxHeight / 3;
-        }
 
-        public void DrawTotalMap(Map totalMap)
-        {
             for (int h = 0; h < mapHeight; h++)
             {
                 for (int w = 0; w < mapWidth; w++)
@@ -125,39 +125,39 @@ namespace ARX_Reloaded
 
                     Color pathColor = Color.LawnGreen;
 
-                    if(totalMap.Cases[h * 5 + w].value != 0)
+                    if(totalMap.Cases[h * mapWidth + w].value != 0)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleMiddle);
                     }
 
-                    if (totalMap.Cases[h * 5 + w].value == 2)
+                    if (totalMap.Cases[h * mapWidth + w].value == 2)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                     }
-                    else if (totalMap.Cases[h * 5 + w].value == 3)
+                    else if (totalMap.Cases[h * mapWidth + w].value == 3)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                     }
-                    else if (totalMap.Cases[h * 5 + w].value == 4)
+                    else if (totalMap.Cases[h * mapWidth + w].value == 4)
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                     }
 
-                    if (w > 0 && totalMap.Cases[h * 5 + w].value != 0 && 
-                        (totalMap.Cases[h * 5 + w - 1].value == 2 || totalMap.Cases[h * 5 + w - 1].value == 4))
+                    if (w > 0 && totalMap.Cases[h * mapWidth + w].value != 0 && 
+                        (totalMap.Cases[h * mapWidth + w - 1].value == 2 || totalMap.Cases[h * mapWidth + w - 1].value == 4))
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleLeft);
                     }
-                    if (h > 0 && totalMap.Cases[h * 5 + w].value != 0 &&
-                        (totalMap.Cases[h * 5 + w - 5].value == 3 || totalMap.Cases[h * 5 + w - 5].value == 4))
+                    if (h > 0 && totalMap.Cases[h * mapWidth + w].value != 0 &&
+                        (totalMap.Cases[h * mapWidth + w - mapWidth].value == 3 || totalMap.Cases[h * mapWidth + w - mapWidth].value == 4))
                     {
                         pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), upMiddle);
                     }
 
-                    pictureElement.Graphics.DrawString($"{h*5+w}", new Font("Arial", 14), Brushes.White, 
+                    /*pictureElement.Graphics.DrawString($"{h*5+w}", new Font("Arial", 14), Brushes.White, 
                         new Point(Convert.ToInt32(w * boxWidth + miniBoxWidth * 1), 
-                        Convert.ToInt32(h * boxHeight + miniBoxHeight * 1)));
+                        Convert.ToInt32(h * boxHeight + miniBoxHeight * 1)));*/
                 }
             }
         }

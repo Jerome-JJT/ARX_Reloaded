@@ -9,11 +9,14 @@ namespace ARX_Reloaded
 {
     public class Map
     {
-        int mapWidth;
-        int mapHeight;
+        public int mapWidth;
+        public int mapHeight;
 
         public List<Case> Cases = new List<Case>();
         private Stack<int> active = new Stack<int>();
+
+        Random rand = new Random();
+
 
         public Map(int width, int height)
         {
@@ -28,7 +31,7 @@ namespace ARX_Reloaded
 
         public void GenerateMap(PictureBox pic)
         {
-            Random rand = new Random();
+            
 
             active.Push(rand.Next(Cases.Count()));
             Cases[active.Last()].value = 1;
@@ -93,13 +96,11 @@ namespace ARX_Reloaded
 
         private void Shuffle<T>(IList<T> list)
         {
-            Random rng = new Random();
-
             int n = list.Count;
             while (n > 1)
             {
                 n--;
-                int k = rng.Next(n + 1);
+                int k = rand.Next(n + 1);
                 T value = list[k];
                 list[k] = list[n];
                 list[n] = value;
@@ -115,19 +116,19 @@ namespace ARX_Reloaded
 
             foreach (int test in possibilities)
             {
-                if (test == 0 && baseSearch >= 5 && Cases[baseSearch - mapWidth].value == 0)
+                if (test == 0 && baseSearch >= mapWidth && Cases[baseSearch - mapWidth].value == 0)
                 {
                     return 0;
                 }
-                else if (test == 90 && baseSearch % 5 < 4 && Cases[baseSearch + 1].value == 0)
+                else if (test == 90 && baseSearch % mapHeight < mapHeight-1 && Cases[baseSearch + 1].value == 0)
                 {
                     return 90;
                 }
-                else if (test == 180 && baseSearch < 24-5 && Cases[baseSearch + mapWidth].value == 0)
+                else if (test == 180 && baseSearch < mapHeight*mapWidth-mapWidth && Cases[baseSearch + mapWidth].value == 0)
                 {
                     return 180;
                 }
-                else if (test == 270 && baseSearch % 5 > 0 && Cases[baseSearch - 1].value == 0)
+                else if (test == 270 && baseSearch % mapHeight > 0 && Cases[baseSearch - 1].value == 0)
                 {
                     return 270;
                 }
