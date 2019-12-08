@@ -243,7 +243,7 @@ namespace ARX_Reloaded
                 new Point(Convert.ToInt32(maxWidth*leftBackWall),       Convert.ToInt32(maxHeight*downBackWall))
             };
 
-            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.SaddleBrown), drawBackBlock);
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(78, 78, 78)), drawBackBlock);
         }
 
         private void drawLeftBackWall()

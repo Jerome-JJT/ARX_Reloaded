@@ -15,14 +15,9 @@ namespace ARX_Reloaded
         Map map;
         Player player;
 
-        Size labyrinthSize = new Size(20, 20);
+        Size labyrinthSize = new Size(30,30);
 
-        bool canGoLeft = true;
-        bool canGoRight = true;
-
-        bool couldGoLeft = true;
-        bool couldGoRight = true;
-        int vision = 2;
+        
 
         public FrmGame()
         {
@@ -30,106 +25,75 @@ namespace ARX_Reloaded
             player = new Player();
         }
 
-        private void FrmGame_KeyPress(object sender, KeyPressEventArgs e)
+        private void FrmGame_Load(object sender, EventArgs e)
         {
-            //MessageBox.Show("Form.KeyPress: '" + e.KeyChar.ToString() + "' pressed.");
-            switch (e.KeyChar)
-            {
-                case 'w':
-                    Move("up");
-                    break;
-                case 'a':
-                    Move("left");
-                    break;
-                case 'd':
-                    Move("right");
-                    break;
-                case 's':
-                    Move("down");
-                    break;
-            }
+            map = new MapNormal(labyrinthSize);
+            map.GenerateMap();
+            picMap.Refresh();
+
+            prepareMovement("none");
         }
 
-        public void Move(string direction)
-        {
-            if(chkPacmanMoves.Checked)
-            {
 
-            }
-            else
+        private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switchKeys(e.KeyCode);
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if(switchKeys(keyData))
             {
-                if (direction == "up")
-                {
-                    if (player.Rotation == 0 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 || 
-                         map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
-                    {
-                        player.Y -= 1;
-                    }
-                    else if (player.Rotation == 90 && player.X < map.Width &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
-                    {
-                        player.X += 1;
-                    }
-                    else if (player.Rotation == 180 && player.Y < map.Height &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
-                    {
-                        player.Y += 1;
-                    }
-                    else if (player.Rotation == 270 && player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X - 1].State == 4))
-                    {
-                        player.X -= 1;
-                    }
-                }
-                else if (direction == "left")
-                {
-                    player.Rotation = (player.Rotation + 270) % 360;
-                }
-                else if (direction == "right")
-                {
-                    player.Rotation = (player.Rotation + 90) % 360;
-                }
-                else if (direction == "down")
-                {
-                    if (player.Rotation == 0 && player.Y < map.Height &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
-                    {
-                        player.Y += 1;
-                    }
-                    else if (player.Rotation == 90 && player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X - 1].State == 4))
-                    {
-                        player.X -= 1;
-                    }
-                    else if (player.Rotation == 180 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
-                    {
-                        player.Y -= 1;
-                    }
-                    else if (player.Rotation == 270 && player.Y < map.Width &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
-                    {
-                        player.X += 1;
-                    }
-                }
+                return true;
             }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private bool switchKeys(Keys key)
+        {
+            switch (key)
+            {
+                case Keys.W:
+                case Keys.Up:
+                    prepareMovement("up");
+                    break;
+
+                case Keys.A:
+                case Keys.Left:
+                    prepareMovement("left");
+                    break;
+
+                case Keys.D:
+                case Keys.Right:
+                    prepareMovement("right");
+                    break;
+
+                case Keys.S:
+                case Keys.Down:
+                    prepareMovement("down");
+                    break;
+
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        private void prepareMovement(string direction)
+        {
+            Movement.Goto(ref player, map, direction, chkPacmanMoves.Checked);
 
             picMap.Refresh();
+            picView.Refresh();
         }
+        
 
         private void picView_Paint(object sender, PaintEventArgs e)
         {
             DrawView drawView = new DrawView(e, picView.Size);
 
-            drawView.DrawTotalView(canGoLeft, canGoRight, couldGoLeft, couldGoRight, vision);
+            drawView.DrawTotalView(Movement.CanGoLeft, Movement.CanGoRight, Movement.CouldGoLeft, Movement.CouldGoRight, Movement.Vision);
         }
 
         private void picMap_Paint(object sender, PaintEventArgs e)
@@ -159,7 +123,6 @@ namespace ARX_Reloaded
 
         private void cmdUpdateView_Click(object sender, EventArgs e)
         {
-            canGoLeft = false;
             picView.Refresh();
         }
     }

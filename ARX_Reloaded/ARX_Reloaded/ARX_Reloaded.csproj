@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Case.cs" />
+    <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="DrawMap.cs" />
     <Compile Include="DrawPlayer.cs" />

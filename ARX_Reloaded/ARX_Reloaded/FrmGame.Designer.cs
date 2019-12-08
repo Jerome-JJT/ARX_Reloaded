@@ -114,7 +114,8 @@
             this.KeyPreview = true;
             this.Name = "FrmGame";
             this.Text = "ARX Reloaded";
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FrmGame_KeyPress);
+            this.Load += new System.EventHandler(this.FrmGame_Load);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.FrmGame_PreviewKeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.picView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMap)).EndInit();
             this.ResumeLayout(false);

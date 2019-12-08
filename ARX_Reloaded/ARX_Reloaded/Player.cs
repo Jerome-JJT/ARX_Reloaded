@@ -14,8 +14,8 @@ namespace ARX_Reloaded
 
         public Player()
         {
-            x = 2;
-            y = 2;
+            x = 5;
+            y = 5;
             rotation = 270;
         }
 
