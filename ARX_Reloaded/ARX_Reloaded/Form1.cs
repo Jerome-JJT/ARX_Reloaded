@@ -33,7 +33,7 @@ namespace ARX_Reloaded
         bool couldGoRight = true;
         int vision = 2;
 
-        Map map = new Map(10,10);
+        Map map = new Map(30,30);
         
 
 
@@ -58,7 +58,6 @@ namespace ARX_Reloaded
             canGoLeft = false;
             picView.Refresh();
 
-            map = new Map(10, 10);
             map.GenerateMap(picMap);
             picMap.Refresh();
         }

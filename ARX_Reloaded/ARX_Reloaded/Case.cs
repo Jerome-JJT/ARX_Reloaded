@@ -8,11 +8,17 @@ namespace ARX_Reloaded
 {
     public class Case
     {
-        public int value;
+        private int state;
 
         public Case()
         {
-            value = 0;
+            state = 0;
+        }
+
+        public int State
+        {
+            get { return state; }
+            set { state = value; }
         }
     }
 }
