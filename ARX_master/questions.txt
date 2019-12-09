@@ -1,0 +1,32 @@
+Oh... a ce que je vois on a reussi a arriver jusqu a moi. Bon, je vais te soumettre un petit quizz pour voir si tu es
+bel et bien digne de pouvoir passer. Reponds juste par A, B, C ou D.
+
+0: Qui est la personne la plus importante de ce monde?
+
+ A: Le développeur de ce jeu
+ B: ..
+ C: ..
+ D: ..
+
+Bien tu as compris le concepte du quizz! bien commençons le vrai quizz.
+
+1: Avec quels languages a été codé ce jeu ?
+
+ A: HTML/CSS
+ B: VBA/Assembleur
+ C: JavaScript/HTML(Bonne réponse)
+ D: C#/C
+
+2: Le binaire c'est quoi ?
+
+ A: Un genre
+ B: Un truc avec des chiffres non ?
+ C: Un ensemble de nerfs
+ D: La base 2(Bonne réponse)
+
+3: On peut dire qu'un HUB c'est un peu comme Mcdonald's, venez comme vous êtes.
+
+ A: Parce qu'un HUB c'est un Hybrid Unit Bro
+ B: Parce qu'un HUB ne filtre rien (Bonne réponse)
+ C: Parce qu'un HUB est américain
+ D: Parce qu'un HUB c'est le prochain burger de chez Mcdonald's
