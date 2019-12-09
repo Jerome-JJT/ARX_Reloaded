@@ -49,7 +49,7 @@ namespace ARX_Reloaded
             get { return cases; }
         }
 
-        public virtual void GenerateMap()
+        public virtual void GenerateMap(PictureBox elem, Label loading)
         {
         }
 

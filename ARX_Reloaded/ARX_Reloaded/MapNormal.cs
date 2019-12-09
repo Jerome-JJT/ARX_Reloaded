@@ -14,7 +14,7 @@ namespace ARX_Reloaded
         {
         }
 
-        public override void GenerateMap()
+        public override void GenerateMap(PictureBox elem, Label loading)
         {
             cases = new List<Case>();
             active = new Stack<int>();
@@ -110,6 +110,12 @@ namespace ARX_Reloaded
                     }
 
                     active.Push(active.First() - 1);
+                }
+
+                if(elem != null)
+                {
+                    elem.Refresh();
+                    //System.Threading.Thread.Sleep(1);
                 }
             }
         }

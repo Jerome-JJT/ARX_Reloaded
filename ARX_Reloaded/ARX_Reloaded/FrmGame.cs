@@ -15,7 +15,7 @@ namespace ARX_Reloaded
         Map map;
         Player player;
 
-        Size labyrinthSize = new Size(30,30);
+        Size labyrinthSize = new Size(100,100);
 
         
 
@@ -28,7 +28,7 @@ namespace ARX_Reloaded
         private void FrmGame_Load(object sender, EventArgs e)
         {
             map = new MapNormal(labyrinthSize);
-            map.GenerateMap();
+            map.GenerateMap(null, null);
             picMap.Refresh();
 
             prepareMovement("none");
@@ -112,7 +112,7 @@ namespace ARX_Reloaded
         private void cmdGenNormal_Click(object sender, EventArgs e)
         {
             map = new MapNormal(labyrinthSize);
-            map.GenerateMap();
+            map.GenerateMap(picMap, lblLoading);
 
             prepareMovement("none");
 
@@ -122,7 +122,7 @@ namespace ARX_Reloaded
         private void cmdGenChaos_Click(object sender, EventArgs e)
         {
             map = new MapChaos(labyrinthSize);
-            map.GenerateMap();
+            map.GenerateMap(picMap, lblLoading);
 
             prepareMovement("none");
 

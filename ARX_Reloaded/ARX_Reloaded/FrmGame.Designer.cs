@@ -34,6 +34,7 @@
             this.cmdGenChaos = new System.Windows.Forms.Button();
             this.cmdShowView = new System.Windows.Forms.Button();
             this.chkPacmanMoves = new System.Windows.Forms.CheckBox();
+            this.lblLoading = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMap)).BeginInit();
             this.SuspendLayout();
@@ -100,11 +101,22 @@
             this.chkPacmanMoves.Text = "Pacman moves";
             this.chkPacmanMoves.UseVisualStyleBackColor = true;
             // 
+            // lblLoading
+            // 
+            this.lblLoading.AutoSize = true;
+            this.lblLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoading.Location = new System.Drawing.Point(1096, 3);
+            this.lblLoading.Name = "lblLoading";
+            this.lblLoading.Size = new System.Drawing.Size(71, 17);
+            this.lblLoading.TabIndex = 6;
+            this.lblLoading.Text = "Iteration : ";
+            // 
             // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1227, 660);
+            this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.chkPacmanMoves);
             this.Controls.Add(this.cmdShowView);
             this.Controls.Add(this.cmdGenChaos);
@@ -131,6 +143,7 @@
         private System.Windows.Forms.Button cmdGenChaos;
         private System.Windows.Forms.Button cmdShowView;
         private System.Windows.Forms.CheckBox chkPacmanMoves;
+        private System.Windows.Forms.Label lblLoading;
     }
 }
 
