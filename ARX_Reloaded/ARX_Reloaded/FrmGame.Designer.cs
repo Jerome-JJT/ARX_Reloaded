@@ -32,7 +32,7 @@
             this.picView = new System.Windows.Forms.PictureBox();
             this.picMap = new System.Windows.Forms.PictureBox();
             this.cmdGenChaos = new System.Windows.Forms.Button();
-            this.cmdUpdateView = new System.Windows.Forms.Button();
+            this.cmdShowView = new System.Windows.Forms.Button();
             this.chkPacmanMoves = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMap)).BeginInit();
@@ -80,15 +80,15 @@
             this.cmdGenChaos.UseVisualStyleBackColor = true;
             this.cmdGenChaos.Click += new System.EventHandler(this.cmdGenChaos_Click);
             // 
-            // cmdUpdateView
+            // cmdShowView
             // 
-            this.cmdUpdateView.Location = new System.Drawing.Point(12, 1);
-            this.cmdUpdateView.Name = "cmdUpdateView";
-            this.cmdUpdateView.Size = new System.Drawing.Size(120, 23);
-            this.cmdUpdateView.TabIndex = 4;
-            this.cmdUpdateView.Text = "Update view";
-            this.cmdUpdateView.UseVisualStyleBackColor = true;
-            this.cmdUpdateView.Click += new System.EventHandler(this.cmdUpdateView_Click);
+            this.cmdShowView.Location = new System.Drawing.Point(974, 1);
+            this.cmdShowView.Name = "cmdShowView";
+            this.cmdShowView.Size = new System.Drawing.Size(120, 23);
+            this.cmdShowView.TabIndex = 4;
+            this.cmdShowView.Text = "Afficher map";
+            this.cmdShowView.UseVisualStyleBackColor = true;
+            this.cmdShowView.Click += new System.EventHandler(this.cmdUpdateView_Click);
             // 
             // chkPacmanMoves
             // 
@@ -106,7 +106,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1227, 660);
             this.Controls.Add(this.chkPacmanMoves);
-            this.Controls.Add(this.cmdUpdateView);
+            this.Controls.Add(this.cmdShowView);
             this.Controls.Add(this.cmdGenChaos);
             this.Controls.Add(this.picMap);
             this.Controls.Add(this.picView);
@@ -129,7 +129,7 @@
         private System.Windows.Forms.PictureBox picView;
         private System.Windows.Forms.PictureBox picMap;
         private System.Windows.Forms.Button cmdGenChaos;
-        private System.Windows.Forms.Button cmdUpdateView;
+        private System.Windows.Forms.Button cmdShowView;
         private System.Windows.Forms.CheckBox chkPacmanMoves;
     }
 }

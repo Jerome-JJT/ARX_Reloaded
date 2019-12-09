@@ -113,6 +113,9 @@ namespace ARX_Reloaded
         {
             map = new MapNormal(labyrinthSize);
             map.GenerateMap();
+
+            prepareMovement("none");
+
             picMap.Refresh();
         }
 
@@ -120,12 +123,20 @@ namespace ARX_Reloaded
         {
             map = new MapChaos(labyrinthSize);
             map.GenerateMap();
+
+            prepareMovement("none");
+
             picMap.Refresh();
         }
 
         private void cmdUpdateView_Click(object sender, EventArgs e)
         {
-            picView.Refresh();
+            for (int i = 0; i < map.Cases.Count(); i++)
+            {
+                map.Cases[i].Visited = true;
+            }
+
+            picMap.Refresh();
         }
     }
 }
