@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace ARX_Reloaded
 {
-    public class Map
+    public abstract class Map
     {
         protected int width;
         protected int height;
@@ -49,9 +49,7 @@ namespace ARX_Reloaded
             get { return cases; }
         }
 
-        public virtual void GenerateMap(PictureBox elem, Label loading)
-        {
-        }
+        public abstract void GenerateMap(PictureBox elem, Label loading);
 
         //Shuffle a list
         protected void shuffle<T>(IList<T> list)

@@ -40,17 +40,42 @@ namespace ARX_Reloaded
             get { return vision; }
         }
 
+        private static void goForward(ref Player player, Map map)
+        {
+            if (player.Rotation == 0 && player.Y > 0 &&
+                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 ||
+                         map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+            {
+                player.Y -= 1;
+            }
+            else if (player.Rotation == 90 && player.X < map.Width &&
+                (map.Cases[player.Y * map.Width + player.X].State == 2 ||
+                 map.Cases[player.Y * map.Width + player.X].State == 4))
+            {
+                player.X += 1;
+            }
+            else if (player.Rotation == 180 && player.Y < map.Height &&
+                (map.Cases[player.Y * map.Width + player.X].State == 3 ||
+                 map.Cases[player.Y * map.Width + player.X].State == 4))
+            {
+                player.Y += 1;
+            }
+            else if (player.Rotation == 270 && player.X > 0 &&
+                (map.Cases[player.Y * map.Width + player.X - 1].State == 2 ||
+                 map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+            {
+                player.X -= 1;
+            }
+        }
+
         public static void Goto(ref Player player, Map map, string direction, bool pacmanMode)
         {
             if (pacmanMode)
             {
                 if (direction == "up")
                 {
-                    if (player.Rotation == 0 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                    if (player.Rotation == 0)
                     {
-                        player.Y -= 1;
                     }
                     else if (player.Rotation == 90)
                     {
@@ -64,14 +89,13 @@ namespace ARX_Reloaded
                     {
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
+
+                    goForward(ref player, map);
                 }
                 else if (direction == "right")
                 {
-                    if (player.Rotation == 90 && player.X < map.Width &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
-                    {
-                        player.X += 1;
+                    if (player.Rotation == 90)
+                    { 
                     }
                     else if (player.Rotation == 180)
                     {
@@ -85,14 +109,13 @@ namespace ARX_Reloaded
                     {
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
+
+                    goForward(ref player, map);
                 }
                 else if (direction == "down")
                 {
-                    if (player.Rotation == 180 && player.Y < map.Height &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
+                    if (player.Rotation == 180)
                     {
-                        player.Y += 1;
                     }
                     else if (player.Rotation == 270)
                     {
@@ -106,14 +129,13 @@ namespace ARX_Reloaded
                     {
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
+
+                    goForward(ref player, map);
                 }
                 else if (direction == "left")
                 {
-                    if (player.Rotation == 270 && player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                    if (player.Rotation == 270)
                     {
-                        player.X -= 1;
                     }
                     else if (player.Rotation == 0)
                     {
@@ -127,6 +149,8 @@ namespace ARX_Reloaded
                     {
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
+
+                    goForward(ref player, map);
                 }
             }
 
@@ -134,11 +158,9 @@ namespace ARX_Reloaded
             {
                 if (direction == "up")
                 {
-                    if (player.Rotation == 0 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                    if (player.Rotation == 0)
                     {
-                        player.Y -= 1;
+                        goForward(ref player, map);
                     }
                     else if (player.Rotation == 90 && player.X < map.Width &&
                         (map.Cases[player.Y * map.Width + player.X].State == 2 ||

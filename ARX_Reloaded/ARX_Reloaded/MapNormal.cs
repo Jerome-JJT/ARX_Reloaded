@@ -114,7 +114,7 @@ namespace ARX_Reloaded
 
                 if(elem != null)
                 {
-                    elem.Refresh();
+                    //elem.Refresh();
                     //System.Threading.Thread.Sleep(1);
                 }
             }

@@ -33,7 +33,8 @@ namespace ARX_Reloaded
             cases[active.Last()].State = 1;
 
             //Search for new point until stack is empty
-            for(int iteration = 0; iteration < 100000; iteration++)
+            //for(int iteration = 0; iteration < 4200000; iteration++)
+            while(!isMapFull())
             {
                 //Determine in which direction the labyrinth is expandable
                 int futurDirection = emptyAdj(active.First());
@@ -151,6 +152,19 @@ namespace ARX_Reloaded
                 }
             }
             return -1;
+        }
+
+        private bool isMapFull()
+        {
+            foreach (Case eachCase in cases)
+            {
+                if(eachCase.State == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
