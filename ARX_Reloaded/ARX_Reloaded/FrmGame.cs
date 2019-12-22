@@ -15,7 +15,7 @@ namespace ARX_Reloaded
         Map map;
         Player player;
 
-        Size labyrinthSize = new Size(100,100);
+        Size labyrinthSize = new Size(30,30);
 
         
 

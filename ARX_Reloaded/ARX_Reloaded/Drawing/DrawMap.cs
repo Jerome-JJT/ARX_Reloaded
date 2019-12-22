@@ -88,7 +88,27 @@ namespace ARX_Reloaded
                     };
 
 
-                    Color pathColor = Color.LawnGreen;
+                    Color pathColor;
+                    
+                    switch(map.Cases[h * mapLengthX + w].Zone)
+                    {
+                        case 1:
+                            pathColor = Color.Red;
+                            break;
+
+                        case 2:
+                            pathColor = Color.LawnGreen;
+                            break;
+
+                        case 3:
+                            pathColor = Color.Blue;
+                            break;
+
+                        default:
+                            pathColor = Color.White;
+                            break;
+                    }
+
 
                     if (map.Cases[h * mapLengthX + w].Visited == true)
                     {
