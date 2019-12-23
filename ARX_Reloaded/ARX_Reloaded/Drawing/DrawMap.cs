@@ -25,18 +25,55 @@ namespace ARX_Reloaded
         private double mapPathWidth;
         private double mapPathHeight;
 
-        public DrawMap(PaintEventArgs elem, Size picBoxSize, Player player)
-        {
-            pictureElement = elem;
+        Random shuffleColors;
 
+        /*private static List<string> colorValues = new List<string> { "FFFFFF",
+            "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF",
+            "800000", "008000", "000080", "808000", "800080", "008080", "808080",
+            "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0",
+            "400000", "004000", "000040", "404000", "400040", "004040", "404040",
+            "200000", "002000", "000020", "202000", "200020", "002020", "202020",
+            "600000", "006000", "000060", "606000", "600060", "006060", "606060",
+            "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0",
+            "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"
+        };*/
+
+        /*private List<string> colorValues = new List<string> {
+            "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF",
+            "008000", "000080", "800080", "008080", "808080",
+            "C00000", "00C000", "C0C000", "C000C0", "00C0C0",
+            "400000", "004000", "000040", "404000", "400040", "004040",
+            "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0"
+        };*/
+
+        private List<string> colorValues = new List<string> {
+            "00ffff", "0000ff", "a52a2a", "00008b", "008b8b", "c0c0c0",
+            "006400", "bdb76b", "556b2f", "ff8c00", "8b0000", "00ff00",
+            "e9967a", "9400d3", "ffd700", "008000", "4b0082",
+            "ff00ff", "800000", "808000", "ffc0cb", "ff0000"
+        };
+        
+
+        public DrawMap(Size picBoxSize, Player player, Random randColors)
+        {
             pictureWidth = picBoxSize.Width;
             pictureHeight = picBoxSize.Height;
 
             this.player = player;
+
+            shuffleColors = randColors;
+            Calculus.Shuffle(shuffleColors, colorValues);
         }
 
-        public void DrawTotalMap(Map map)
+        public void ShuffleColors()
         {
+            Calculus.Shuffle(shuffleColors, colorValues);
+        }
+
+        public void DrawTotalMap(PaintEventArgs elem, Map map)
+        {
+            pictureElement = elem;
+
             mapLengthX = map.Width;
             mapLengthY = map.Height;
 
@@ -87,28 +124,16 @@ namespace ARX_Reloaded
                         new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*4))
                     };
 
-
                     Color pathColor;
-                    
-                    switch(map.Cases[h * mapLengthX + w].Zone)
+
+                    if (map.Cases[h * mapLengthX + w].Zone == 0)
                     {
-                        case 1:
-                            pathColor = Color.Red;
-                            break;
-
-                        case 2:
-                            pathColor = Color.LawnGreen;
-                            break;
-
-                        case 3:
-                            pathColor = Color.Blue;
-                            break;
-
-                        default:
-                            pathColor = Color.White;
-                            break;
+                        pathColor = Color.White;
                     }
-
+                    else
+                    {
+                        pathColor = Color.FromArgb(int.Parse($"FF{colorValues[(map.Cases[h * mapLengthX + w].Zone - 1) % colorValues.Count]}", System.Globalization.NumberStyles.HexNumber));
+                    }
 
                     if (map.Cases[h * mapLengthX + w].Visited == true)
                     {

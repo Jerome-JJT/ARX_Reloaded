@@ -13,27 +13,93 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
+        Size labyrinthSize = new Size(30, 30);
         Player player;
 
-        Size labyrinthSize = new Size(30,30);
+        DrawMap drawMap;
+        DrawView drawView;  
 
-        
+        Random labyrinthRandom = new Random();
 
         public FrmGame()
         {
             InitializeComponent();
-            player = new Player();
         }
 
         private void FrmGame_Load(object sender, EventArgs e)
         {
-            map = new MapNormal(labyrinthSize);
-            map.GenerateMap(null, null);
-            picMap.Refresh();
+            map = new MapNormal(labyrinthSize, labyrinthRandom);
+            player = new Player();
 
-            prepareMovement("none");
+            drawMap = new DrawMap(picMap.Size, player, labyrinthRandom);
+            drawView = new DrawView(picView.Size);
+
+            map.GenerateMap(null, null);
+            map.GenerateZones(picMap, lblLoading);
+
+            Moving("none");
         }
 
+        private void Moving(string direction)
+        {
+            Movement.Goto(ref player, map, direction, chkPacmanMoves.Checked);
+
+            map.Cases[player.Y * map.Width + player.X].Visited = true;
+
+            picMap.Refresh();
+            picView.Refresh();
+        }
+
+
+        private void cmdGenNormal_Click(object sender, EventArgs e)
+        {
+            map = new MapNormal(labyrinthSize, labyrinthRandom);
+            drawMap.ShuffleColors();
+
+            //map.GenerateMap(picMap, lblLoading);
+            map.GenerateMap(null, null);
+
+            map.GenerateZones(picMap, lblLoading);
+
+            Moving("none");
+        }
+
+        private void cmdGenChaos_Click(object sender, EventArgs e)
+        {
+            map = new MapChaos(labyrinthSize, labyrinthRandom);
+            drawMap.ShuffleColors();
+
+            //map.GenerateMap(picMap, lblLoading);
+            map.GenerateMap(null, null);
+
+            map.GenerateZones(picMap, lblLoading);
+
+            Moving("none");
+        }
+
+        private void cmdUpdateView_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < map.Cases.Count(); i++)
+            {
+                map.Cases[i].Visited = true;
+            }
+
+            picMap.Refresh();
+        }
+
+
+        private void picView_Paint(object sender, PaintEventArgs e)
+        {
+            drawView.DrawTotalView(e, Movement.CanGoLeft, Movement.CanGoRight, Movement.CouldGoLeft, Movement.CouldGoRight, Movement.Vision);
+        }
+
+        private void picMap_Paint(object sender, PaintEventArgs e)
+        {
+            if(map != null)
+            {
+                drawMap.DrawTotalMap(e, map);
+            }
+        }
 
         private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -42,7 +108,7 @@ namespace ARX_Reloaded
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if(switchKeys(keyData))
+            if (switchKeys(keyData))
             {
                 return true;
             }
@@ -56,87 +122,28 @@ namespace ARX_Reloaded
             {
                 case Keys.W:
                 case Keys.Up:
-                    prepareMovement("up");
+                    Moving("up");
                     break;
 
                 case Keys.A:
                 case Keys.Left:
-                    prepareMovement("left");
+                    Moving("left");
                     break;
 
                 case Keys.D:
                 case Keys.Right:
-                    prepareMovement("right");
+                    Moving("right");
                     break;
 
                 case Keys.S:
                 case Keys.Down:
-                    prepareMovement("down");
+                    Moving("down");
                     break;
 
                 default:
                     return false;
             }
             return true;
-        }
-
-        private void prepareMovement(string direction)
-        {
-            Movement.Goto(ref player, map, direction, chkPacmanMoves.Checked);
-
-            map.Cases[player.Y * map.Width + player.X].Visited = true;
-
-            picMap.Refresh();
-            picView.Refresh();
-        }
-        
-
-        private void picView_Paint(object sender, PaintEventArgs e)
-        {
-            DrawView drawView = new DrawView(e, picView.Size);
-
-            drawView.DrawTotalView(Movement.CanGoLeft, Movement.CanGoRight, Movement.CouldGoLeft, Movement.CouldGoRight, Movement.Vision);
-        }
-
-        private void picMap_Paint(object sender, PaintEventArgs e)
-        {
-            if(map != null)
-            {
-                DrawMap drawMap = new DrawMap(e, picMap.Size, player);
-                drawMap.DrawTotalMap(map);
-
-                drawMap.DrawTotalMap(map);
-            }
-        }
-
-        private void cmdGenNormal_Click(object sender, EventArgs e)
-        {
-            map = new MapNormal(labyrinthSize);
-            map.GenerateMap(picMap, lblLoading);
-
-            prepareMovement("none");
-
-            picMap.Refresh();
-        }
-
-        private void cmdGenChaos_Click(object sender, EventArgs e)
-        {
-            map = new MapChaos(labyrinthSize);
-            map.GenerateMap(picMap, lblLoading);
-
-            prepareMovement("none");
-
-            picMap.Refresh();
-        }
-
-        private void cmdUpdateView_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < map.Cases.Count(); i++)
-            {
-                map.Cases[i].Visited = true;
-            }
-
-            picMap.Refresh();
         }
     }
 }

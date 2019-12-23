@@ -60,10 +60,8 @@ namespace ARX_Reloaded
         #endregion Points
 
 
-        public DrawView(PaintEventArgs elem, Size pictureSize)
+        public DrawView(Size pictureSize)
         {
-            pictureElement = elem;
-
             maxWidth = pictureSize.Width;
             maxHeight = pictureSize.Height;
 
@@ -336,8 +334,10 @@ namespace ARX_Reloaded
             pictureElement.Graphics.FillPolygon(new SolidBrush(Color.FromArgb(12,12,12)), drawBackground);
         }
 
-        public void DrawTotalView(bool canGoLeft, bool canGoRight, bool couldGoLeft, bool couldGoRight, int vision)
+        public void DrawTotalView(PaintEventArgs elem, bool canGoLeft, bool canGoRight, bool couldGoLeft, bool couldGoRight, int vision)
         {
+            pictureElement = elem;
+
             drawFloor();
             drawCeiling();
 

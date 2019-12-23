@@ -10,7 +10,7 @@ namespace ARX_Reloaded
 {
     public class MapChaos : Map
     {
-        public MapChaos(Size mapSize) : base(mapSize)
+        public MapChaos(Size mapSize, Random mapRandom) : base(mapSize, mapRandom)
         {
         }
 
@@ -18,12 +18,11 @@ namespace ARX_Reloaded
         {
             cases = new List<Case>();
             active = new Stack<int>();
-            rand = new Random();
 
             //Initialize/reset map
             for (int eachCase = 0; eachCase < width * height; eachCase++)
             {
-                cases.Add(new Case(rand.Next(0,4)));
+                cases.Add(new Case(0));
             }
 
             cases[cases.Count()-1].State = 1;
@@ -121,14 +120,12 @@ namespace ARX_Reloaded
             }
         }
 
-
-
         //Search for an empty case around given case
         private int emptyAdj(int baseSearch)
         {
             //Decide in which order directions will be tested
             List<int> possibilities = new List<int> { 0, 90, 180, 270 };
-            shuffle(possibilities);
+            Calculus.Shuffle(rand, possibilities);
 
             //Test all directions
             foreach (int test in possibilities)
