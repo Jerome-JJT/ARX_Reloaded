@@ -217,6 +217,7 @@ namespace ARX_Reloaded
             }
 
             pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Red), playerCursor);
+            pictureElement.Graphics.DrawPolygon(new Pen(Color.Black), playerCursor);
         }
     }
 }
