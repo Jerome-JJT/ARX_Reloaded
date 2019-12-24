@@ -19,6 +19,11 @@ namespace ARX_Reloaded
         private int mapLengthX;
         private int mapLengthY;
 
+        private int mapDrawStartX;
+        private int mapDrawStartY;
+        private int mapDrawStopX;
+        private int mapDrawStopY;
+
         private double mapCaseWidth;
         private double mapCaseHeight;
 
@@ -70,58 +75,64 @@ namespace ARX_Reloaded
             Calculus.Shuffle(shuffleColors, colorValues);
         }
 
-        public void DrawTotalMap(PaintEventArgs elem, Map map)
+        public void DrawTotalMap(PaintEventArgs elem, Map map, int zoom)
         {
             pictureElement = elem;
 
             mapLengthX = map.Width;
             mapLengthY = map.Height;
 
-            mapCaseWidth = pictureWidth / mapLengthX;
-            mapCaseHeight = pictureHeight / mapLengthY;
+            mapDrawStartX = (int)(Math.Floor((double)player.X / Math.Ceiling((double)map.Width  / zoom)) * Math.Ceiling((double)map.Width  / zoom));
+            mapDrawStartY = (int)(Math.Floor((double)player.Y / Math.Ceiling((double)map.Height / zoom)) * Math.Ceiling((double)map.Height / zoom));
+
+            mapDrawStopX = Math.Min(map.Width,  mapDrawStartX + (int)Math.Ceiling((double)map.Width / zoom));
+            mapDrawStopY = Math.Min(map.Height, mapDrawStartY + (int)Math.Ceiling((double)map.Height / zoom));
+
+            mapCaseWidth = pictureWidth / (mapDrawStopX - mapDrawStartX);
+            mapCaseHeight = pictureHeight / (mapDrawStopY - mapDrawStartY);
 
             mapPathWidth = mapCaseWidth / 4;
             mapPathHeight = mapCaseHeight / 4;
 
-            for (int h = 0; h < mapLengthY; h++)
+            for (int h = mapDrawStartY; h < mapDrawStopY; h++)
             {
-                for (int w = 0; w < mapLengthX; w++)
+                for (int w = mapDrawStartX; w < mapDrawStopX; w++)
                 {
                     Point[] upMiddle = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*0)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1))
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*0)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*0)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1))
                     };
 
 
                     Point[] middleLeft = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3))
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*0),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3))
                     };
 
                     Point[] middleMiddle = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3))
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3))
                     };
 
                     Point[] middleRight = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*4),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*1)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*4),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3))
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*4),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*1)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*4),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3))
                     };
 
                     
                     Point[] downMiddle = {
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*3)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*4)),
-                        new Point(Convert.ToInt32(w*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32(h*mapCaseHeight+mapPathHeight*4))
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*3)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*3),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*4)),
+                        new Point(Convert.ToInt32((w-mapDrawStartX)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStartY)*mapCaseHeight+mapPathHeight*4))
                     };
 
                     Color pathColor;
@@ -175,33 +186,33 @@ namespace ARX_Reloaded
             if (player.Rotation == 0)
             {
                 playerCursor = new Point[] {
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*2), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.2)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.3), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*2.9)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*2.7), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*2.9))
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*2.0), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*1.2)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*1.3), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*2.9)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*2.7), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*2.9))
                 };
             }
             else if (player.Rotation == 90)
             {
                 playerCursor = new Point[] {
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*2.8), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*2)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.1), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.3)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.1), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*2.7))
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*2.8), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*2.0)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*1.1), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*1.3)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*1.1), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*2.7))
                 };
             }
             else if (player.Rotation == 180)
             {
                 playerCursor = new Point[] {
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*2), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*2.8)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.3), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.1)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*2.7), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.1))
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*2.0), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*2.8)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*1.3), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*1.1)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*2.7), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*1.1))
                 };
             }
             else if (player.Rotation == 270)
             {
                 playerCursor = new Point[] {
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*1.2), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*2)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*2.9), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*1.3)),
-                    new Point(Convert.ToInt32(player.X*mapCaseWidth + mapPathWidth*2.9), Convert.ToInt32(player.Y*mapCaseHeight + mapPathHeight*2.7))
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*1.2), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*2.0)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*2.9), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*1.3)),
+                    new Point(Convert.ToInt32((player.X-mapDrawStartX)*mapCaseWidth + mapPathWidth*2.9), Convert.ToInt32((player.Y-mapDrawStartY)*mapCaseHeight + mapPathHeight*2.7))
                 };
             }
 

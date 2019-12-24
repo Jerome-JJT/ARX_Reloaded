@@ -13,13 +13,15 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
-        Size labyrinthSize = new Size(30, 30);
+        Size labyrinthSize = new Size(21, 17);
         Player player;
 
         DrawMap drawMap;
         DrawView drawView;  
 
         Random labyrinthRandom = new Random();
+
+        int zoomLevel = 1;
 
         public FrmGame()
         {
@@ -97,7 +99,7 @@ namespace ARX_Reloaded
         {
             if(map != null)
             {
-                drawMap.DrawTotalMap(e, map);
+                drawMap.DrawTotalMap(e, map, zoomLevel);
             }
         }
 
@@ -138,6 +140,22 @@ namespace ARX_Reloaded
                 case Keys.S:
                 case Keys.Down:
                     Moving("down");
+                    break;
+
+                case Keys.Add:
+                    if (zoomLevel < 4)
+                    {
+                        zoomLevel++;
+                        picMap.Refresh();
+                    }
+                    break;
+
+                case Keys.Subtract:
+                    if (zoomLevel > 1)
+                    {
+                        zoomLevel--;
+                        picMap.Refresh();
+                    }
                     break;
 
                 default:

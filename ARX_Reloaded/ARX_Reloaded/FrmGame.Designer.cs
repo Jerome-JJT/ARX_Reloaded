@@ -94,6 +94,8 @@
             // chkPacmanMoves
             // 
             this.chkPacmanMoves.AutoSize = true;
+            this.chkPacmanMoves.Checked = true;
+            this.chkPacmanMoves.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPacmanMoves.Location = new System.Drawing.Point(869, 5);
             this.chkPacmanMoves.Name = "chkPacmanMoves";
             this.chkPacmanMoves.Size = new System.Drawing.Size(99, 17);
