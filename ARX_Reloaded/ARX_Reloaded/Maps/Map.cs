@@ -14,7 +14,6 @@ namespace ARX_Reloaded
         protected int height;
 
         protected List<Case> cases;
-        protected Stack<int> active;
 
         protected Random rand = new Random();
 
@@ -43,14 +42,12 @@ namespace ARX_Reloaded
 
         public abstract void GenerateMap(PictureBox elem, Label loading);
 
-        public void GenerateZones(PictureBox elem, Label loading)
+        public void GenerateZones(PictureBox elem, Label loading, int zones)
         {
-            int zones = 5;
-
             List<List<List<int>>> points = new List<List<List<int>>>();
             List<int> usedCoords = new List<int>();
 
-            double ratio = Math.Sqrt((Width * Height / (zones)) / Math.PI) * 1.5;
+            double ratio = Math.Sqrt((width * height / (zones)) / Math.PI) * 1.5;
 
             for (int i = 0; i < zones; i++)
             {
@@ -62,7 +59,7 @@ namespace ARX_Reloaded
                 int newCoord;
                 do
                 {
-                    newCoord = rand.Next(0, Width * Height);
+                    newCoord = rand.Next(0, width * height);
                 }
                 while (inZoneRadius(ratio, usedCoords, newCoord));
 
@@ -70,22 +67,22 @@ namespace ARX_Reloaded
                 points[i][0].Add(newCoord);
                 cases[newCoord].Zone = i + 1;
             }
-
+            
             while (restEmptyZone())
             {
                 foreach (List<List<int>> zone in points)
                 {
                     foreach (int point in zone[0])
                     {
-                        if (point > Width - 1 && cases[point - Width].Zone == 0
-                            && (cases[point - Width].State == 3 || cases[point - Width].State == 4))
+                        if (point > width - 1 && cases[point - width].Zone == 0
+                            && (cases[point - width].State == 3 || cases[point - width].State == 4))
                         {
-                            cases[point - Width].Zone = cases[point].Zone;
+                            cases[point - width].Zone = cases[point].Zone;
 
-                            zone[1].Add(point - Width);
+                            zone[1].Add(point - width);
                         }
 
-                        if (point % Width < Width - 1 && cases[point + 1].Zone == 0
+                        if (point % width < width - 1 && cases[point + 1].Zone == 0
                             && (cases[point].State == 2 || cases[point].State == 4))
                         {
                             cases[point + 1].Zone = cases[point].Zone;
@@ -93,15 +90,15 @@ namespace ARX_Reloaded
                             zone[1].Add(point + 1);
                         }
 
-                        if (point < Height * Width - Width && cases[point + Width].Zone == 0
+                        if (point < height * width - width && cases[point + width].Zone == 0
                             && (cases[point].State == 3 || cases[point].State == 4))
                         {
-                            cases[point + Width].Zone = cases[point].Zone;
+                            cases[point + width].Zone = cases[point].Zone;
 
-                            zone[1].Add(point + Width);
+                            zone[1].Add(point + width);
                         }
 
-                        if (point % Width > 0 && cases[point - 1].Zone == 0
+                        if (point % width > 0 && cases[point - 1].Zone == 0
                             && (cases[point - 1].State == 2 || cases[point - 1].State == 4))
                         {
                             cases[point - 1].Zone = cases[point].Zone;
@@ -126,7 +123,7 @@ namespace ARX_Reloaded
         {
             foreach (int point in placedPoints)
             {
-                if(Math.Sqrt(Math.Pow(Math.Abs((point%Width) - (newPoint%Width)), 2) + Math.Pow(Math.Abs(Math.Floor((double)point/Width) - Math.Floor((double)newPoint/Width)), 2)) < ratio)
+                if(Math.Sqrt(Math.Pow(Math.Abs((point%width) - (newPoint%width)), 2) + Math.Pow(Math.Abs(Math.Floor((double)point/width) - Math.Floor((double)newPoint/width)), 2)) < ratio)
                 {
                     return true;
                 }
@@ -136,14 +133,16 @@ namespace ARX_Reloaded
 
         private bool restEmptyZone()
         {
-            foreach (Case eachCase in cases)
+            return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
+
+            /*foreach (Case eachCase in cases)
             {
                 if (eachCase.Zone == 0)
                 {
                     return true;
                 }
             }
-            return false;
+            return false;*/
         }
     }
 }

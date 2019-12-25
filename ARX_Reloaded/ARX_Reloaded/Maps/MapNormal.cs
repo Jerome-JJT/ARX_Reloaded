@@ -10,6 +10,8 @@ namespace ARX_Reloaded
 {
     public class MapNormal : Map
     {
+        private Stack<int> active;
+
         public MapNormal(Size mapSize, Random mapRandom) : base(mapSize, mapRandom)
         {
         }

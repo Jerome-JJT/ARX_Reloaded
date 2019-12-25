@@ -8,88 +8,55 @@ using System.Windows.Forms;
 
 namespace ARX_Reloaded
 {
-    public class DrawMap
+    public static class DrawMap
     {
-        private PaintEventArgs pictureElement;
-        private Player player;
+        
 
-        private int pictureWidth;
-        private int pictureHeight;
-
-        private int mapLengthX;
-        private int mapLengthY;
-
-        private int mapDrawStartX;
-        private int mapDrawStartY;
-        private int mapDrawStopX;
-        private int mapDrawStopY;
-
-        private double mapCaseWidth;
-        private double mapCaseHeight;
-
-        private double mapPathWidth;
-        private double mapPathHeight;
-
-        Random shuffleColors;
-
-        /*private static List<string> colorValues = new List<string> { "FFFFFF",
-            "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF",
-            "800000", "008000", "000080", "808000", "800080", "008080", "808080",
-            "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0",
-            "400000", "004000", "000040", "404000", "400040", "004040", "404040",
-            "200000", "002000", "000020", "202000", "200020", "002020", "202020",
-            "600000", "006000", "000060", "606000", "600060", "006060", "606060",
-            "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0",
-            "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0"
-        };*/
-
-        /*private List<string> colorValues = new List<string> {
-            "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF",
-            "008000", "000080", "800080", "008080", "808080",
-            "C00000", "00C000", "C0C000", "C000C0", "00C0C0",
-            "400000", "004000", "000040", "404000", "400040", "004040",
-            "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0"
-        };*/
-
-        private List<string> colorValues = new List<string> {
+        private static List<string> colorValues = new List<string> {
             "00ffff", "0000ff", "a52a2a", "00008b", "008b8b", "c0c0c0",
             "006400", "bdb76b", "556b2f", "ff8c00", "8b0000", "00ff00",
             "e9967a", "9400d3", "ffd700", "008000", "4b0082",
             "ff00ff", "800000", "808000", "ffc0cb", "ff0000"
         };
         
-
-        public DrawMap(Size picBoxSize, Player player, Random randColors)
+        public static void ShuffleColors(Random randColors)
         {
-            pictureWidth = picBoxSize.Width;
-            pictureHeight = picBoxSize.Height;
-
-            this.player = player;
-
-            shuffleColors = randColors;
-            Calculus.Shuffle(shuffleColors, colorValues);
+            Calculus.Shuffle(randColors, colorValues);
         }
 
-        public void ShuffleColors()
+        public static void DrawTotalMap(PaintEventArgs pictureElement, Size picBoxSize, Map map, Player player, int zoom)
         {
-            Calculus.Shuffle(shuffleColors, colorValues);
-        }
+            double mapDrawLengthX;
+            double mapDrawLengthY;
 
-        public void DrawTotalMap(PaintEventArgs elem, Map map, int zoom)
-        {
-            pictureElement = elem;
+            int mapDrawStartX;
+            int mapDrawStartY;
+            int mapDrawStopX;
+            int mapDrawStopY;
 
-            mapLengthX = map.Width;
-            mapLengthY = map.Height;
+            double mapCaseWidth;
+            double mapCaseHeight;
 
-            mapDrawStartX = (int)(Math.Floor((double)player.X / Math.Ceiling((double)map.Width  / zoom)) * Math.Ceiling((double)map.Width  / zoom));
-            mapDrawStartY = (int)(Math.Floor((double)player.Y / Math.Ceiling((double)map.Height / zoom)) * Math.Ceiling((double)map.Height / zoom));
+            double mapPathWidth;
+            double mapPathHeight;
 
-            mapDrawStopX = Math.Min(map.Width,  mapDrawStartX + (int)Math.Ceiling((double)map.Width / zoom));
-            mapDrawStopY = Math.Min(map.Height, mapDrawStartY + (int)Math.Ceiling((double)map.Height / zoom));
+            mapDrawLengthX = (double)map.Width  / zoom;
+            mapDrawLengthY = (double)map.Height / zoom;
 
-            mapCaseWidth = pictureWidth / (mapDrawStopX - mapDrawStartX);
-            mapCaseHeight = pictureHeight / (mapDrawStopY - mapDrawStartY);
+            //mapDrawStartX = Math.Floor(player.X / Math.Ceiling(map.Width / (double)zoom)) * Math.Ceiling();
+            //mapDrawStartY = Math.Floor(player.Y / Math.Ceiling(map.Height / (double)zoom)) * Math.Ceiling();
+
+            mapDrawStartX = (int)Math.Ceiling(((int)(player.X / mapDrawLengthX)) * mapDrawLengthX);
+            mapDrawStartY = (int)Math.Ceiling(((int)(player.Y / mapDrawLengthY)) * mapDrawLengthY);
+
+            //mapDrawStopX = Math.Min(map.Width, Math.Round(mapDrawStartX + (map.Width / (double)zoom)));
+            //mapDrawStopY = Math.Min(map.Height, Math.Round(mapDrawStartY + (map.Height / (double)zoom)));
+
+            mapDrawStopX = Math.Min(map.Width,  (int)Math.Ceiling(((int)(player.X / mapDrawLengthX + 1)) * mapDrawLengthX));
+            mapDrawStopY = Math.Min(map.Height, (int)Math.Ceiling(((int)(player.Y / mapDrawLengthY + 1)) * mapDrawLengthY));
+
+            mapCaseWidth  = picBoxSize.Width / (mapDrawStopX - mapDrawStartX);
+            mapCaseHeight = picBoxSize.Height / (mapDrawStopY - mapDrawStartY);
 
             mapPathWidth = mapCaseWidth / 4;
             mapPathHeight = mapCaseHeight / 4;
@@ -137,43 +104,43 @@ namespace ARX_Reloaded
 
                     Color pathColor;
 
-                    if (map.Cases[h * mapLengthX + w].Zone == 0)
+                    if (map.Cases[h * map.Width + w].Zone == 0)
                     {
                         pathColor = Color.White;
                     }
                     else
                     {
-                        pathColor = Color.FromArgb(int.Parse($"FF{colorValues[(map.Cases[h * mapLengthX + w].Zone - 1) % colorValues.Count]}", System.Globalization.NumberStyles.HexNumber));
+                        pathColor = Color.FromArgb(int.Parse($"FF{colorValues[(map.Cases[h * map.Width + w].Zone - 1) % colorValues.Count]}", System.Globalization.NumberStyles.HexNumber));
                     }
 
-                    if (map.Cases[h * mapLengthX + w].Visited == true)
+                    if (map.Cases[h * map.Width + w].Visited == true)
                     {
-                        if (map.Cases[h * mapLengthX + w].State != 0)
+                        if (map.Cases[h * map.Width + w].State != 0)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleMiddle);
                         }
 
-                        if (map.Cases[h * mapLengthX + w].State == 2)
+                        if (map.Cases[h * map.Width + w].State == 2)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                         }
-                        else if (map.Cases[h * mapLengthX + w].State == 3)
+                        else if (map.Cases[h * map.Width + w].State == 3)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                         }
-                        else if (map.Cases[h * mapLengthX + w].State == 4)
+                        else if (map.Cases[h * map.Width + w].State == 4)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                         }
 
-                        if (w > 0 && map.Cases[h * mapLengthX + w].State != 0 &&
-                            (map.Cases[h * mapLengthX + w - 1].State == 2 || map.Cases[h * mapLengthX + w - 1].State == 4))
+                        if (w > 0 && map.Cases[h * map.Width + w].State != 0 &&
+                            (map.Cases[h * map.Width + w - 1].State == 2 || map.Cases[h * map.Width + w - 1].State == 4))
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleLeft);
                         }
-                        if (h > 0 && map.Cases[h * mapLengthX + w].State != 0 &&
-                            (map.Cases[h * mapLengthX + w - mapLengthX].State == 3 || map.Cases[h * mapLengthX + w - mapLengthX].State == 4))
+                        if (h > 0 && map.Cases[h * map.Width + w].State != 0 &&
+                            (map.Cases[h * map.Width + w - map.Width].State == 3 || map.Cases[h * map.Width + w - map.Width].State == 4))
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), upMiddle);
                         }

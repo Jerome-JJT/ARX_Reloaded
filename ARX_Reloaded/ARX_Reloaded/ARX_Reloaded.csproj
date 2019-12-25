@@ -51,7 +51,6 @@
     <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Drawing\DrawMap.cs" />
-    <Compile Include="Drawing\DrawPlayer.cs" />
     <Compile Include="Drawing\DrawView.cs" />
     <Compile Include="FrmGame.cs">
       <SubType>Form</SubType>

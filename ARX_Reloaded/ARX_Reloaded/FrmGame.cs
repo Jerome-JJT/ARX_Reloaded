@@ -13,15 +13,16 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
-        Size labyrinthSize = new Size(21, 17);
+        Size labyrinthSize = new Size(100, 100);
         Player player;
 
-        DrawMap drawMap;
         DrawView drawView;  
 
         Random labyrinthRandom = new Random();
 
         int zoomLevel = 1;
+        const int minZoomLevel = 1;
+        const int maxZoomLevel = 5;
 
         public FrmGame()
         {
@@ -30,14 +31,15 @@ namespace ARX_Reloaded
 
         private void FrmGame_Load(object sender, EventArgs e)
         {
-            map = new MapNormal(labyrinthSize, labyrinthRandom);
-            player = new Player();
+            //map = new MapNormal(labyrinthSize, labyrinthRandom);
+            map = new MapChaos(labyrinthSize, labyrinthRandom);
+            player = new Player(0,0,90);
 
-            drawMap = new DrawMap(picMap.Size, player, labyrinthRandom);
             drawView = new DrawView(picView.Size);
 
             map.GenerateMap(null, null);
-            map.GenerateZones(picMap, lblLoading);
+            //map.GenerateZones(picMap, lblLoading);
+            map.GenerateZones(null, null, 5);
 
             Moving("none");
         }
@@ -56,12 +58,13 @@ namespace ARX_Reloaded
         private void cmdGenNormal_Click(object sender, EventArgs e)
         {
             map = new MapNormal(labyrinthSize, labyrinthRandom);
-            drawMap.ShuffleColors();
+            DrawMap.ShuffleColors(labyrinthRandom);
 
             //map.GenerateMap(picMap, lblLoading);
             map.GenerateMap(null, null);
 
-            map.GenerateZones(picMap, lblLoading);
+            //map.GenerateZones(picMap, lblLoading);
+            map.GenerateZones(null, null, 5);
 
             Moving("none");
         }
@@ -69,12 +72,13 @@ namespace ARX_Reloaded
         private void cmdGenChaos_Click(object sender, EventArgs e)
         {
             map = new MapChaos(labyrinthSize, labyrinthRandom);
-            drawMap.ShuffleColors();
+            DrawMap.ShuffleColors(labyrinthRandom);
 
             //map.GenerateMap(picMap, lblLoading);
             map.GenerateMap(null, null);
 
-            map.GenerateZones(picMap, lblLoading);
+            //map.GenerateZones(picMap, lblLoading);
+            map.GenerateZones(null, null, 5);
 
             Moving("none");
         }
@@ -99,7 +103,7 @@ namespace ARX_Reloaded
         {
             if(map != null)
             {
-                drawMap.DrawTotalMap(e, map, zoomLevel);
+                DrawMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
             }
         }
 
@@ -143,7 +147,7 @@ namespace ARX_Reloaded
                     break;
 
                 case Keys.Add:
-                    if (zoomLevel < 4)
+                    if (zoomLevel < maxZoomLevel)
                     {
                         zoomLevel++;
                         picMap.Refresh();
@@ -151,7 +155,7 @@ namespace ARX_Reloaded
                     break;
 
                 case Keys.Subtract:
-                    if (zoomLevel > 1)
+                    if (zoomLevel > minZoomLevel)
                     {
                         zoomLevel--;
                         picMap.Refresh();

@@ -12,11 +12,11 @@ namespace ARX_Reloaded
         private int y;
         private int rotation;
 
-        public Player()
+        public Player(int x, int y, int r)
         {
-            x = 5;
-            y = 5;
-            rotation = 270;
+            this.x = x;
+            this.y = y;
+            this.rotation = r;
         }
 
         public int X {
