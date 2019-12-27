@@ -10,8 +10,6 @@ namespace ARX_Reloaded
 {
     public class MapChaos : Map
     {
-        int lastCase;
-
         public MapChaos(Size mapSize, Random mapRandom) : base(mapSize, mapRandom)
         {
         }
@@ -23,18 +21,19 @@ namespace ARX_Reloaded
             //Initialize/reset map
             for (int eachCase = 0; eachCase < width * height; eachCase++)
             {
-                cases.Add(new Case(0));
+                cases.Add(new Case(eachCase % width, (int)(eachCase / height)));
             }
 
             cases[0].State = 4;
             cases[cases.Count()-1].State = 1;
+
+            int lastCase;
 
             //Choose starting testAround and initialize it
             lastCase = rand.Next(cases.Count());
             cases[lastCase].State = 1;
 
             //Search for new testAround until stack is empty
-            //for(int iteration = 0; iteration < 100000; iteration++)
             while(emptyCase())
             {
                 //Determine in which direction the labyrinth is expandable
@@ -109,11 +108,6 @@ namespace ARX_Reloaded
 
                     lastCase = lastCase - 1;
                 }
-
-                //elem.Refresh();
-                //loading.Text = $"Iteration : {iteration}";
-                //loading.Refresh();
-                //System.Threading.Thread.Sleep(1);
             }
 
             while (!pathsFinished()) { }

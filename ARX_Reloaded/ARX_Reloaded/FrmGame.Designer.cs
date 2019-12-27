@@ -35,13 +35,17 @@
             this.cmdShowView = new System.Windows.Forms.Button();
             this.chkPacmanMoves = new System.Windows.Forms.CheckBox();
             this.lblLoading = new System.Windows.Forms.Label();
+            this.cmdGenPourcent = new System.Windows.Forms.Button();
+            this.cmdGenFaos = new System.Windows.Forms.Button();
+            this.cmdGenMultiple = new System.Windows.Forms.Button();
+            this.cmdGenLines = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMap)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdGenNormal
             // 
-            this.cmdGenNormal.Location = new System.Drawing.Point(618, 1);
+            this.cmdGenNormal.Location = new System.Drawing.Point(12, 3);
             this.cmdGenNormal.Name = "cmdGenNormal";
             this.cmdGenNormal.Size = new System.Drawing.Size(120, 23);
             this.cmdGenNormal.TabIndex = 0;
@@ -63,7 +67,6 @@
             // picMap
             // 
             this.picMap.BackColor = System.Drawing.Color.Black;
-            this.picMap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picMap.Location = new System.Drawing.Point(618, 26);
             this.picMap.Name = "picMap";
             this.picMap.Size = new System.Drawing.Size(600, 600);
@@ -73,7 +76,7 @@
             // 
             // cmdGenChaos
             // 
-            this.cmdGenChaos.Location = new System.Drawing.Point(742, 1);
+            this.cmdGenChaos.Location = new System.Drawing.Point(138, 3);
             this.cmdGenChaos.Name = "cmdGenChaos";
             this.cmdGenChaos.Size = new System.Drawing.Size(120, 23);
             this.cmdGenChaos.TabIndex = 3;
@@ -113,11 +116,55 @@
             this.lblLoading.TabIndex = 6;
             this.lblLoading.Text = "Iteration : ";
             // 
+            // cmdGenPourcent
+            // 
+            this.cmdGenPourcent.Location = new System.Drawing.Point(390, 3);
+            this.cmdGenPourcent.Name = "cmdGenPourcent";
+            this.cmdGenPourcent.Size = new System.Drawing.Size(120, 23);
+            this.cmdGenPourcent.TabIndex = 7;
+            this.cmdGenPourcent.Text = "Generate Pourcent";
+            this.cmdGenPourcent.UseVisualStyleBackColor = true;
+            this.cmdGenPourcent.Click += new System.EventHandler(this.cmdGenPourcent_Click);
+            // 
+            // cmdGenFaos
+            // 
+            this.cmdGenFaos.Location = new System.Drawing.Point(264, 3);
+            this.cmdGenFaos.Name = "cmdGenFaos";
+            this.cmdGenFaos.Size = new System.Drawing.Size(120, 23);
+            this.cmdGenFaos.TabIndex = 8;
+            this.cmdGenFaos.Text = "Generate Fast Chaos";
+            this.cmdGenFaos.UseVisualStyleBackColor = true;
+            this.cmdGenFaos.Click += new System.EventHandler(this.cmdGenFaos_Click);
+            // 
+            // cmdGenMultiple
+            // 
+            this.cmdGenMultiple.Location = new System.Drawing.Point(516, 3);
+            this.cmdGenMultiple.Name = "cmdGenMultiple";
+            this.cmdGenMultiple.Size = new System.Drawing.Size(120, 23);
+            this.cmdGenMultiple.TabIndex = 9;
+            this.cmdGenMultiple.Text = "Generate Multiple";
+            this.cmdGenMultiple.UseVisualStyleBackColor = true;
+            this.cmdGenMultiple.Click += new System.EventHandler(this.cmdGenMultiple_Click);
+            // 
+            // cmdGenLines
+            // 
+            this.cmdGenLines.Location = new System.Drawing.Point(642, 3);
+            this.cmdGenLines.Name = "cmdGenLines";
+            this.cmdGenLines.Size = new System.Drawing.Size(120, 23);
+            this.cmdGenLines.TabIndex = 10;
+            this.cmdGenLines.Text = "Generate Lines";
+            this.cmdGenLines.UseVisualStyleBackColor = true;
+            this.cmdGenLines.Click += new System.EventHandler(this.cmdGenLines_Click);
+            // 
             // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1227, 660);
+            this.Controls.Add(this.cmdGenLines);
+            this.Controls.Add(this.cmdGenMultiple);
+            this.Controls.Add(this.cmdGenFaos);
+            this.Controls.Add(this.cmdGenPourcent);
             this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.chkPacmanMoves);
             this.Controls.Add(this.cmdShowView);
@@ -146,6 +193,10 @@
         private System.Windows.Forms.Button cmdShowView;
         private System.Windows.Forms.CheckBox chkPacmanMoves;
         private System.Windows.Forms.Label lblLoading;
+        private System.Windows.Forms.Button cmdGenPourcent;
+        private System.Windows.Forms.Button cmdGenFaos;
+        private System.Windows.Forms.Button cmdGenMultiple;
+        private System.Windows.Forms.Button cmdGenLines;
     }
 }
 

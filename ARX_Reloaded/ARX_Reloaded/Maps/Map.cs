@@ -17,6 +17,14 @@ namespace ARX_Reloaded
 
         protected Random rand = new Random();
 
+        private List<string> colorValues = new List<string> {
+            "00ffff", "0000ff", "a52a2a", "00008b", "008b8b", "c0c0c0",
+            "006400", "bdb76b", "556b2f", "ff8c00", "8b0000", "00ff00",
+            "e9967a", "9400d3", "ffd700", "008000", "4b0082",
+            "ff00ff", "800000", "808000", "ffc0cb", "ff0000"
+        };
+
+
         public Map(Size mapSize, Random mapRandom)
         {
             width = mapSize.Width;
@@ -49,6 +57,9 @@ namespace ARX_Reloaded
 
             double ratio = Math.Sqrt((width * height / (zones)) / Math.PI) * 1.5;
 
+            Calculus.Shuffle(rand, colorValues);
+
+            //Generate starting points for each zones
             for (int i = 0; i < zones; i++)
             {
                 points.Add(new List<List<int>>());
@@ -65,9 +76,16 @@ namespace ARX_Reloaded
 
                 usedCoords.Add(newCoord);
                 points[i][0].Add(newCoord);
+
                 cases[newCoord].Zone = i + 1;
+
+                //Generate color orders
+                cases[newCoord].ZoneColor =
+                    Color.FromArgb(int.Parse($"FF{colorValues[i % colorValues.Count]}",
+                    System.Globalization.NumberStyles.HexNumber));
             }
-            
+
+            //Build zones on the map
             while (restEmptyZone())
             {
                 foreach (List<List<int>> zone in points)
@@ -79,6 +97,18 @@ namespace ARX_Reloaded
                         {
                             cases[point - width].Zone = cases[point].Zone;
 
+                            //Generate color orders
+                            if (cases[point - width].Zone == 0)
+                            {
+                                cases[point - width].ZoneColor = Color.White;
+                            }
+                            else
+                            {
+                                cases[point - width].ZoneColor = 
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point - width].Zone - 1) % colorValues.Count]}", 
+                                    System.Globalization.NumberStyles.HexNumber));
+                            }
+
                             zone[1].Add(point - width);
                         }
 
@@ -86,6 +116,18 @@ namespace ARX_Reloaded
                             && (cases[point].State == 2 || cases[point].State == 4))
                         {
                             cases[point + 1].Zone = cases[point].Zone;
+
+                            //Generate color orders
+                            if (cases[point + 1].Zone == 0)
+                            {
+                                cases[point + 1].ZoneColor = Color.White;
+                            }
+                            else
+                            {
+                                cases[point + 1].ZoneColor = 
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point + 1].Zone - 1) % colorValues.Count]}", 
+                                    System.Globalization.NumberStyles.HexNumber));
+                            }
 
                             zone[1].Add(point + 1);
                         }
@@ -95,6 +137,18 @@ namespace ARX_Reloaded
                         {
                             cases[point + width].Zone = cases[point].Zone;
 
+                            //Generate color orders
+                            if (cases[point + width].Zone == 0)
+                            {
+                                cases[point + width].ZoneColor = Color.White;
+                            }
+                            else
+                            {
+                                cases[point + width].ZoneColor =
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point + width].Zone - 1) % colorValues.Count]}",
+                                    System.Globalization.NumberStyles.HexNumber));
+                            }
+
                             zone[1].Add(point + width);
                         }
 
@@ -102,6 +156,18 @@ namespace ARX_Reloaded
                             && (cases[point - 1].State == 2 || cases[point - 1].State == 4))
                         {
                             cases[point - 1].Zone = cases[point].Zone;
+
+                            //Generate color orders
+                            if (cases[point - 1].Zone == 0)
+                            {
+                                cases[point - 1].ZoneColor = Color.White;
+                            }
+                            else
+                            {
+                                cases[point - 1].ZoneColor =
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point - 1].Zone - 1) % colorValues.Count]}",
+                                    System.Globalization.NumberStyles.HexNumber));
+                            }
 
                             zone[1].Add(point - 1);
                         }
@@ -134,15 +200,79 @@ namespace ARX_Reloaded
         private bool restEmptyZone()
         {
             return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
+        }
 
-            /*foreach (Case eachCase in cases)
+
+        protected bool pathsFinished()
+        {
+            List<List<int>> visits = new List<List<int>>();
+            List<int> unique = new List<int> { 0 };
+
+            visits.Add(new List<int>());//Present
+            visits.Add(new List<int>());//Futur
+
+            visits[0].Add(0);
+
+            do
             {
-                if (eachCase.Zone == 0)
+                foreach (int testAround in visits[0])
                 {
-                    return true;
+                    if (testAround > width - 1 && (!visits[1].Contains(testAround - width)) && (!unique.Contains(testAround - width))
+                        && (cases[testAround - width].State == 3 || cases[testAround - width].State == 4))
+                    {
+                        visits[1].Add(testAround - width);
+                    }
+
+                    if (testAround % width < width - 1 && (!visits[1].Contains(testAround + 1)) && (!unique.Contains(testAround + 1))
+                        && (cases[testAround].State == 2 || cases[testAround].State == 4))
+                    {
+                        visits[1].Add(testAround + 1);
+                    }
+
+                    if (testAround < height * width - width && (!visits[1].Contains(testAround + width)) && (!unique.Contains(testAround + width))
+                        && (cases[testAround].State == 3 || cases[testAround].State == 4))
+                    {
+                        visits[1].Add(testAround + width);
+                    }
+
+                    if (testAround % width > 0 && (!visits[1].Contains(testAround - 1)) && (!unique.Contains(testAround - 1))
+                        && (cases[testAround - 1].State == 2 || cases[testAround - 1].State == 4))
+                    {
+                        visits[1].Add(testAround - 1);
+                    }
                 }
+
+                unique.AddRange(new List<int>(visits[1]));
+                visits[0] = new List<int>(visits[1]);
+                visits[1].Clear();
+
+            } while (visits[0].Count > 0);
+
+            if (unique.Count != width * height)
+            {
+                for (int i = 0; i < width * height; i++)
+                {
+                    if ((!unique.Contains(i)) && unique.Count > (width * height) / 2)
+                    {
+                        if (i % width == width - 1)
+                        {
+                            cases[i - 1].State = (cases[i - 1].State % 4) + 1;
+                        }
+                        else if (i > (height * width) - width - 1)
+                        {
+                            cases[i - width].State = (cases[i - width].State % 4) + 1;
+                        }
+
+                        cases[i].State = (cases[i].State % 4) + 1;
+                    }
+                    else if (unique.Contains(i) && unique.Count <= (width * height) / 2)
+                    {
+                        cases[i].State = (cases[i].State % 4) + 1;
+                    }
+                }
+                return false;
             }
-            return false;*/
+            return true;
         }
     }
 }

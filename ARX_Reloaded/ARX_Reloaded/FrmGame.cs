@@ -13,13 +13,14 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
-        Size labyrinthSize = new Size(100, 100);
+        Size labyrinthSize = new Size(50, 50);
         Player player;
 
         DrawView drawView;  
 
         Random labyrinthRandom = new Random();
 
+        int nbZones = 5;
         int zoomLevel = 1;
         const int minZoomLevel = 1;
         const int maxZoomLevel = 5;
@@ -31,40 +32,31 @@ namespace ARX_Reloaded
 
         private void FrmGame_Load(object sender, EventArgs e)
         {
-            //map = new MapNormal(labyrinthSize, labyrinthRandom);
-            map = new MapChaos(labyrinthSize, labyrinthRandom);
+            map = new MapNormal(labyrinthSize, labyrinthRandom);
+            //map = new MapChaos(labyrinthSize, labyrinthRandom);
+            //map = new MapN50(labyrinthSize, labyrinthRandom);
+
+
             player = new Player(0,0,90);
 
             drawView = new DrawView(picView.Size);
 
             map.GenerateMap(null, null);
             //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, 5);
+            map.GenerateZones(null, null, nbZones);
 
             Moving("none");
         }
 
-        private void Moving(string direction)
-        {
-            Movement.Goto(ref player, map, direction, chkPacmanMoves.Checked);
-
-            map.Cases[player.Y * map.Width + player.X].Visited = true;
-
-            picMap.Refresh();
-            picView.Refresh();
-        }
-
-
         private void cmdGenNormal_Click(object sender, EventArgs e)
         {
             map = new MapNormal(labyrinthSize, labyrinthRandom);
-            DrawMap.ShuffleColors(labyrinthRandom);
 
             //map.GenerateMap(picMap, lblLoading);
             map.GenerateMap(null, null);
 
             //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, 5);
+            map.GenerateZones(null, null, nbZones);
 
             Moving("none");
         }
@@ -72,13 +64,64 @@ namespace ARX_Reloaded
         private void cmdGenChaos_Click(object sender, EventArgs e)
         {
             map = new MapChaos(labyrinthSize, labyrinthRandom);
-            DrawMap.ShuffleColors(labyrinthRandom);
 
             //map.GenerateMap(picMap, lblLoading);
             map.GenerateMap(null, null);
 
             //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, 5);
+            map.GenerateZones(null, null, nbZones);
+
+            Moving("none");
+        }
+
+        private void cmdGenFaos_Click(object sender, EventArgs e)
+        {
+            map = new MapFastChaos(10, labyrinthSize, labyrinthRandom);
+
+            //map.GenerateMap(picMap, lblLoading);
+            map.GenerateMap(null, null);
+
+            //map.GenerateZones(picMap, lblLoading);
+            map.GenerateZones(null, null, nbZones);
+
+            Moving("none");
+        }
+
+        private void cmdGenPourcent_Click(object sender, EventArgs e)
+        {
+            map = new MapPourcent(20, labyrinthSize, labyrinthRandom);
+
+            //map.GenerateMap(picMap, lblLoading);
+            map.GenerateMap(null, null);
+
+            //map.GenerateZones(picMap, lblLoading);
+            map.GenerateZones(null, null, nbZones);
+
+            Moving("none");
+        }
+
+        private void cmdGenMultiple_Click(object sender, EventArgs e)
+        {
+            map = new MapMultiple(labyrinthSize, labyrinthRandom);
+
+            map.GenerateMap(picMap, lblLoading);
+            //map.GenerateMap(null, null);
+
+            //map.GenerateZones(picMap, lblLoading);
+            map.GenerateZones(null, null, nbZones);
+
+            Moving("none");
+        }
+
+        private void cmdGenLines_Click(object sender, EventArgs e)
+        {
+            map = new MapLines(labyrinthSize, labyrinthRandom);
+
+            map.GenerateMap(picMap, lblLoading);
+            //map.GenerateMap(null, null);
+
+            //map.GenerateZones(picMap, lblLoading);
+            map.GenerateZones(null, null, nbZones);
 
             Moving("none");
         }
@@ -105,6 +148,16 @@ namespace ARX_Reloaded
             {
                 DrawMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
             }
+        }
+
+        private void Moving(string direction)
+        {
+            Movement.Goto(ref player, map, direction, chkPacmanMoves.Checked);
+
+            map.Cases[player.Y * map.Width + player.X].Visited = true;
+
+            picMap.Refresh();
+            picView.Refresh();
         }
 
         private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

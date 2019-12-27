@@ -10,8 +10,6 @@ namespace ARX_Reloaded
 {
     public class MapNormal : Map
     {
-        private Stack<int> active;
-
         public MapNormal(Size mapSize, Random mapRandom) : base(mapSize, mapRandom)
         {
         }
@@ -19,12 +17,12 @@ namespace ARX_Reloaded
         public override void GenerateMap(PictureBox elem, Label loading)
         {
             cases = new List<Case>();
-            active = new Stack<int>();
+            Stack<int> active = new Stack<int>();
 
             //Initialize/reset map
             for (int eachCase = 0; eachCase < width * height; eachCase++)
             {
-                cases.Add(new Case(0));
+                cases.Add(new Case(eachCase % width, (int)(eachCase/height)));
             }
 
             //Choose starting point and initialize it

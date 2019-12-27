@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,22 @@ namespace ARX_Reloaded
     public class Case
     {
         private int state;
-        private int zone;
         private bool visited;
 
-        public Case(int zone)
+        private int zone;
+        private Color zoneColor;
+
+        private Point pos;
+
+        public Case(int posX, int posY)
         {
             this.state = 0;
-            this.zone = zone;
             this.visited = true;
+
+            this.zone = 0;
+            this.zoneColor = Color.White;
+
+            this.Pos = new Point(posX, posY);
         }
 
         public int State
@@ -25,16 +34,28 @@ namespace ARX_Reloaded
             set { state = value; }
         }
 
+        public bool Visited
+        {
+            get { return visited; }
+            set { visited = value; }
+        }
+
         public int Zone
         {
             get { return zone; }
             set { zone = value; }
         }
 
-        public bool Visited
+        public Color ZoneColor
         {
-            get { return visited; }
-            set { visited = value; }
+            get { return zoneColor; }
+            set { zoneColor = value; }
+        }
+
+        public Point Pos
+        {
+            get { return pos; }
+            set { pos = value; }
         }
     }
 }

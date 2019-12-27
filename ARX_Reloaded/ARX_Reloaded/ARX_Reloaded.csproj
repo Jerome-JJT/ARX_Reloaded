@@ -48,6 +48,10 @@
   <ItemGroup>
     <Compile Include="Calculus.cs" />
     <Compile Include="Maps\Case.cs" />
+    <Compile Include="Maps\MapFastChaos.cs" />
+    <Compile Include="Maps\MapLines.cs" />
+    <Compile Include="Maps\MapMultiple.cs" />
+    <Compile Include="Maps\MapPourcent.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Drawing\DrawMap.cs" />
