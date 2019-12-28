@@ -13,7 +13,7 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
-        Size labyrinthSize = new Size(50, 50);
+        Size labyrinthSize = new Size(20, 20);
         Player player;
 
         DrawView drawView;  
@@ -104,8 +104,8 @@ namespace ARX_Reloaded
         {
             map = new MapMultiple(labyrinthSize, labyrinthRandom);
 
-            map.GenerateMap(picMap, lblLoading);
-            //map.GenerateMap(null, null);
+            //map.GenerateMap(picMap, lblLoading);
+            map.GenerateMap(null, null);
 
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
@@ -117,8 +117,8 @@ namespace ARX_Reloaded
         {
             map = new MapLines(labyrinthSize, labyrinthRandom);
 
-            map.GenerateMap(picMap, lblLoading);
-            //map.GenerateMap(null, null);
+            //map.GenerateMap(picMap, lblLoading);
+            map.GenerateMap(null, null);
 
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);

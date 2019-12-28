@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calculus.cs" />
+    <Compile Include="ARX.cs" />
     <Compile Include="Maps\Case.cs" />
     <Compile Include="Maps\MapFastChaos.cs" />
     <Compile Include="Maps\MapLines.cs" />

@@ -43,26 +43,26 @@ namespace ARX_Reloaded
         private static void goForward(ref Player player, Map map)
         {
             if (player.Rotation == 0 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                (map.Upper(player.Y * map.Width + player.X).State == ARX.State.Down ||
+                 map.Upper(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.Y -= 1;
             }
             else if (player.Rotation == 90 && player.X < map.Width &&
-                (map.Cases[player.Y * map.Width + player.X].State == 2 ||
-                 map.Cases[player.Y * map.Width + player.X].State == 4))
+                (map.Meme(player.Y * map.Width + player.X).State == ARX.State.Right ||
+                 map.Meme(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.X += 1;
             }
             else if (player.Rotation == 180 && player.Y < map.Height &&
-                (map.Cases[player.Y * map.Width + player.X].State == 3 ||
-                 map.Cases[player.Y * map.Width + player.X].State == 4))
+                (map.Meme(player.Y * map.Width + player.X).State == ARX.State.Down ||
+                 map.Meme(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.Y += 1;
             }
             else if (player.Rotation == 270 && player.X > 0 &&
-                (map.Cases[player.Y * map.Width + player.X - 1].State == 2 ||
-                 map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                (map.Lefter(player.Y * map.Width + player.X).State == ARX.State.Right ||
+                 map.Lefter(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.X -= 1;
             }
@@ -163,20 +163,20 @@ namespace ARX_Reloaded
                         goForward(ref player, map);
                     }
                     else if (player.Rotation == 90 && player.X < map.Width &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right ||
+                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                     {
                         player.X += 1;
                     }
                     else if (player.Rotation == 180 && player.Y < map.Height &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down ||
+                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                     {
                         player.Y += 1;
                     }
                     else if (player.Rotation == 270 && player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right ||
+                         map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
                     {
                         player.X -= 1;
                     }
@@ -188,26 +188,26 @@ namespace ARX_Reloaded
                 else if (direction == "down")
                 {
                     if (player.Rotation == 0 && player.Y < map.Height &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down ||
+                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                     {
                         player.Y += 1;
                     }
                     else if (player.Rotation == 90 && player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right ||
+                         map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
                     {
                         player.X -= 1;
                     }
                     else if (player.Rotation == 180 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 ||
-                         map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down ||
+                         map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
                     {
                         player.Y -= 1;
                     }
                     else if (player.Rotation == 270 && player.Y < map.Width &&
-                        (map.Cases[player.Y * map.Width + player.X].State == 2 ||
-                         map.Cases[player.Y * map.Width + player.X].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right ||
+                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                     {
                         player.X += 1;
                     }
@@ -226,36 +226,42 @@ namespace ARX_Reloaded
 
             if (player.Rotation == 0)
             {
-                if ((map.Cases[player.Y * map.Width + player.X].State == 2 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                 {
                     canGoRight = true;
                 }
 
                 if (player.X > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - 1].State == 2 || map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
                 {
                     canGoLeft = true;
                 }
 
                 if (player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == 2 || map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
                 {
                     couldGoRight = true;
                 }
 
                 if (player.X > 0 && player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == 2 || map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Cross))
                 {
                     couldGoLeft = true;
                 }
 
                 if (player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
                 {
                     vision = 1;
 
                     if (player.Y > 1 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width * 2].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width * 2].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - map.Width * 2].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X - map.Width * 2].State == ARX.State.Cross))
                     {
                         vision = 2;
                     }
@@ -267,35 +273,41 @@ namespace ARX_Reloaded
             }
             else if (player.Rotation == 90)
             {
-                if ((map.Cases[player.Y * map.Width + player.X].State == 3 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                 {
                     canGoRight = true;
                 }
 
                 if (player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
                 {
                     canGoLeft = true;
                 }
 
                 if (player.X < map.Width - 1 && 
-                    (map.Cases[player.Y * map.Width + player.X + 1].State == 3 || map.Cases[player.Y * map.Width + player.X + 1].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Cross))
                 {
                     couldGoRight = true;
                 }
 
                 if (player.X < map.Width - 1 && player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == ARX.State.Cross))
                 {
                     couldGoLeft = true;
                 }
 
-                if ((map.Cases[player.Y * map.Width + player.X].State == 2 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                 {
                     vision = 1;
 
                     if (player.X < map.Width - 1 &&
-                    (map.Cases[player.Y * map.Width + player.X + 1].State == 2 || map.Cases[player.Y * map.Width + player.X + 1].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Cross))
                     {
                         vision = 2;
                     }
@@ -308,34 +320,40 @@ namespace ARX_Reloaded
             else if (player.Rotation == 180)
             {
                 if (player.X > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - 1].State == 2 || map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
                 {
                     canGoRight = true;
                 }
 
-                if ((map.Cases[player.Y * map.Width + player.X].State == 2 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                 {
                     canGoLeft = true;
                 }
 
                 if (player.X > 0 && player.Y < map.Height - 1 &&
-                    (map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == 2 || map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == ARX.State.Cross))
                 {
                     couldGoRight = true;
                 }
 
                 if (player.Y < map.Height - 1 &&
-                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == 2 || map.Cases[player.Y * map.Width + player.X + map.Width].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Right 
+                    || map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Cross))
                 {
                     couldGoLeft = true;
                 }
 
-                if ((map.Cases[player.Y * map.Width + player.X].State == 3 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                 {
                     vision = 1;
 
                     if (player.Y < map.Height &&
-                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == 3 || map.Cases[player.Y * map.Width + player.X + map.Width].State == 4))
+                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Down 
+                    || map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Cross))
                     {
                         vision = 2;
                     }
@@ -350,35 +368,41 @@ namespace ARX_Reloaded
                 if (player.Rotation == 270)
                 {
                     if (player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down 
+                        || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
                     {
                         canGoRight = true;
                     }
 
-                    if ((map.Cases[player.Y * map.Width + player.X].State == 3 || map.Cases[player.Y * map.Width + player.X].State == 4))
+                    if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down 
+                        || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
                     {
                         canGoLeft = true;
                     }
 
                     if (player.X > 0 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == 3 || map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Down 
+                        || map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Cross))
                     {
                         couldGoRight = true;
                     }
 
                     if (player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == 3 || map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Down 
+                        || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
                     {
                         couldGoLeft = true;
                     }
 
                     if (player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == 2 || map.Cases[player.Y * map.Width + player.X - 1].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right 
+                        || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
                     {
                         vision = 1;
 
                         if (player.X > 1 &&
-                        (map.Cases[player.Y * map.Width + player.X - 2].State == 2 || map.Cases[player.Y * map.Width + player.X - 2].State == 4))
+                        (map.Cases[player.Y * map.Width + player.X - 2].State == ARX.State.Right 
+                        || map.Cases[player.Y * map.Width + player.X - 2].State == ARX.State.Cross))
                         {
                             vision = 2;
                         }

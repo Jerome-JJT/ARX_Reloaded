@@ -48,6 +48,59 @@ namespace ARX_Reloaded
             get { return cases; }
         }
 
+        public Case Meme(int index)
+        {
+            return cases[index];
+        }
+
+        public Case Upper(int index)
+        {
+            if (index >= width)
+            {
+                return cases[index - width];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Case Righter(int index)
+        {
+            if (index % width < width - 1)
+            {
+                return cases[index + 1];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Case Lower(int index)
+        {
+            if (index < (height-1) * width)
+            {
+                return cases[index + width];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Case Lefter(int index)
+        {
+            if (index % width > 0)
+            {
+                return cases[index - 1];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public abstract void GenerateMap(PictureBox elem, Label loading);
 
         public void GenerateZones(PictureBox elem, Label loading, int zones)
@@ -57,15 +110,15 @@ namespace ARX_Reloaded
 
             double ratio = Math.Sqrt((width * height / (zones)) / Math.PI) * 1.5;
 
-            Calculus.Shuffle(rand, colorValues);
+            ARX.Shuffle(rand, colorValues);
 
             //Generate starting points for each zones
-            for (int i = 0; i < zones; i++)
+            for (int eachZone = 0; eachZone < zones; eachZone++)
             {
                 points.Add(new List<List<int>>());
 
-                points[i].Add(new List<int>());//Present
-                points[i].Add(new List<int>());//Futur
+                points[eachZone].Add(new List<int>());//Present
+                points[eachZone].Add(new List<int>());//Futur
 
                 int newCoord;
                 do
@@ -75,106 +128,106 @@ namespace ARX_Reloaded
                 while (inZoneRadius(ratio, usedCoords, newCoord));
 
                 usedCoords.Add(newCoord);
-                points[i][0].Add(newCoord);
+                points[eachZone][0].Add(newCoord);
 
-                cases[newCoord].Zone = i + 1;
+                cases[newCoord].Zone = eachZone + 1;
 
                 //Generate color orders
                 cases[newCoord].ZoneColor =
-                    Color.FromArgb(int.Parse($"FF{colorValues[i % colorValues.Count]}",
+                    Color.FromArgb(int.Parse($"FF{colorValues[eachZone % colorValues.Count]}",
                     System.Globalization.NumberStyles.HexNumber));
             }
 
             //Build zones on the map
             while (restEmptyZone())
             {
-                foreach (List<List<int>> zone in points)
+                foreach (List<List<int>> eachZone in points)
                 {
-                    foreach (int point in zone[0])
+                    foreach (int point in eachZone[0])
                     {
-                        if (point > width - 1 && cases[point - width].Zone == 0
-                            && (cases[point - width].State == 3 || cases[point - width].State == 4))
+                        if (Upper(point) != null && Upper(point).Zone == 0
+                            && (Upper(point).State == ARX.State.Down || Upper(point).State == ARX.State.Cross))
                         {
-                            cases[point - width].Zone = cases[point].Zone;
+                            Upper(point).Zone = Meme(point).Zone;
 
                             //Generate color orders
-                            if (cases[point - width].Zone == 0)
+                            if (Upper(point).Zone == 0)
                             {
-                                cases[point - width].ZoneColor = Color.White;
+                                Upper(point).ZoneColor = Color.White;
                             }
                             else
                             {
-                                cases[point - width].ZoneColor = 
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point - width].Zone - 1) % colorValues.Count]}", 
+                                Upper(point).ZoneColor = 
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(Upper(point).Zone - 1) % colorValues.Count]}", 
                                     System.Globalization.NumberStyles.HexNumber));
                             }
 
-                            zone[1].Add(point - width);
+                            eachZone[1].Add(Upper(point).Coord);
                         }
 
-                        if (point % width < width - 1 && cases[point + 1].Zone == 0
-                            && (cases[point].State == 2 || cases[point].State == 4))
+                        if (Righter(point) != null && Righter(point).Zone == 0
+                            && (Meme(point).State == ARX.State.Right || Meme(point).State == ARX.State.Cross))
                         {
-                            cases[point + 1].Zone = cases[point].Zone;
+                            Righter(point).Zone = Meme(point).Zone;
 
                             //Generate color orders
-                            if (cases[point + 1].Zone == 0)
+                            if (Righter(point).Zone == 0)
                             {
-                                cases[point + 1].ZoneColor = Color.White;
+                                Righter(point).ZoneColor = Color.White;
                             }
                             else
                             {
-                                cases[point + 1].ZoneColor = 
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point + 1].Zone - 1) % colorValues.Count]}", 
+                                Righter(point).ZoneColor = 
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(Righter(point).Zone - 1) % colorValues.Count]}", 
                                     System.Globalization.NumberStyles.HexNumber));
                             }
 
-                            zone[1].Add(point + 1);
+                            eachZone[1].Add(Righter(point).Coord);
                         }
 
-                        if (point < height * width - width && cases[point + width].Zone == 0
-                            && (cases[point].State == 3 || cases[point].State == 4))
+                        if (Lower(point) != null && Lower(point).Zone == 0
+                            && (Meme(point).State == ARX.State.Down || Meme(point).State == ARX.State.Cross))
                         {
-                            cases[point + width].Zone = cases[point].Zone;
+                            Lower(point).Zone = Meme(point).Zone;
 
                             //Generate color orders
-                            if (cases[point + width].Zone == 0)
+                            if (Lower(point).Zone == 0)
                             {
-                                cases[point + width].ZoneColor = Color.White;
+                                Lower(point).ZoneColor = Color.White;
                             }
                             else
                             {
-                                cases[point + width].ZoneColor =
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point + width].Zone - 1) % colorValues.Count]}",
+                                Lower(point).ZoneColor =
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(Lower(point).Zone - 1) % colorValues.Count]}",
                                     System.Globalization.NumberStyles.HexNumber));
                             }
 
-                            zone[1].Add(point + width);
+                            eachZone[1].Add(Lower(point).Coord);
                         }
 
-                        if (point % width > 0 && cases[point - 1].Zone == 0
-                            && (cases[point - 1].State == 2 || cases[point - 1].State == 4))
+                        if (Lefter(point) != null && Lefter(point).Zone == 0
+                            && (Lefter(point).State == ARX.State.Right || Lefter(point).State == ARX.State.Cross))
                         {
-                            cases[point - 1].Zone = cases[point].Zone;
+                            Lefter(point).Zone = Meme(point).Zone;
 
                             //Generate color orders
-                            if (cases[point - 1].Zone == 0)
+                            if (Lefter(point).Zone == 0)
                             {
-                                cases[point - 1].ZoneColor = Color.White;
+                                Lefter(point).ZoneColor = Color.White;
                             }
                             else
                             {
-                                cases[point - 1].ZoneColor =
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(cases[point - 1].Zone - 1) % colorValues.Count]}",
+                                Lefter(point).ZoneColor =
+                                    Color.FromArgb(int.Parse($"FF{colorValues[(Lefter(point).Zone - 1) % colorValues.Count]}",
                                     System.Globalization.NumberStyles.HexNumber));
                             }
 
-                            zone[1].Add(point - 1);
+                            eachZone[1].Add(Lefter(point).Coord);
                         }
                     }
 
-                    zone[0] = new List<int>(zone[1]);
-                    zone[1].Clear();
+                    eachZone[0] = new List<int>(eachZone[1]);
+                    eachZone[1].Clear();
                 }
 
                 if (elem != null)
@@ -197,7 +250,12 @@ namespace ARX_Reloaded
             return false;
         }
 
-        private bool restEmptyZone()
+        protected bool restEmptyState()
+        {
+            return !cases.TrueForAll(eachCase => eachCase.State != 0);
+        }
+
+        protected bool restEmptyZone()
         {
             return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
         }
@@ -213,65 +271,77 @@ namespace ARX_Reloaded
 
             visits[0].Add(0);
 
-            do
+            while (visits[0].Count > 0)
             {
                 foreach (int testAround in visits[0])
                 {
-                    if (testAround > width - 1 && (!visits[1].Contains(testAround - width)) && (!unique.Contains(testAround - width))
-                        && (cases[testAround - width].State == 3 || cases[testAround - width].State == 4))
+                    if (Upper(testAround) != null
+                        && (!visits[1].Contains(Upper(testAround).Coord)) && (!unique.Contains(Upper(testAround).Coord))
+                        && (Upper(testAround).State == ARX.State.Down || Upper(testAround).State == ARX.State.Cross))
                     {
-                        visits[1].Add(testAround - width);
+                        visits[1].Add(Upper(testAround).Coord);
                     }
 
-                    if (testAround % width < width - 1 && (!visits[1].Contains(testAround + 1)) && (!unique.Contains(testAround + 1))
-                        && (cases[testAround].State == 2 || cases[testAround].State == 4))
+                    if (Righter(testAround) != null 
+                        && (!visits[1].Contains(Righter(testAround).Coord)) && (!unique.Contains(Righter(testAround).Coord))
+                        && (Meme(testAround).State == ARX.State.Right || Meme(testAround).State == ARX.State.Cross))
                     {
-                        visits[1].Add(testAround + 1);
+                        visits[1].Add(Righter(testAround).Coord);
                     }
 
-                    if (testAround < height * width - width && (!visits[1].Contains(testAround + width)) && (!unique.Contains(testAround + width))
-                        && (cases[testAround].State == 3 || cases[testAround].State == 4))
+                    if (Lower(testAround) != null 
+                        && (!visits[1].Contains(Lower(testAround).Coord)) && (!unique.Contains(Lower(testAround).Coord))
+                        && (Meme(testAround).State == ARX.State.Down || Meme(testAround).State == ARX.State.Cross))
                     {
-                        visits[1].Add(testAround + width);
+                        visits[1].Add(Lower(testAround).Coord);
                     }
 
-                    if (testAround % width > 0 && (!visits[1].Contains(testAround - 1)) && (!unique.Contains(testAround - 1))
-                        && (cases[testAround - 1].State == 2 || cases[testAround - 1].State == 4))
+                    if (Lefter(testAround) != null 
+                        && (!visits[1].Contains(Lefter(testAround).Coord)) && (!unique.Contains(Lefter(testAround).Coord))
+                        && (Lefter(testAround).State == ARX.State.Right || Lefter(testAround).State == ARX.State.Cross))
                     {
-                        visits[1].Add(testAround - 1);
+                        visits[1].Add(Lefter(testAround).Coord);
                     }
                 }
 
                 unique.AddRange(new List<int>(visits[1]));
                 visits[0] = new List<int>(visits[1]);
                 visits[1].Clear();
+            } 
 
-            } while (visits[0].Count > 0);
-
+            //If the map is separeted in multiple parts
             if (unique.Count != width * height)
             {
-                for (int i = 0; i < width * height; i++)
+                for (int eachCase = 0; eachCase < width * height; eachCase++)
                 {
-                    if ((!unique.Contains(i)) && unique.Count > (width * height) / 2)
+                    //Affect cases not joinable from 0/0 if this part is the bigger
+                    if ((!unique.Contains(eachCase)) && unique.Count > (width * height) / 2)
                     {
-                        if (i % width == width - 1)
+                        //Special right side case
+                        if (Righter(eachCase) == null)
                         {
-                            cases[i - 1].State = (cases[i - 1].State % 4) + 1;
+                            Lefter(eachCase).State = Lefter(eachCase).NextPathState;
                         }
-                        else if (i > (height * width) - width - 1)
+                        //Special lower side case
+                        else if (Lower(eachCase) == null)
                         {
-                            cases[i - width].State = (cases[i - width].State % 4) + 1;
+                            Upper(eachCase).State = Upper(eachCase).NextPathState;
                         }
 
-                        cases[i].State = (cases[i].State % 4) + 1;
+                        //Change state to another one (except void form)
+                        Meme(eachCase).State = Meme(eachCase).NextPathState;
                     }
-                    else if (unique.Contains(i) && unique.Count <= (width * height) / 2)
+
+                    //Affect cases joinable from 0/0 if this part is the smallest
+                    else if (unique.Contains(eachCase) && unique.Count <= (width * height) / 2)
                     {
-                        cases[i].State = (cases[i].State % 4) + 1;
+                        Meme(eachCase).State = Meme(eachCase).NextPathState;
                     }
                 }
+
                 return false;
             }
+
             return true;
         }
     }

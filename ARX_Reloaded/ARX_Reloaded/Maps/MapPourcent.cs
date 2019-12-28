@@ -25,7 +25,7 @@ namespace ARX_Reloaded
             {
                 if(rand.Next(100) < ratio)
                 {
-                    eachCase.State = 4;
+                    eachCase.State = ARX.State.Cross;
                 }
             }
         }

@@ -12,39 +12,27 @@ namespace ARX_Reloaded
     {
         public static void DrawTotalMap(PaintEventArgs pictureElement, Size picBoxSize, Map map, Player player, int zoom)
         {
-            double mapDrawLengthX;
-            double mapDrawLengthY;
-
             Point mapDrawStart = new Point();
-
             Point mapDrawStop = new Point();
 
-            double mapCaseWidth;
-            double mapCaseHeight;
 
-            double mapPathWidth;
-            double mapPathHeight;
+            double mapDrawLengthX = (double)map.Width  / zoom;
+            double mapDrawLengthY = (double)map.Height / zoom;
 
-            mapDrawLengthX = (double)map.Width  / zoom;
-            mapDrawLengthY = (double)map.Height / zoom;
-
-            //mapDrawStart.X = Math.Floor(player.X / Math.Ceiling(map.Width / (double)zoom)) * Math.Ceiling();
-            //mapDrawStart.Y = Math.Floor(player.Y / Math.Ceiling(map.Height / (double)zoom)) * Math.Ceiling();
 
             mapDrawStart.X = (int)Math.Ceiling(((int)(player.X / mapDrawLengthX)) * mapDrawLengthX);
             mapDrawStart.Y = (int)Math.Ceiling(((int)(player.Y / mapDrawLengthY)) * mapDrawLengthY);
 
-            //mapDrawStop.X = Math.Min(map.Width, Math.Round(mapDrawStart.X + (map.Width / (double)zoom)));
-            //mapDrawStop.Y = Math.Min(map.Height, Math.Round(mapDrawStart.Y + (map.Height / (double)zoom)));
-
             mapDrawStop.X = Math.Min(map.Width,  (int)Math.Ceiling(((int)(player.X / mapDrawLengthX + 1)) * mapDrawLengthX));
             mapDrawStop.Y = Math.Min(map.Height, (int)Math.Ceiling(((int)(player.Y / mapDrawLengthY + 1)) * mapDrawLengthY));
 
-            mapCaseWidth  = (double)picBoxSize.Width / (mapDrawStop.X - mapDrawStart.X);
-            mapCaseHeight = (double)picBoxSize.Height / (mapDrawStop.Y - mapDrawStart.Y);
 
-            mapPathWidth = mapCaseWidth / 4.0;
-            mapPathHeight = mapCaseHeight / 4.0;
+            double mapCaseWidth = (double)picBoxSize.Width / (mapDrawStop.X - mapDrawStart.X);
+            double mapCaseHeight = (double)picBoxSize.Height / (mapDrawStop.Y - mapDrawStart.Y);
+
+            double mapPathWidth = mapCaseWidth / 4.0;
+            double mapPathHeight = mapCaseHeight / 4.0;
+
 
             for (int h = mapDrawStart.Y; h < mapDrawStop.Y; h++)
             {
@@ -91,32 +79,32 @@ namespace ARX_Reloaded
 
                     if (map.Cases[h * map.Width + w].Visited == true)
                     {
-                        if (map.Cases[h * map.Width + w].State != 0)
+                        if (map.Cases[h * map.Width + w].State != ARX.State.Void)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleMiddle);
                         }
 
-                        if (map.Cases[h * map.Width + w].State == 2)
+                        if (map.Cases[h * map.Width + w].State == ARX.State.Right)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                         }
-                        else if (map.Cases[h * map.Width + w].State == 3)
+                        else if (map.Cases[h * map.Width + w].State == ARX.State.Down)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                         }
-                        else if (map.Cases[h * map.Width + w].State == 4)
+                        else if (map.Cases[h * map.Width + w].State == ARX.State.Cross)
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
                         }
 
-                        if (w > 0 && map.Cases[h * map.Width + w].State != 0 &&
-                            (map.Cases[h * map.Width + w - 1].State == 2 || map.Cases[h * map.Width + w - 1].State == 4))
+                        if (w > 0 && map.Cases[h * map.Width + w].State != ARX.State.Void &&
+                            (map.Cases[h * map.Width + w - 1].State == ARX.State.Right || map.Cases[h * map.Width + w - 1].State == ARX.State.Cross))
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleLeft);
                         }
-                        if (h > 0 && map.Cases[h * map.Width + w].State != 0 &&
-                            (map.Cases[h * map.Width + w - map.Width].State == 3 || map.Cases[h * map.Width + w - map.Width].State == 4))
+                        if (h > 0 && map.Cases[h * map.Width + w].State != ARX.State.Void &&
+                            (map.Cases[h * map.Width + w - map.Width].State == ARX.State.Down || map.Cases[h * map.Width + w - map.Width].State == ARX.State.Cross))
                         {
                             pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), upMiddle);
                         }

@@ -21,92 +21,100 @@ namespace ARX_Reloaded
             //Initialize/reset map
             for (int eachCase = 0; eachCase < width * height; eachCase++)
             {
-                cases.Add(new Case(eachCase % width, (int)(eachCase / height)));
+                cases.Add(new Case(eachCase));
             }
 
-            cases[0].State = 4;
-            cases[cases.Count()-1].State = 1;
+            cases[cases.First().Coord].State = ARX.State.Cross;
+            cases[cases.Last().Coord].State = ARX.State.Point;
 
-            int lastCase;
+            int currentCase;
 
             //Choose starting testAround and initialize it
-            lastCase = rand.Next(cases.Count());
-            cases[lastCase].State = 1;
+            currentCase = rand.Next(cases.Count());
+            cases[currentCase].State = ARX.State.Point;
 
             //Search for new testAround until stack is empty
-            while(emptyCase())
+            while (restEmptyState())
             {
                 //Determine in which direction the labyrinth is expandable
-                int futurDirection = emptyAdj(lastCase);
+                ARX.Direction futurDirection = emptyAdj(currentCase);
 
                 //Expand the labyrinth to the up
-                if (futurDirection == 0)
+                if (futurDirection == ARX.Direction.Up)
                 {
-                    if(cases[lastCase - width].State == 2)
+                    if(Upper(currentCase).State == ARX.State.Right)
                     {
-                        cases[lastCase - width].State = 4;
+                        Upper(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        cases[lastCase - width].State = 3;
+                        Upper(currentCase).State = ARX.State.Down;
                     }
 
-                    lastCase = lastCase - width;
+                    currentCase = Upper(currentCase).Coord;
                 }
 
                 //Expand the labyrinth to the right
-                else if (futurDirection == 90)
+                else if (futurDirection == ARX.Direction.Right)
                 {
-                    if (cases[lastCase].State == 3)
+                    if (Meme(currentCase).State == ARX.State.Down)
                     {
-                        cases[lastCase].State = 4;
+                        Meme(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        cases[lastCase].State = 2;
+                        Meme(currentCase).State = ARX.State.Right;
                     }
 
-                    if (cases[lastCase + 1].State == 0)
+                    if (Righter(currentCase).State == ARX.State.Void)
                     {
-                        cases[lastCase + 1].State = 1;
+                        Righter(currentCase).State = ARX.State.Point;
                     }
 
-                    lastCase = lastCase + 1;
+                    currentCase = Righter(currentCase).Coord;
                 }
 
                 //Expand the labyrinth to the down
-                else if (futurDirection == 180)
+                else if (futurDirection == ARX.Direction.Down)
                 {
-                    if (cases[lastCase].State == 2)
+                    if (Meme(currentCase).State == ARX.State.Right)
                     {
-                        cases[lastCase].State = 4;
+                        Meme(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        cases[lastCase].State = 3;
+                        Meme(currentCase).State = ARX.State.Down;
                     }
 
-                    if(cases[lastCase + width].State == 0)
+                    if(Lower(currentCase).State == ARX.State.Void)
                     {
-                        cases[lastCase + width].State = 1;
+                        Lower(currentCase).State = ARX.State.Point;
                     }
 
-                    lastCase = lastCase + width;
+                    currentCase = Lower(currentCase).Coord;
                 }
 
                 //Expand the labyrinth to the left
-                else if (futurDirection == 270)
+                else if (futurDirection == ARX.Direction.Left)
                 {
-                    if(cases[lastCase - 1].State == 3)
+                    if(Lefter(currentCase).State == ARX.State.Down)
                     {
-                        cases[lastCase - 1].State = 4;
+                        Lefter(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        cases[lastCase - 1].State = 2;
+                        Lefter(currentCase).State = ARX.State.Right;
                     }
 
-                    lastCase = lastCase - 1;
+                    currentCase = Lefter(currentCase).Coord;
+                }
+
+                if (elem != null)
+                {
+                    elem.Refresh();
+                    //loading.Text = $"Iteration : {iteration}";
+                    //loading.Refresh();
+                    //System.Threading.Thread.Sleep(1);
                 }
             }
 
@@ -114,121 +122,36 @@ namespace ARX_Reloaded
         }
 
         //Search for an empty case around given case
-        private int emptyAdj(int baseSearch)
+        private ARX.Direction emptyAdj(int baseSearch)
         {
             //Decide in which order directions will be tested
-            List<int> possibilities = new List<int> { 0, 90, 180, 270 };
-            Calculus.Shuffle(rand, possibilities);
+            List<ARX.Direction> possibilities = new List<ARX.Direction> {
+                ARX.Direction.Up, ARX.Direction.Right, ARX.Direction.Down, ARX.Direction.Left };
+
+            ARX.Shuffle(rand, possibilities);
 
             //Test all directions
-            foreach (int test in possibilities)
+            foreach (ARX.Direction test in possibilities)
             {
-                if (test == 0 && baseSearch >= width)
+                if (test == ARX.Direction.Up && Upper(baseSearch) != null)
                 {
-                    return 0;
+                    return ARX.Direction.Up;
                 }
-                else if (test == 90 && baseSearch % width < width - 1)
+                else if (test == ARX.Direction.Right && Righter(baseSearch) != null)
                 {
-                    return 90;
+                    return ARX.Direction.Right;
                 }
-                else if (test == 180 && baseSearch < height*width-width)
+                else if (test == ARX.Direction.Down && Lower(baseSearch) != null)
                 {
-                    return 180;
+                    return ARX.Direction.Down;
                 }
-                else if (test == 270 && baseSearch % width > 0)
+                else if (test == ARX.Direction.Left && Lefter(baseSearch) != null)
                 {
-                    return 270;
+                    return ARX.Direction.Left;
                 }
             }
-            return -1;
-        }
 
-        private bool emptyCase()
-        {
-            for (int i = 0; i < cases.Count; i++)
-            {
-                if (cases[i].State == 0)
-                {
-                    return true;
-                }
-                else if (cases[i].State == 1 &&
-                    ((i >= width && cases[i - width].State != 3 && cases[i - width].State != 4) &&
-                    (i % width > 0 && cases[i - 1].State != 2 && cases[i - 1].State != 4)))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool pathsFinished()
-        {
-            List<List<int>> visits = new List<List<int>>();
-            List<int> unique = new List<int> { 0 };
-
-            visits.Add(new List<int>());//Present
-            visits.Add(new List<int>());//Futur
-
-            visits[0].Add(0);
-
-            do
-            {
-                foreach (int testAround in visits[0])
-                {
-                    if (testAround > width - 1 && (!visits[1].Contains(testAround - width)) && (!unique.Contains(testAround - width))
-                        && (cases[testAround - width].State == 3 || cases[testAround - width].State == 4))
-                    {
-                        visits[1].Add(testAround - width);
-                    }
-
-                    if (testAround % width < width - 1 && (!visits[1].Contains(testAround + 1)) && (!unique.Contains(testAround + 1))
-                        && (cases[testAround].State == 2 || cases[testAround].State == 4))
-                    {
-                        visits[1].Add(testAround + 1);
-                    }
-
-                    if (testAround < height * width - width && (!visits[1].Contains(testAround + width)) && (!unique.Contains(testAround + width))
-                        && (cases[testAround].State == 3 || cases[testAround].State == 4))
-                    {
-                        visits[1].Add(testAround + width);
-                    }
-
-                    if (testAround % width > 0 && (!visits[1].Contains(testAround - 1)) && (!unique.Contains(testAround - 1))
-                        && (cases[testAround - 1].State == 2 || cases[testAround - 1].State == 4))
-                    {
-                        visits[1].Add(testAround - 1);
-                    }
-                }
-
-                unique.AddRange(new List<int>(visits[1]));
-                visits[0] = new List<int>(visits[1]);
-                visits[1].Clear();
-
-            } while (visits[0].Count > 0);
-
-            if (unique.Count != width * height)
-            {
-                for (int i = 0; i < width * height; i++)
-                {
-                    if (!unique.Contains(i))
-                    {
-                        if (i % width == width - 1)
-                        {
-                            cases[i - 1].State = (cases[i - 1].State % 4) + 1;
-                        }
-                        else if (i > (height * width) - width - 1)
-                        {
-                            cases[i - width].State = (cases[i - width].State % 4) + 1;
-                        }
-                        else
-                        {
-                            cases[i].State = (cases[i].State % 4) + 1;
-                        }
-                    }
-                }
-                return false;
-            }
-            return true;
+            return ARX.Direction.Null;
         }
     }
 }

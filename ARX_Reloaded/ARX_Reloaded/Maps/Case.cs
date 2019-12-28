@@ -9,15 +9,15 @@ namespace ARX_Reloaded
 {
     public class Case
     {
-        private int state;
+        private ARX.State state;
         private bool visited;
 
         private int zone;
         private Color zoneColor;
 
-        private Point pos;
+        private int coord;
 
-        public Case(int posX, int posY)
+        public Case(int coord)
         {
             this.state = 0;
             this.visited = true;
@@ -25,10 +25,10 @@ namespace ARX_Reloaded
             this.zone = 0;
             this.zoneColor = Color.White;
 
-            this.Pos = new Point(posX, posY);
+            this.coord = coord;
         }
 
-        public int State
+        public ARX.State State
         {
             get { return state; }
             set { state = value; }
@@ -52,10 +52,16 @@ namespace ARX_Reloaded
             set { zoneColor = value; }
         }
 
-        public Point Pos
+        public int Coord
         {
-            get { return pos; }
-            set { pos = value; }
+            get { return coord; }
+            set { coord = value; }
+        }
+
+        //Change state to another one (except void form)
+        public ARX.State NextPathState
+        {
+            get { return (ARX.State)((int)state % 4 + 1); }
         }
     }
 }

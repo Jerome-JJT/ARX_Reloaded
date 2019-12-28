@@ -6,8 +6,26 @@ using System.Threading.Tasks;
 
 namespace ARX_Reloaded
 {
-    public static class Calculus
+    public static class ARX
     {
+        public enum Direction
+        {
+            Null = -1,
+            Up = 0,
+            Right = 90,
+            Down = 180,
+            Left = 270
+        }
+
+        public enum State
+        {
+            Void = 0,
+            Point = 1,
+            Right = 2,
+            Down = 3,
+            Cross = 4
+        }
+
         //Shuffle a list
         public static void Shuffle<T>(Random random, IList<T> list)
         {

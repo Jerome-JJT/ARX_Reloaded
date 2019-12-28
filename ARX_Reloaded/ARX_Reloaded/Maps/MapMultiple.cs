@@ -26,94 +26,94 @@ namespace ARX_Reloaded
             //Initialize/reset map
             for (int eachCase = 0; eachCase < width * height; eachCase++)
             {
-                cases.Add(new Case(eachCase % width, (int)(eachCase / height)));
+                cases.Add(new Case(eachCase));
             }
 
             //Choose starting point and initialize it
             active[0].Add(rand.Next(cases.Count()));
-            cases[active[0][0]].State = 1;
+            cases[active[0][0]].State = ARX.State.Point;
 
             //Search for new point until list present is empty
             //while (active[0].Count() > 0)
             while (restEmptyState())
             {
-                Calculus.Shuffle(rand, active[0]);
+                ARX.Shuffle(rand, active[0]);
 
-                foreach (int testActive in active[0])
+                foreach (int currentActive in active[0])
                 {
                     //Determine in which direction the labyrinth is expandable
-                    List<int> futurDirection = emptyAdj(testActive);
+                    List<ARX.Direction> futurDirection = emptyAdj(currentActive);
 
-                    foreach (int eachDirection in futurDirection)
+                    foreach (ARX.Direction eachDirection in futurDirection)
                     {
                         //Expand the labyrinth to the up
-                        if (eachDirection == 0 && !active[1].Contains(testActive - width))
+                        if (eachDirection == ARX.Direction.Up && !active[1].Contains(Upper(currentActive).Coord))
                         {
-                            if (cases[testActive - width].State == 2)
+                            if (Upper(currentActive).State == ARX.State.Right)
                             {
-                                cases[testActive - width].State = 4;
+                                Upper(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                cases[testActive - width].State = 3;
+                                Upper(currentActive).State = ARX.State.Down;
                             }
 
-                            active[1].Add(testActive - width);
+                            active[1].Add(Upper(currentActive).Coord);
                         }
 
                         //Expand the labyrinth to the right
-                        else if (eachDirection == 90 && !active[1].Contains(testActive + 1))
+                        else if (eachDirection == ARX.Direction.Right && !active[1].Contains(Righter(currentActive).Coord))
                         {
-                            if (cases[testActive].State == 3)
+                            if (Meme(currentActive).State == ARX.State.Down)
                             {
-                                cases[testActive].State = 4;
+                                Meme(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                cases[testActive].State = 2;
+                                Meme(currentActive).State = ARX.State.Right;
                             }
 
-                            if (cases[testActive + 1].State == 0)
+                            if (Righter(currentActive).State == ARX.State.Void)
                             {
-                                cases[testActive + 1].State = 1;
+                                Righter(currentActive).State = ARX.State.Point;
                             }
 
-                            active[1].Add(testActive + 1);
+                            active[1].Add(Righter(currentActive).Coord);
                         }
 
                         //Expand the labyrinth to the down
-                        else if (eachDirection == 180 && !active[1].Contains(testActive + width))
+                        else if (eachDirection == ARX.Direction.Down && !active[1].Contains(Lower(currentActive).Coord))
                         {
-                            if (cases[testActive].State == 2)
+                            if (Meme(currentActive).State == ARX.State.Right)
                             {
-                                cases[testActive].State = 4;
+                                Meme(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                cases[testActive].State = 3;
+                                Meme(currentActive).State = ARX.State.Down;
                             }
 
-                            if (cases[testActive + width].State == 0)
+                            if (Lower(currentActive).State == ARX.State.Void)
                             {
-                                cases[testActive + width].State = 1;
+                                Lower(currentActive).State = ARX.State.Point;
                             }
 
-                            active[1].Add(testActive + width);
+                            active[1].Add(Lower(currentActive).Coord);
                         }
 
                         //Expand the labyrinth to the left
-                        else if (eachDirection == 270 && !active[1].Contains(testActive - 1))
+                        else if (eachDirection == ARX.Direction.Left && !active[1].Contains(Lefter(currentActive).Coord))
                         {
-                            if (cases[testActive - 1].State == 3)
+                            if (Lefter(currentActive).State == ARX.State.Down)
                             {
-                                cases[testActive - 1].State = 4;
+                                Lefter(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                cases[testActive - 1].State = 2;
+                                Lefter(currentActive).State = ARX.State.Right;
                             }
 
-                            active[1].Add(testActive - 1);
+                            active[1].Add(Lefter(currentActive).Coord);
                         }
                     }
                 }
@@ -128,45 +128,34 @@ namespace ARX_Reloaded
                 }
             }
 
-            while (!pathsFinished()) {
-                if (elem != null)
-                {
-                    elem.Refresh();
-                    System.Threading.Thread.Sleep(2);
-                }
-            }
-        }
-
-
-        private bool restEmptyState()
-        {
-            return !cases.TrueForAll(eachCase => eachCase.State != 0);
+            while (!pathsFinished()) { }
         }
 
         //Search for an empty case around given case
-        private List<int> emptyAdj(int baseSearch)
+        private List<ARX.Direction> emptyAdj(int baseSearch)
         {
             //Decide in which order directions will be tested
-            List<int> possibilities = new List<int> { 0, 90, 180, 270 };
+            List<ARX.Direction> possibilities = new List<ARX.Direction> {
+                ARX.Direction.Up, ARX.Direction.Right, ARX.Direction.Down, ARX.Direction.Left };
 
-            if (!(baseSearch >= width))
+            if (!(Upper(baseSearch) != null))
             {
-                possibilities.Remove(0);
+                possibilities.Remove(ARX.Direction.Up);
             }
-            if (!(baseSearch % width < width - 1))
+            if (!(Righter(baseSearch) != null))
             {
-                possibilities.Remove(90);
+                possibilities.Remove(ARX.Direction.Right);
             }
-            if (!(baseSearch < height * width - width))
+            if (!(Lower(baseSearch) != null))
             {
-                possibilities.Remove(180);
+                possibilities.Remove(ARX.Direction.Down);
             }
-            if (!(baseSearch % width > 0))
+            if (!(Lefter(baseSearch) != null))
             {
-                possibilities.Remove(270);
+                possibilities.Remove(ARX.Direction.Left);
             }
 
-            Calculus.Shuffle(rand, possibilities);
+            ARX.Shuffle(rand, possibilities);
 
             possibilities.RemoveRange(0, (int)Math.Ceiling(possibilities.Count/2.0));
 
