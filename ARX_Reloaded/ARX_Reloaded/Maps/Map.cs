@@ -48,12 +48,12 @@ namespace ARX_Reloaded
             get { return cases; }
         }
 
-        public Case Meme(int index)
+        public Case self(int index)
         {
             return cases[index];
         }
 
-        public Case Upper(int index)
+        public Case upper(int index)
         {
             if (index >= width)
             {
@@ -65,7 +65,7 @@ namespace ARX_Reloaded
             }
         }
 
-        public Case Righter(int index)
+        public Case righter(int index)
         {
             if (index % width < width - 1)
             {
@@ -77,7 +77,7 @@ namespace ARX_Reloaded
             }
         }
 
-        public Case Lower(int index)
+        public Case lower(int index)
         {
             if (index < (height-1) * width)
             {
@@ -89,7 +89,7 @@ namespace ARX_Reloaded
             }
         }
 
-        public Case Lefter(int index)
+        public Case lefter(int index)
         {
             if (index % width > 0)
             {
@@ -101,38 +101,49 @@ namespace ARX_Reloaded
             }
         }
 
-        public abstract void GenerateMap(PictureBox elem, Label loading);
-
-        public void GenerateZones(PictureBox elem, Label loading, int zones)
+        public virtual void GenerateMap(PictureBox elem, Label loading)
         {
-            List<List<List<int>>> points = new List<List<List<int>>>();
-            List<int> usedCoords = new List<int>();
+            cases = new List<Case>();
 
-            double ratio = Math.Sqrt((width * height / (zones)) / Math.PI) * 1.5;
+            //Initialize/reset map
+            for (int eachCase = 0; eachCase < width * height; eachCase++)
+            {
+                cases.Add(new Case(eachCase));
+            }
+        }
 
+        public void GenerateZones(PictureBox elem, Label loading, int nbZones)
+        {
+            double ratio = Math.Sqrt(((width * height) / nbZones) / Math.PI) * 1.5;
+
+
+            List<List<List<int>>> zonesPoints = new List<List<List<int>>>();
+
+            //Generate colors order
             ARX.Shuffle(rand, colorValues);
 
             //Generate starting points for each zones
-            for (int eachZone = 0; eachZone < zones; eachZone++)
+            for (int eachZone = 0; eachZone < nbZones; eachZone++)
             {
-                points.Add(new List<List<int>>());
+                //Create zone's list
+                zonesPoints.Add(new List<List<int>>());
 
-                points[eachZone].Add(new List<int>());//Present
-                points[eachZone].Add(new List<int>());//Futur
+                //Create storage inside each zones
+                zonesPoints[eachZone].Add(new List<int>());//Actuals
+                zonesPoints[eachZone].Add(new List<int>());//Futurs
 
+                //Generate unique and separeted points in map
                 int newCoord;
                 do
                 {
                     newCoord = rand.Next(0, width * height);
                 }
-                while (inZoneRadius(ratio, usedCoords, newCoord));
+                while (inZoneRadius(ratio, zonesPoints[eachZone][0], newCoord));
 
-                usedCoords.Add(newCoord);
-                points[eachZone][0].Add(newCoord);
+                zonesPoints[eachZone][0].Add(newCoord);
 
+                //Generate zones id and colors
                 cases[newCoord].Zone = eachZone + 1;
-
-                //Generate color orders
                 cases[newCoord].ZoneColor =
                     Color.FromArgb(int.Parse($"FF{colorValues[eachZone % colorValues.Count]}",
                     System.Globalization.NumberStyles.HexNumber));
@@ -141,91 +152,58 @@ namespace ARX_Reloaded
             //Build zones on the map
             while (restEmptyZone())
             {
-                foreach (List<List<int>> eachZone in points)
+                //Update each zones
+                foreach (List<List<int>> eachZone in zonesPoints)
                 {
-                    foreach (int point in eachZone[0])
+                    //Advance each points 
+                    foreach (int eachPoint in eachZone[0])
                     {
-                        if (Upper(point) != null && Upper(point).Zone == 0
-                            && (Upper(point).State == ARX.State.Down || Upper(point).State == ARX.State.Cross))
+                        if (upper(eachPoint) != null && upper(eachPoint).Zone == 0
+                            && (upper(eachPoint).State == ARX.State.Down || upper(eachPoint).State == ARX.State.Cross))
                         {
-                            Upper(point).Zone = Meme(point).Zone;
+                            upper(eachPoint).Zone = self(eachPoint).Zone;
 
-                            //Generate color orders
-                            if (Upper(point).Zone == 0)
-                            {
-                                Upper(point).ZoneColor = Color.White;
-                            }
-                            else
-                            {
-                                Upper(point).ZoneColor = 
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(Upper(point).Zone - 1) % colorValues.Count]}", 
-                                    System.Globalization.NumberStyles.HexNumber));
-                            }
+                            //Get actual case color orders
+                            upper(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(Upper(point).Coord);
+                            eachZone[1].Add(upper(eachPoint).Coord);
                         }
 
-                        if (Righter(point) != null && Righter(point).Zone == 0
-                            && (Meme(point).State == ARX.State.Right || Meme(point).State == ARX.State.Cross))
+                        if (righter(eachPoint) != null && righter(eachPoint).Zone == 0
+                            && (self(eachPoint).State == ARX.State.Right || self(eachPoint).State == ARX.State.Cross))
                         {
-                            Righter(point).Zone = Meme(point).Zone;
+                            righter(eachPoint).Zone = self(eachPoint).Zone;
 
-                            //Generate color orders
-                            if (Righter(point).Zone == 0)
-                            {
-                                Righter(point).ZoneColor = Color.White;
-                            }
-                            else
-                            {
-                                Righter(point).ZoneColor = 
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(Righter(point).Zone - 1) % colorValues.Count]}", 
-                                    System.Globalization.NumberStyles.HexNumber));
-                            }
+                            //Get actual case color orders
+                            righter(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(Righter(point).Coord);
+                            eachZone[1].Add(righter(eachPoint).Coord);
                         }
 
-                        if (Lower(point) != null && Lower(point).Zone == 0
-                            && (Meme(point).State == ARX.State.Down || Meme(point).State == ARX.State.Cross))
+                        if (lower(eachPoint) != null && lower(eachPoint).Zone == 0
+                            && (self(eachPoint).State == ARX.State.Down || self(eachPoint).State == ARX.State.Cross))
                         {
-                            Lower(point).Zone = Meme(point).Zone;
+                            lower(eachPoint).Zone = self(eachPoint).Zone;
 
-                            //Generate color orders
-                            if (Lower(point).Zone == 0)
-                            {
-                                Lower(point).ZoneColor = Color.White;
-                            }
-                            else
-                            {
-                                Lower(point).ZoneColor =
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(Lower(point).Zone - 1) % colorValues.Count]}",
-                                    System.Globalization.NumberStyles.HexNumber));
-                            }
+                            //Get actual case color orders
+                            lower(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(Lower(point).Coord);
+                            eachZone[1].Add(lower(eachPoint).Coord);
                         }
 
-                        if (Lefter(point) != null && Lefter(point).Zone == 0
-                            && (Lefter(point).State == ARX.State.Right || Lefter(point).State == ARX.State.Cross))
+                        if (lefter(eachPoint) != null && lefter(eachPoint).Zone == 0
+                            && (lefter(eachPoint).State == ARX.State.Right || lefter(eachPoint).State == ARX.State.Cross))
                         {
-                            Lefter(point).Zone = Meme(point).Zone;
+                            lefter(eachPoint).Zone = self(eachPoint).Zone;
 
-                            //Generate color orders
-                            if (Lefter(point).Zone == 0)
-                            {
-                                Lefter(point).ZoneColor = Color.White;
-                            }
-                            else
-                            {
-                                Lefter(point).ZoneColor =
-                                    Color.FromArgb(int.Parse($"FF{colorValues[(Lefter(point).Zone - 1) % colorValues.Count]}",
-                                    System.Globalization.NumberStyles.HexNumber));
-                            }
+                            //Get actual case color orders
+                            lefter(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(Lefter(point).Coord);
+                            eachZone[1].Add(lefter(eachPoint).Coord);
                         }
                     }
 
+                    //Pass futurs points in actual points
                     eachZone[0] = new List<int>(eachZone[1]);
                     eachZone[1].Clear();
                 }
@@ -250,11 +228,13 @@ namespace ARX_Reloaded
             return false;
         }
 
+        //Check for void case
         protected bool restEmptyState()
         {
-            return !cases.TrueForAll(eachCase => eachCase.State != 0);
+            return !cases.TrueForAll(eachCase => eachCase.State != ARX.State.Void);
         }
 
+        //Check for non defined zone
         protected bool restEmptyZone()
         {
             return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
@@ -263,79 +243,84 @@ namespace ARX_Reloaded
 
         protected bool pathsFinished()
         {
+            //Store cases to visit and cases who will be visited
             List<List<int>> visits = new List<List<int>>();
-            List<int> unique = new List<int> { 0 };
+            //Store every visited cases
+            List<int> visited = new List<int>();
 
-            visits.Add(new List<int>());//Present
-            visits.Add(new List<int>());//Futur
+            visits.Add(new List<int>());//Actuals
+            visits.Add(new List<int>());//Futurs
 
+            //First case to visit and reference case
             visits[0].Add(0);
+            visited.Add(0);
 
             while (visits[0].Count > 0)
             {
                 foreach (int testAround in visits[0])
                 {
-                    if (Upper(testAround) != null
-                        && (!visits[1].Contains(Upper(testAround).Coord)) && (!unique.Contains(Upper(testAround).Coord))
-                        && (Upper(testAround).State == ARX.State.Down || Upper(testAround).State == ARX.State.Cross))
+                    if (upper(testAround) != null //If case exists
+                        && (!visits[1].Contains(upper(testAround).Coord)) && (!visited.Contains(upper(testAround).Coord)) //If case not visited or to visit
+                        && (upper(testAround).State == ARX.State.Down || upper(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(Upper(testAround).Coord);
+                        visits[1].Add(upper(testAround).Coord);
                     }
 
-                    if (Righter(testAround) != null 
-                        && (!visits[1].Contains(Righter(testAround).Coord)) && (!unique.Contains(Righter(testAround).Coord))
-                        && (Meme(testAround).State == ARX.State.Right || Meme(testAround).State == ARX.State.Cross))
+                    if (righter(testAround) != null //If case exists
+                        && (!visits[1].Contains(righter(testAround).Coord)) && (!visited.Contains(righter(testAround).Coord)) //If case not visited or to visit
+                        && (self(testAround).State == ARX.State.Right || self(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(Righter(testAround).Coord);
+                        visits[1].Add(righter(testAround).Coord);
                     }
 
-                    if (Lower(testAround) != null 
-                        && (!visits[1].Contains(Lower(testAround).Coord)) && (!unique.Contains(Lower(testAround).Coord))
-                        && (Meme(testAround).State == ARX.State.Down || Meme(testAround).State == ARX.State.Cross))
+                    if (lower(testAround) != null //If case exists
+                        && (!visits[1].Contains(lower(testAround).Coord)) && (!visited.Contains(lower(testAround).Coord)) //If case not visited or to visit
+                        && (self(testAround).State == ARX.State.Down || self(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(Lower(testAround).Coord);
+                        visits[1].Add(lower(testAround).Coord);
                     }
 
-                    if (Lefter(testAround) != null 
-                        && (!visits[1].Contains(Lefter(testAround).Coord)) && (!unique.Contains(Lefter(testAround).Coord))
-                        && (Lefter(testAround).State == ARX.State.Right || Lefter(testAround).State == ARX.State.Cross))
+                    if (lefter(testAround) != null //If case exists
+                        && (!visits[1].Contains(lefter(testAround).Coord)) && (!visited.Contains(lefter(testAround).Coord)) //If case not visited or to visit
+                        && (lefter(testAround).State == ARX.State.Right || lefter(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(Lefter(testAround).Coord);
+                        visits[1].Add(lefter(testAround).Coord);
                     }
                 }
 
-                unique.AddRange(new List<int>(visits[1]));
+                //Pass futur poi^nts to actual points and store them
+                visited.AddRange(new List<int>(visits[1]));
                 visits[0] = new List<int>(visits[1]);
                 visits[1].Clear();
             } 
 
-            //If the map is separeted in multiple parts
-            if (unique.Count != width * height)
+            //If the map is not in one part
+            if (visited.Count != width * height)
             {
                 for (int eachCase = 0; eachCase < width * height; eachCase++)
                 {
                     //Affect cases not joinable from 0/0 if this part is the bigger
-                    if ((!unique.Contains(eachCase)) && unique.Count > (width * height) / 2)
+                    if ((!visited.Contains(eachCase)) && visited.Count > (width * height) / 2)
                     {
-                        //Special right side case
-                        if (Righter(eachCase) == null)
+                        //Special right map side case
+                        if (righter(eachCase) == null)
                         {
-                            Lefter(eachCase).State = Lefter(eachCase).NextPathState;
+                            lefter(eachCase).State = lefter(eachCase).NextPathState;
                         }
-                        //Special lower side case
-                        else if (Lower(eachCase) == null)
+                        //Special lower map side case
+                        else if (lower(eachCase) == null)
                         {
-                            Upper(eachCase).State = Upper(eachCase).NextPathState;
+                            upper(eachCase).State = upper(eachCase).NextPathState;
                         }
 
                         //Change state to another one (except void form)
-                        Meme(eachCase).State = Meme(eachCase).NextPathState;
+                        self(eachCase).State = self(eachCase).NextPathState;
                     }
 
                     //Affect cases joinable from 0/0 if this part is the smallest
-                    else if (unique.Contains(eachCase) && unique.Count <= (width * height) / 2)
+                    else if (visited.Contains(eachCase) && visited.Count <= (width * height) / 2)
                     {
-                        Meme(eachCase).State = Meme(eachCase).NextPathState;
+                        self(eachCase).State = self(eachCase).NextPathState;
                     }
                 }
 

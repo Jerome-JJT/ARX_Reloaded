@@ -16,13 +16,7 @@ namespace ARX_Reloaded
 
         public override void GenerateMap(PictureBox elem, Label loading)
         {
-            cases = new List<Case>();
-            
-            //Initialize/reset map
-            for (int eachCase = 0; eachCase < width * height; eachCase++)
-            {
-                cases.Add(new Case(eachCase));
-            }
+            base.GenerateMap(elem, loading);
 
             cases[cases.First().Coord].State = ARX.State.Cross;
             cases[cases.Last().Coord].State = ARX.State.Point;
@@ -37,76 +31,76 @@ namespace ARX_Reloaded
             while (restEmptyState())
             {
                 //Determine in which direction the labyrinth is expandable
-                ARX.Direction futurDirection = emptyAdj(currentCase);
+                ARX.Direction futurDirection = oneRandAdjacent(currentCase);
 
                 //Expand the labyrinth to the up
                 if (futurDirection == ARX.Direction.Up)
                 {
-                    if(Upper(currentCase).State == ARX.State.Right)
+                    if(upper(currentCase).State == ARX.State.Right)
                     {
-                        Upper(currentCase).State = ARX.State.Cross;
+                        upper(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        Upper(currentCase).State = ARX.State.Down;
+                        upper(currentCase).State = ARX.State.Down;
                     }
 
-                    currentCase = Upper(currentCase).Coord;
+                    currentCase = upper(currentCase).Coord;
                 }
 
                 //Expand the labyrinth to the right
                 else if (futurDirection == ARX.Direction.Right)
                 {
-                    if (Meme(currentCase).State == ARX.State.Down)
+                    if (self(currentCase).State == ARX.State.Down)
                     {
-                        Meme(currentCase).State = ARX.State.Cross;
+                        self(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        Meme(currentCase).State = ARX.State.Right;
+                        self(currentCase).State = ARX.State.Right;
                     }
 
-                    if (Righter(currentCase).State == ARX.State.Void)
+                    if (righter(currentCase).State == ARX.State.Void)
                     {
-                        Righter(currentCase).State = ARX.State.Point;
+                        righter(currentCase).State = ARX.State.Point;
                     }
 
-                    currentCase = Righter(currentCase).Coord;
+                    currentCase = righter(currentCase).Coord;
                 }
 
                 //Expand the labyrinth to the down
                 else if (futurDirection == ARX.Direction.Down)
                 {
-                    if (Meme(currentCase).State == ARX.State.Right)
+                    if (self(currentCase).State == ARX.State.Right)
                     {
-                        Meme(currentCase).State = ARX.State.Cross;
+                        self(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        Meme(currentCase).State = ARX.State.Down;
+                        self(currentCase).State = ARX.State.Down;
                     }
 
-                    if(Lower(currentCase).State == ARX.State.Void)
+                    if(lower(currentCase).State == ARX.State.Void)
                     {
-                        Lower(currentCase).State = ARX.State.Point;
+                        lower(currentCase).State = ARX.State.Point;
                     }
 
-                    currentCase = Lower(currentCase).Coord;
+                    currentCase = lower(currentCase).Coord;
                 }
 
                 //Expand the labyrinth to the left
                 else if (futurDirection == ARX.Direction.Left)
                 {
-                    if(Lefter(currentCase).State == ARX.State.Down)
+                    if(lefter(currentCase).State == ARX.State.Down)
                     {
-                        Lefter(currentCase).State = ARX.State.Cross;
+                        lefter(currentCase).State = ARX.State.Cross;
                     }
                     else
                     {
-                        Lefter(currentCase).State = ARX.State.Right;
+                        lefter(currentCase).State = ARX.State.Right;
                     }
 
-                    currentCase = Lefter(currentCase).Coord;
+                    currentCase = lefter(currentCase).Coord;
                 }
 
                 if (elem != null)
@@ -121,8 +115,8 @@ namespace ARX_Reloaded
             while (!pathsFinished()) { }
         }
 
-        //Search for an empty case around given case
-        private ARX.Direction emptyAdj(int baseSearch)
+        //Search for a case around given case
+        private ARX.Direction oneRandAdjacent(int baseSearch)
         {
             //Decide in which order directions will be tested
             List<ARX.Direction> possibilities = new List<ARX.Direction> {
@@ -133,19 +127,19 @@ namespace ARX_Reloaded
             //Test all directions
             foreach (ARX.Direction test in possibilities)
             {
-                if (test == ARX.Direction.Up && Upper(baseSearch) != null)
+                if (test == ARX.Direction.Up && upper(baseSearch) != null)
                 {
                     return ARX.Direction.Up;
                 }
-                else if (test == ARX.Direction.Right && Righter(baseSearch) != null)
+                else if (test == ARX.Direction.Right && righter(baseSearch) != null)
                 {
                     return ARX.Direction.Right;
                 }
-                else if (test == ARX.Direction.Down && Lower(baseSearch) != null)
+                else if (test == ARX.Direction.Down && lower(baseSearch) != null)
                 {
                     return ARX.Direction.Down;
                 }
-                else if (test == ARX.Direction.Left && Lefter(baseSearch) != null)
+                else if (test == ARX.Direction.Left && lefter(baseSearch) != null)
                 {
                     return ARX.Direction.Left;
                 }

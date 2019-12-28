@@ -43,26 +43,26 @@ namespace ARX_Reloaded
         private static void goForward(ref Player player, Map map)
         {
             if (player.Rotation == 0 && player.Y > 0 &&
-                (map.Upper(player.Y * map.Width + player.X).State == ARX.State.Down ||
-                 map.Upper(player.Y * map.Width + player.X).State == ARX.State.Cross))
+                (map.upper(player.Y * map.Width + player.X).State == ARX.State.Down ||
+                 map.upper(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.Y -= 1;
             }
             else if (player.Rotation == 90 && player.X < map.Width &&
-                (map.Meme(player.Y * map.Width + player.X).State == ARX.State.Right ||
-                 map.Meme(player.Y * map.Width + player.X).State == ARX.State.Cross))
+                (map.self(player.Y * map.Width + player.X).State == ARX.State.Right ||
+                 map.self(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.X += 1;
             }
             else if (player.Rotation == 180 && player.Y < map.Height &&
-                (map.Meme(player.Y * map.Width + player.X).State == ARX.State.Down ||
-                 map.Meme(player.Y * map.Width + player.X).State == ARX.State.Cross))
+                (map.self(player.Y * map.Width + player.X).State == ARX.State.Down ||
+                 map.self(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.Y += 1;
             }
             else if (player.Rotation == 270 && player.X > 0 &&
-                (map.Lefter(player.Y * map.Width + player.X).State == ARX.State.Right ||
-                 map.Lefter(player.Y * map.Width + player.X).State == ARX.State.Cross))
+                (map.lefter(player.Y * map.Width + player.X).State == ARX.State.Right ||
+                 map.lefter(player.Y * map.Width + player.X).State == ARX.State.Cross))
             {
                 player.X -= 1;
             }
