@@ -21,10 +21,8 @@ namespace ARX_Reloaded
             cases[cases.First().Coord].State = ARX.State.Cross;
             cases[cases.Last().Coord].State = ARX.State.Point;
 
-            int currentCase;
-
             //Choose starting testAround and initialize it
-            currentCase = rand.Next(cases.Count());
+            int currentCase = rand.Next(cases.Count());
             cases[currentCase].State = ARX.State.Point;
 
             //Search for new testAround until stack is empty

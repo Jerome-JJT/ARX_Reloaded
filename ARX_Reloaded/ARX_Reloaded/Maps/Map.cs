@@ -116,7 +116,6 @@ namespace ARX_Reloaded
         {
             double ratio = Math.Sqrt(((width * height) / nbZones) / Math.PI) * 1.5;
 
-
             List<List<List<int>>> zonesPoints = new List<List<List<int>>>();
 
             //Generate colors order
@@ -239,7 +238,6 @@ namespace ARX_Reloaded
         {
             return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
         }
-
 
         protected bool pathsFinished()
         {

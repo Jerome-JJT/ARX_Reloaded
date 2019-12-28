@@ -16,8 +16,6 @@ namespace ARX_Reloaded
         Size labyrinthSize = new Size(20, 20);
         Player player;
 
-        DrawView drawView;  
-
         Random labyrinthRandom = new Random();
 
         int nbZones = 5;
@@ -36,10 +34,7 @@ namespace ARX_Reloaded
             //map = new MapChaos(labyrinthSize, labyrinthRandom);
             //map = new MapN50(labyrinthSize, labyrinthRandom);
 
-
             player = new Player(0,0,90);
-
-            drawView = new DrawView(picView.Size);
 
             map.GenerateMap(null, null);
             //map.GenerateZones(picMap, lblLoading);
@@ -139,7 +134,7 @@ namespace ARX_Reloaded
 
         private void picView_Paint(object sender, PaintEventArgs e)
         {
-            drawView.DrawTotalView(e, Movement.CanGoLeft, Movement.CanGoRight, Movement.CouldGoLeft, Movement.CouldGoRight, Movement.Vision);
+            DrawView.DrawTotalView(e, picView.Size, Movement.CanGoLeft, Movement.CanGoRight, Movement.CouldGoLeft, Movement.CouldGoRight, Movement.Vision);
         }
 
         private void picMap_Paint(object sender, PaintEventArgs e)
