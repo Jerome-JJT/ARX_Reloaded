@@ -294,19 +294,50 @@ namespace ARX_Reloaded
                     //Affect cases not joinable from 0/0 if this part is the bigger
                     if ((!visited.Contains(eachCase)) && visited.Count > (width * height) / 2)
                     {
-                        //Special right map side case
-                        if (righter(eachCase) == null && visited.Contains(lefter(eachCase).Coord))
+                        if (upper(eachCase) != null && visited.Contains(upper(eachCase).Coord))
                         {
-                            lefter(eachCase).State = lefter(eachCase).NextPathState;
+                            if (upper(eachCase).State == ARX.State.Right)
+                            {
+                                upper(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                upper(eachCase).State = ARX.State.Down;
+                            }
                         }
-                        //Special lower map side case
-                        else if (lower(eachCase) == null && visited.Contains(upper(eachCase).Coord))
+                        else if (righter(eachCase) != null && visited.Contains(righter(eachCase).Coord))
                         {
-                            upper(eachCase).State = upper(eachCase).NextPathState;
+                            if (self(eachCase).State == ARX.State.Down)
+                            {
+                                self(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                self(eachCase).State = ARX.State.Right;
+                            }
                         }
-
-                        //Change state to another one (except void form)
-                        self(eachCase).State = self(eachCase).NextPathState;
+                        else if (lower(eachCase) != null && visited.Contains(lower(eachCase).Coord))
+                        {
+                            if (self(eachCase).State == ARX.State.Right)
+                            {
+                                self(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                self(eachCase).State = ARX.State.Down;
+                            }
+                        }
+                        else if (lefter(eachCase) != null && visited.Contains(lefter(eachCase).Coord))
+                        {
+                            if (lefter(eachCase).State == ARX.State.Down)
+                            {
+                                lefter(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                lefter(eachCase).State = ARX.State.Right;
+                            }
+                        }
                     }
 
                     //Affect cases joinable from 0/0 if this part is the smallest
