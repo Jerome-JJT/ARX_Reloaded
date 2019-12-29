@@ -112,16 +112,8 @@ namespace ARX_Reloaded
 
                 points[0] = new List<int>(points[1]);
                 points[1].Clear();
-
-                if (elem != null)
-                {
-                    elem.Refresh();
-                    System.Threading.Thread.Sleep(1);
-                }
             }
         }
-
-
 
         //Search for an empty case around given case
         private List<ARX.Direction> allRandEmpty(int baseSearch)

@@ -68,11 +68,11 @@ namespace ARX_Reloaded
             }
         }
 
-        public static void Goto(ref Player player, Map map, string direction, bool pacmanMode)
+        public static void Goto(Player player, Map map, ARX.Direction direction, bool pacmanMode)
         {
             if (pacmanMode)
             {
-                if (direction == "up")
+                if (direction == ARX.Direction.Up)
                 {
                     if (player.Rotation == 0)
                     {
@@ -92,7 +92,7 @@ namespace ARX_Reloaded
 
                     goForward(ref player, map);
                 }
-                else if (direction == "right")
+                else if (direction == ARX.Direction.Right)
                 {
                     if (player.Rotation == 90)
                     { 
@@ -112,7 +112,7 @@ namespace ARX_Reloaded
 
                     goForward(ref player, map);
                 }
-                else if (direction == "down")
+                else if (direction == ARX.Direction.Down)
                 {
                     if (player.Rotation == 180)
                     {
@@ -132,7 +132,7 @@ namespace ARX_Reloaded
 
                     goForward(ref player, map);
                 }
-                else if (direction == "left")
+                else if (direction == ARX.Direction.Left)
                 {
                     if (player.Rotation == 270)
                     {
@@ -156,7 +156,7 @@ namespace ARX_Reloaded
 
             else
             {
-                if (direction == "up")
+                if (direction == ARX.Direction.Up)
                 {
                     if (player.Rotation == 0)
                     {
@@ -181,11 +181,11 @@ namespace ARX_Reloaded
                         player.X -= 1;
                     }
                 }
-                else if (direction == "right")
+                else if (direction == ARX.Direction.Right)
                 {
                     player.Rotation = (player.Rotation + 90) % 360;
                 }
-                else if (direction == "down")
+                else if (direction == ARX.Direction.Down)
                 {
                     if (player.Rotation == 0 && player.Y < map.Height &&
                         (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down ||
@@ -212,7 +212,7 @@ namespace ARX_Reloaded
                         player.X += 1;
                     }
                 }
-                else if (direction == "left")
+                else if (direction == ARX.Direction.Left)
                 {
                     player.Rotation = (player.Rotation + 270) % 360;
                 }

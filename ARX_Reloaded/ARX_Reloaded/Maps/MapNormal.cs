@@ -140,7 +140,5 @@ namespace ARX_Reloaded
             
             return ARX.Direction.Null;
         }
-
-
     }
 }

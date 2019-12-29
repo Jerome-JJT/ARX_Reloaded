@@ -114,15 +114,15 @@ namespace ARX_Reloaded
 
                 points[0] = new List<int>(points[1]);
                 points[1].Clear();
-
-                if (elem != null)
-                {
-                    elem.Refresh();
-                    System.Threading.Thread.Sleep(2);
-                }
             }
 
-            while (!pathsFinished()) { }
+            for (int eachTry = 0; eachTry <= 100 && !pathsFinished(); eachTry++)
+            {
+                if (eachTry == 100)
+                {
+                    GenerateMap(elem, loading);
+                }
+            }
         }
 
         //Search for an empty case around given case

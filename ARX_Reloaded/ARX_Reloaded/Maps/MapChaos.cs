@@ -18,8 +18,8 @@ namespace ARX_Reloaded
         {
             base.GenerateMap(elem, loading);
 
-            cases[cases.First().Coord].State = ARX.State.Cross;
-            cases[cases.Last().Coord].State = ARX.State.Point;
+            cases.First().State = ARX.State.Cross;
+            cases.Last().State = ARX.State.Point;
 
             //Choose starting testAround and initialize it
             int currentCase = rand.Next(cases.Count());
@@ -100,17 +100,15 @@ namespace ARX_Reloaded
 
                     currentCase = lefter(currentCase).Coord;
                 }
-
-                if (elem != null)
-                {
-                    elem.Refresh();
-                    //loading.Text = $"Iteration : {iteration}";
-                    //loading.Refresh();
-                    //System.Threading.Thread.Sleep(1);
-                }
             }
 
-            while (!pathsFinished()) { }
+            for (int eachTry = 0; eachTry <= 100 && !pathsFinished(); eachTry++)
+            {
+                if(eachTry == 100)
+                {
+                    GenerateMap(elem, loading);
+                }
+            }
         }
 
         //Search for a case around given case

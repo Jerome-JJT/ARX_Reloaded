@@ -16,7 +16,7 @@ namespace ARX_Reloaded
         Size labyrinthSize = new Size(20, 20);
         Player player;
 
-        Random labyrinthRandom = new Random();
+        Random labyrinthRandom = new Random(6);
 
         int nbZones = 5;
         int zoomLevel = 1;
@@ -40,7 +40,7 @@ namespace ARX_Reloaded
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
 
-            Moving("none");
+            Moving(ARX.Direction.Null);
         }
 
         private void cmdGenNormal_Click(object sender, EventArgs e)
@@ -53,20 +53,20 @@ namespace ARX_Reloaded
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
 
-            Moving("none");
+            Moving(ARX.Direction.Null);
         }
 
         private void cmdGenChaos_Click(object sender, EventArgs e)
         {
             map = new MapChaos(labyrinthSize, labyrinthRandom);
 
-            //map.GenerateMap(picMap, lblLoading);
-            map.GenerateMap(null, null);
+            map.GenerateMap(picMap, lblLoading);
+            //map.GenerateMap(null, null);
 
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
 
-            Moving("none");
+            Moving(ARX.Direction.Null);
         }
 
         private void cmdGenFaos_Click(object sender, EventArgs e)
@@ -79,7 +79,7 @@ namespace ARX_Reloaded
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
 
-            Moving("none");
+            Moving(ARX.Direction.Null);
         }
 
         private void cmdGenPourcent_Click(object sender, EventArgs e)
@@ -92,7 +92,7 @@ namespace ARX_Reloaded
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
 
-            Moving("none");
+            Moving(ARX.Direction.Null);
         }
 
         private void cmdGenMultiple_Click(object sender, EventArgs e)
@@ -105,7 +105,7 @@ namespace ARX_Reloaded
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
 
-            Moving("none");
+            Moving(ARX.Direction.Null);
         }
 
         private void cmdGenLines_Click(object sender, EventArgs e)
@@ -118,7 +118,7 @@ namespace ARX_Reloaded
             //map.GenerateZones(picMap, lblLoading);
             map.GenerateZones(null, null, nbZones);
 
-            Moving("none");
+            Moving(ARX.Direction.Null);
         }
 
         private void cmdUpdateView_Click(object sender, EventArgs e)
@@ -145,9 +145,9 @@ namespace ARX_Reloaded
             }
         }
 
-        private void Moving(string direction)
+        private void Moving(ARX.Direction direction)
         {
-            Movement.Goto(ref player, map, direction, chkPacmanMoves.Checked);
+            Movement.Goto(player, map, direction, chkPacmanMoves.Checked);
 
             map.Cases[player.Y * map.Width + player.X].Visited = true;
 
@@ -176,22 +176,22 @@ namespace ARX_Reloaded
             {
                 case Keys.W:
                 case Keys.Up:
-                    Moving("up");
+                    Moving(ARX.Direction.Up);
                     break;
 
                 case Keys.A:
                 case Keys.Left:
-                    Moving("left");
+                    Moving(ARX.Direction.Left);
                     break;
 
                 case Keys.D:
                 case Keys.Right:
-                    Moving("right");
+                    Moving(ARX.Direction.Right);
                     break;
 
                 case Keys.S:
                 case Keys.Down:
-                    Moving("down");
+                    Moving(ARX.Direction.Down);
                     break;
 
                 case Keys.Add:

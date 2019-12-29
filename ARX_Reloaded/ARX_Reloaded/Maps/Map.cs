@@ -206,12 +206,6 @@ namespace ARX_Reloaded
                     eachZone[0] = new List<int>(eachZone[1]);
                     eachZone[1].Clear();
                 }
-
-                if (elem != null)
-                {
-                    elem.Refresh();
-                    System.Threading.Thread.Sleep(5);
-                }
             }
         }
 
@@ -286,7 +280,7 @@ namespace ARX_Reloaded
                     }
                 }
 
-                //Pass futur poi^nts to actual points and store them
+                //Pass futur points to actual points and store them
                 visited.AddRange(new List<int>(visits[1]));
                 visits[0] = new List<int>(visits[1]);
                 visits[1].Clear();
@@ -301,12 +295,12 @@ namespace ARX_Reloaded
                     if ((!visited.Contains(eachCase)) && visited.Count > (width * height) / 2)
                     {
                         //Special right map side case
-                        if (righter(eachCase) == null)
+                        if (righter(eachCase) == null && visited.Contains(lefter(eachCase).Coord))
                         {
                             lefter(eachCase).State = lefter(eachCase).NextPathState;
                         }
                         //Special lower map side case
-                        else if (lower(eachCase) == null)
+                        else if (lower(eachCase) == null && visited.Contains(upper(eachCase).Coord))
                         {
                             upper(eachCase).State = upper(eachCase).NextPathState;
                         }

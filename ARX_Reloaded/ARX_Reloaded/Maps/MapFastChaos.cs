@@ -120,7 +120,13 @@ namespace ARX_Reloaded
                 }
             }
 
-            while (!pathsFinished()) { }
+            for (int eachTry = 0; eachTry <= 100 && !pathsFinished(); eachTry++)
+            {
+                if (eachTry == 100)
+                {
+                    GenerateMap(elem, loading);
+                }
+            }
         }
 
         //Search for a case around given case
