@@ -18,8 +18,8 @@ namespace ARX_Reloaded
         protected Random rand = new Random();
 
         private List<string> colorValues = new List<string> {
-            "00ffff", "0000ff", "a52a2a", "00008b", "008b8b", "c0c0c0",
-            "006400", "bdb76b", "556b2f", "ff8c00", "8b0000", "00ff00",
+            "00ffff", "0000ff", "a52a2a", "008b8b", "c0c0c0",
+            "bdb76b", "556b2f", "ff8c00", "8b0000", "00ff00",
             "e9967a", "9400d3", "ffd700", "008000", "4b0082",
             "ff00ff", "800000", "808000", "ffc0cb", "ff0000"
         };
@@ -114,7 +114,7 @@ namespace ARX_Reloaded
 
         public void GenerateZones(PictureBox elem, Label loading, int nbZones)
         {
-            double ratio = Math.Sqrt(((width * height) / nbZones) / Math.PI) * 1.5;
+            double ratio = Math.Sqrt(((width * height) / nbZones) / Math.PI);
 
             List<List<List<int>>> zonesPoints = new List<List<List<int>>>();
 
@@ -124,20 +124,20 @@ namespace ARX_Reloaded
             //Generate starting points for each zones
             for (int eachZone = 0; eachZone < nbZones; eachZone++)
             {
-                //Create zone's list
-                zonesPoints.Add(new List<List<int>>());
-
-                //Create storage inside each zones
-                zonesPoints[eachZone].Add(new List<int>());//Actuals
-                zonesPoints[eachZone].Add(new List<int>());//Futurs
-
                 //Generate unique and separeted points in map
                 int newCoord;
                 do
                 {
                     newCoord = rand.Next(0, width * height);
                 }
-                while (inZoneRadius(ratio, zonesPoints[eachZone][0], newCoord));
+                while (inZoneRadius(ratio, zonesPoints, newCoord));
+
+                //Create zone's list
+                zonesPoints.Add(new List<List<int>>());
+
+                //Create storage inside each zones
+                zonesPoints[eachZone].Add(new List<int>());//Actuals
+                zonesPoints[eachZone].Add(new List<int>());//Futurs
 
                 zonesPoints[eachZone][0].Add(newCoord);
 
@@ -209,11 +209,12 @@ namespace ARX_Reloaded
             }
         }
 
-        private bool inZoneRadius(double ratio, List<int> placedPoints, int newPoint)
+        private bool inZoneRadius(double ratio, List<List<List<int>>> allZones, int newPoint)
         {
-            foreach (int point in placedPoints)
+            foreach (List<List<int>> eachZone in allZones)
             {
-                if(Math.Sqrt(Math.Pow(Math.Abs((point%width) - (newPoint%width)), 2) + Math.Pow(Math.Abs(Math.Floor((double)point/width) - Math.Floor((double)newPoint/width)), 2)) < ratio)
+                int firstZonePoint = eachZone[0][0];
+                if (Math.Sqrt(Math.Pow(Math.Abs((firstZonePoint % width) - (newPoint%width)), 2) + Math.Pow(Math.Abs(Math.Floor((double)firstZonePoint / width) - Math.Floor((double)newPoint/width)), 2)) < ratio)
                 {
                     return true;
                 }
