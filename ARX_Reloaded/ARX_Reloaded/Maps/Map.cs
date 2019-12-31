@@ -197,8 +197,7 @@ namespace ARX_Reloaded
                     //Advance each points 
                     foreach (int eachPoint in eachZone[0])
                     {
-                        if (Upper(eachPoint) != null && Upper(eachPoint).Zone == 0
-                            && (Upper(eachPoint).State == ARX.State.Down || Upper(eachPoint).State == ARX.State.Cross))
+                        if (CanGoUp(eachPoint) && Upper(eachPoint).Zone == 0)
                         {
                             Upper(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -208,8 +207,7 @@ namespace ARX_Reloaded
                             eachZone[1].Add(Upper(eachPoint).Coord);
                         }
 
-                        if (Righter(eachPoint) != null && Righter(eachPoint).Zone == 0
-                            && (Self(eachPoint).State == ARX.State.Right || Self(eachPoint).State == ARX.State.Cross))
+                        if (CanGoRight(eachPoint) && Righter(eachPoint).Zone == 0)
                         {
                             Righter(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -219,8 +217,7 @@ namespace ARX_Reloaded
                             eachZone[1].Add(Righter(eachPoint).Coord);
                         }
 
-                        if (Lower(eachPoint) != null && Lower(eachPoint).Zone == 0
-                            && (Self(eachPoint).State == ARX.State.Down || Self(eachPoint).State == ARX.State.Cross))
+                        if (CanGoDown(eachPoint) && Lower(eachPoint).Zone == 0)
                         {
                             Lower(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -230,8 +227,7 @@ namespace ARX_Reloaded
                             eachZone[1].Add(Lower(eachPoint).Coord);
                         }
 
-                        if (Lefter(eachPoint) != null && Lefter(eachPoint).Zone == 0
-                            && (Lefter(eachPoint).State == ARX.State.Right || Lefter(eachPoint).State == ARX.State.Cross))
+                        if (CanGoLeft(eachPoint) && Lefter(eachPoint).Zone == 0)
                         {
                             Lefter(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -292,30 +288,26 @@ namespace ARX_Reloaded
             {
                 foreach (int testAround in visits[0])
                 {
-                    if (Upper(testAround) != null //If case exists
-                        && (!visits[1].Contains(Upper(testAround).Coord)) && (!visited.Contains(Upper(testAround).Coord)) //If case not visited or to visit
-                        && (Upper(testAround).State == ARX.State.Down || Upper(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (CanGoUp(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Upper(testAround).Coord)) && (!visited.Contains(Upper(testAround).Coord))) //If case not visited or to visit
                     {
                         visits[1].Add(Upper(testAround).Coord);
                     }
 
-                    if (Righter(testAround) != null //If case exists
-                        && (!visits[1].Contains(Righter(testAround).Coord)) && (!visited.Contains(Righter(testAround).Coord)) //If case not visited or to visit
-                        && (Self(testAround).State == ARX.State.Right || Self(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (CanGoRight(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Righter(testAround).Coord)) && (!visited.Contains(Righter(testAround).Coord))) //If case not visited or to visit
                     {
                         visits[1].Add(Righter(testAround).Coord);
                     }
 
-                    if (Lower(testAround) != null //If case exists
-                        && (!visits[1].Contains(Lower(testAround).Coord)) && (!visited.Contains(Lower(testAround).Coord)) //If case not visited or to visit
-                        && (Self(testAround).State == ARX.State.Down || Self(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (CanGoDown(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Lower(testAround).Coord)) && (!visited.Contains(Lower(testAround).Coord))) //If case not visited or to visit
                     {
                         visits[1].Add(Lower(testAround).Coord);
                     }
 
-                    if (Lefter(testAround) != null //If case exists
-                        && (!visits[1].Contains(Lefter(testAround).Coord)) && (!visited.Contains(Lefter(testAround).Coord)) //If case not visited or to visit
-                        && (Lefter(testAround).State == ARX.State.Right || Lefter(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (CanGoLeft(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Lefter(testAround).Coord)) && (!visited.Contains(Lefter(testAround).Coord))) //If case not visited or to visit
                     {
                         visits[1].Add(Lefter(testAround).Coord);
                     }

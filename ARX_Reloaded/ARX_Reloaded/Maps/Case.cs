@@ -11,6 +11,7 @@ namespace ARX_Reloaded
     {
         private ARX.State state;
         private bool visited;
+        private bool accessible;
 
         private int zone;
         private Color zoneColor;
@@ -21,6 +22,7 @@ namespace ARX_Reloaded
         {
             this.state = 0;
             this.visited = true;
+            this.accessible = false;
 
             this.zone = 0;
             this.zoneColor = Color.White;
@@ -40,6 +42,12 @@ namespace ARX_Reloaded
             set { visited = value; }
         }
 
+        public bool Accessible
+        {
+            get { return accessible; }
+            set { accessible = value; }
+        }
+
         public int Zone
         {
             get { return zone; }
@@ -52,11 +60,17 @@ namespace ARX_Reloaded
             set { zoneColor = value; }
         }
 
+        public Color AntiColor
+        {
+            get { return Color.FromArgb(255 - zoneColor.R, 255 - zoneColor.G, 255 - zoneColor.B); }
+        }
+
         public int Coord
         {
             get { return coord; }
             set { coord = value; }
         }
+
 
         //Change state to another one (except void form)
         public ARX.State NextPathState

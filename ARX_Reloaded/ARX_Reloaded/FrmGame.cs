@@ -13,7 +13,7 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
-        Size labyrinthSize = new Size(8, 8);
+        Size labyrinthSize = new Size(30, 30);
         Player player;
 
         //Random labyrinthRandom = new Random();
@@ -33,7 +33,6 @@ namespace ARX_Reloaded
         {
             map = new MapNormal(labyrinthSize, labyrinthRandom);
             //map = new MapChaos(labyrinthSize, labyrinthRandom);
-            //map = new MapN50(labyrinthSize, labyrinthRandom);
 
             player = new Player(0,0,90);
 
@@ -152,7 +151,18 @@ namespace ARX_Reloaded
         {
             Movement.Goto(player, map, direction, chkPacmanMoves.Checked);
 
-            map.Cases[player.Y * map.Width + player.X].Visited = true;
+            map.Self(player.Y * map.Width + player.X).Visited = true;
+
+            //Mark visited 3x3 case radius from player, catch NullReferenceException if case is null (outside the map)
+            try { map.Upper(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
+            try { map.Righter(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
+            try { map.Lower(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
+            try { map.Lefter(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
+
+            try { map.Lefter(map.Upper(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
+            try { map.Righter(map.Upper(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
+            try { map.Lefter(map.Lower(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
+            try { map.Righter(map.Lower(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
 
             picMap.Refresh();
             picView.Refresh();
