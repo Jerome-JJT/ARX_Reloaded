@@ -51,71 +51,71 @@ namespace ARX_Reloaded
                     //Expand the labyrinth to the up
                     if (futurDirection == ARX.Direction.Up)
                     {
-                        if (upper(currentPoints[currentPoint]).State == ARX.State.Right)
+                        if (Upper(currentPoints[currentPoint]).State == ARX.State.Right)
                         {
-                            upper(currentPoints[currentPoint]).State = ARX.State.Cross;
+                            Upper(currentPoints[currentPoint]).State = ARX.State.Cross;
                         }
                         else
                         {
-                            upper(currentPoints[currentPoint]).State = ARX.State.Down;
+                            Upper(currentPoints[currentPoint]).State = ARX.State.Down;
                         }
 
-                        currentPoints[currentPoint] = upper(currentPoints[currentPoint]).Coord;
+                        currentPoints[currentPoint] = Upper(currentPoints[currentPoint]).Coord;
                     }
 
                     //Expand the labyrinth to the right
                     else if (futurDirection == ARX.Direction.Right)
                     {
-                        if (self(currentPoints[currentPoint]).State == ARX.State.Down)
+                        if (Self(currentPoints[currentPoint]).State == ARX.State.Down)
                         {
-                            self(currentPoints[currentPoint]).State = ARX.State.Cross;
+                            Self(currentPoints[currentPoint]).State = ARX.State.Cross;
                         }
                         else
                         {
-                            self(currentPoints[currentPoint]).State = ARX.State.Right;
+                            Self(currentPoints[currentPoint]).State = ARX.State.Right;
                         }
 
-                        if (righter(currentPoints[currentPoint]).State == ARX.State.Void)
+                        if (Righter(currentPoints[currentPoint]).State == ARX.State.Void)
                         {
-                            righter(currentPoints[currentPoint]).State = ARX.State.Point;
+                            Righter(currentPoints[currentPoint]).State = ARX.State.Point;
                         }
 
-                        currentPoints[currentPoint] = righter(currentPoints[currentPoint]).Coord;
+                        currentPoints[currentPoint] = Righter(currentPoints[currentPoint]).Coord;
                     }
 
                     //Expand the labyrinth to the down
                     else if (futurDirection == ARX.Direction.Down)
                     {
-                        if (self(currentPoints[currentPoint]).State == ARX.State.Right)
+                        if (Self(currentPoints[currentPoint]).State == ARX.State.Right)
                         {
-                            self(currentPoints[currentPoint]).State = ARX.State.Cross;
+                            Self(currentPoints[currentPoint]).State = ARX.State.Cross;
                         }
                         else
                         {
-                            self(currentPoints[currentPoint]).State = ARX.State.Down;
+                            Self(currentPoints[currentPoint]).State = ARX.State.Down;
                         }
 
-                        if (lower(currentPoints[currentPoint]).State == ARX.State.Void)
+                        if (Lower(currentPoints[currentPoint]).State == ARX.State.Void)
                         {
-                            lower(currentPoints[currentPoint]).State = ARX.State.Point;
+                            Lower(currentPoints[currentPoint]).State = ARX.State.Point;
                         }
 
-                        currentPoints[currentPoint] = lower(currentPoints[currentPoint]).Coord;
+                        currentPoints[currentPoint] = Lower(currentPoints[currentPoint]).Coord;
                     }
 
                     //Expand the labyrinth to the left
                     else if (futurDirection == ARX.Direction.Left)
                     {
-                        if (lefter(currentPoints[currentPoint]).State == ARX.State.Down)
+                        if (Lefter(currentPoints[currentPoint]).State == ARX.State.Down)
                         {
-                            lefter(currentPoints[currentPoint]).State = ARX.State.Cross;
+                            Lefter(currentPoints[currentPoint]).State = ARX.State.Cross;
                         }
                         else
                         {
-                            lefter(currentPoints[currentPoint]).State = ARX.State.Right;
+                            Lefter(currentPoints[currentPoint]).State = ARX.State.Right;
                         }
 
-                        currentPoints[currentPoint] = lefter(currentPoints[currentPoint]).Coord;
+                        currentPoints[currentPoint] = Lefter(currentPoints[currentPoint]).Coord;
                     }
                 }
             }
@@ -141,19 +141,19 @@ namespace ARX_Reloaded
             //Test all directions
             foreach (ARX.Direction test in possibilities)
             {
-                if (test == ARX.Direction.Up && upper(baseSearch) != null)
+                if (test == ARX.Direction.Up && Upper(baseSearch) != null)
                 {
                     return ARX.Direction.Up;
                 }
-                else if (test == ARX.Direction.Right && righter(baseSearch) != null)
+                else if (test == ARX.Direction.Right && Righter(baseSearch) != null)
                 {
                     return ARX.Direction.Right;
                 }
-                else if (test == ARX.Direction.Down && lower(baseSearch) != null)
+                else if (test == ARX.Direction.Down && Lower(baseSearch) != null)
                 {
                     return ARX.Direction.Down;
                 }
-                else if (test == ARX.Direction.Left && lefter(baseSearch) != null)
+                else if (test == ARX.Direction.Left && Lefter(baseSearch) != null)
                 {
                     return ARX.Direction.Left;
                 }

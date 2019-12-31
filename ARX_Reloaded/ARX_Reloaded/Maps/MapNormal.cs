@@ -39,71 +39,71 @@ namespace ARX_Reloaded
                 //Expand the labyrinth to the up
                 else if (futurDirection == ARX.Direction.Up)
                 {
-                    if(upper(active.First()).State == ARX.State.Right)
+                    if(Upper(active.First()).State == ARX.State.Right)
                     {
-                        upper(active.First()).State = ARX.State.Cross;
+                        Upper(active.First()).State = ARX.State.Cross;
                     }
                     else
                     {
-                        upper(active.First()).State = ARX.State.Down;
+                        Upper(active.First()).State = ARX.State.Down;
                     }
                     
-                    active.Push(upper(active.First()).Coord);
+                    active.Push(Upper(active.First()).Coord);
                 }
 
                 //Expand the labyrinth to the right
                 else if (futurDirection == ARX.Direction.Right)
                 {
-                    if (self(active.First()).State == ARX.State.Down)
+                    if (Self(active.First()).State == ARX.State.Down)
                     {
-                        self(active.First()).State = ARX.State.Cross;
+                        Self(active.First()).State = ARX.State.Cross;
                     }
                     else
                     {
-                        self(active.First()).State = ARX.State.Right;
+                        Self(active.First()).State = ARX.State.Right;
                     }
 
-                    if (righter(active.First()).State == ARX.State.Void)
+                    if (Righter(active.First()).State == ARX.State.Void)
                     {
-                        righter(active.First()).State = ARX.State.Point;
+                        Righter(active.First()).State = ARX.State.Point;
                     }
 
-                    active.Push(righter(active.First()).Coord);
+                    active.Push(Righter(active.First()).Coord);
                 }
 
                 //Expand the labyrinth to the down
                 else if (futurDirection == ARX.Direction.Down)
                 {
-                    if (self(active.First()).State == ARX.State.Right)
+                    if (Self(active.First()).State == ARX.State.Right)
                     {
-                        self(active.First()).State = ARX.State.Cross;
+                        Self(active.First()).State = ARX.State.Cross;
                     }
                     else
                     {
-                        self(active.First()).State = ARX.State.Down;
+                        Self(active.First()).State = ARX.State.Down;
                     }
 
-                    if (lower(active.First()).State == ARX.State.Void)
+                    if (Lower(active.First()).State == ARX.State.Void)
                     {
-                        lower(active.First()).State = ARX.State.Point;
+                        Lower(active.First()).State = ARX.State.Point;
                     }
 
-                    active.Push(lower(active.First()).Coord);
+                    active.Push(Lower(active.First()).Coord);
                 }
 
                 //Expand the labyrinth to the left
                 else if (futurDirection == ARX.Direction.Left)
                 {
-                    if (lefter(active.First()).State == ARX.State.Down)
+                    if (Lefter(active.First()).State == ARX.State.Down)
                     {
-                        lefter(active.First()).State = ARX.State.Cross;
+                        Lefter(active.First()).State = ARX.State.Cross;
                     }
                     else
                     {
-                        lefter(active.First()).State = ARX.State.Right;
+                        Lefter(active.First()).State = ARX.State.Right;
                     }
 
-                    active.Push(lefter(active.First()).Coord);
+                    active.Push(Lefter(active.First()).Coord);
                 }
             }
         }
@@ -120,19 +120,19 @@ namespace ARX_Reloaded
             //Test all directions
             foreach (ARX.Direction test in possibilities)
             {
-                if (test == ARX.Direction.Up && upper(baseSearch) != null && upper(baseSearch).State == ARX.State.Void)
+                if (test == ARX.Direction.Up && Upper(baseSearch) != null && Upper(baseSearch).State == ARX.State.Void)
                 {
                     return ARX.Direction.Up;
                 }
-                else if (test == ARX.Direction.Right && righter(baseSearch) != null && righter(baseSearch).State == ARX.State.Void)
+                else if (test == ARX.Direction.Right && Righter(baseSearch) != null && Righter(baseSearch).State == ARX.State.Void)
                 {
                     return ARX.Direction.Right;
                 }
-                else if (test == ARX.Direction.Down && lower(baseSearch) != null && lower(baseSearch).State == ARX.State.Void)
+                else if (test == ARX.Direction.Down && Lower(baseSearch) != null && Lower(baseSearch).State == ARX.State.Void)
                 {
                     return ARX.Direction.Down;
                 }
-                else if (test == ARX.Direction.Left && lefter(baseSearch) != null && lefter(baseSearch).State == ARX.State.Void)
+                else if (test == ARX.Direction.Left && Lefter(baseSearch) != null && Lefter(baseSearch).State == ARX.State.Void)
                 {
                     return ARX.Direction.Left;
                 }

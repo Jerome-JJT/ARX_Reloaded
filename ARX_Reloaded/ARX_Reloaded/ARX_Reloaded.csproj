@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ARX.cs" />
+    <Compile Include="Drawing\DrawUltimeMap.cs" />
+    <Compile Include="Drawing\DrawPacMap.cs" />
     <Compile Include="Maps\Case.cs" />
     <Compile Include="Maps\MapFastChaos.cs" />
     <Compile Include="Maps\MapLines.cs" />

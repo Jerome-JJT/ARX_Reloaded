@@ -75,38 +75,38 @@ namespace ARX_Reloaded
                         new Point(Convert.ToInt32((w-mapDrawStart.X)*mapCaseWidth+mapPathWidth*1),   Convert.ToInt32((h-mapDrawStart.Y)*mapCaseHeight+mapPathHeight*4))
                     };
 
-                    Color pathColor = map.Cases[h * map.Width + w].ZoneColor;
+                    SolidBrush pathColor = new SolidBrush(map.Cases[h * map.Width + w].ZoneColor);
 
                     if (map.Cases[h * map.Width + w].Visited == true)
                     {
                         if (map.Cases[h * map.Width + w].State != ARX.State.Void)
                         {
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleMiddle);
+                            pictureElement.Graphics.FillPolygon(pathColor, middleMiddle);
                         }
 
                         if (map.Cases[h * map.Width + w].State == ARX.State.Right)
                         {
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
+                            pictureElement.Graphics.FillPolygon(pathColor, middleRight);
                         }
                         else if (map.Cases[h * map.Width + w].State == ARX.State.Down)
                         {
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
+                            pictureElement.Graphics.FillPolygon(pathColor, downMiddle);
                         }
                         else if (map.Cases[h * map.Width + w].State == ARX.State.Cross)
                         {
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleRight);
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), downMiddle);
+                            pictureElement.Graphics.FillPolygon(pathColor, middleRight);
+                            pictureElement.Graphics.FillPolygon(pathColor, downMiddle);
                         }
 
                         if (w > 0 && map.Cases[h * map.Width + w].State != ARX.State.Void &&
                             (map.Cases[h * map.Width + w - 1].State == ARX.State.Right || map.Cases[h * map.Width + w - 1].State == ARX.State.Cross))
                         {
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), middleLeft);
+                            pictureElement.Graphics.FillPolygon(pathColor, middleLeft);
                         }
                         if (h > 0 && map.Cases[h * map.Width + w].State != ARX.State.Void &&
                             (map.Cases[h * map.Width + w - map.Width].State == ARX.State.Down || map.Cases[h * map.Width + w - map.Width].State == ARX.State.Cross))
                         {
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(pathColor), upMiddle);
+                            pictureElement.Graphics.FillPolygon(pathColor, upMiddle);
                         }
                     }
                 }

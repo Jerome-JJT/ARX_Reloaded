@@ -48,12 +48,12 @@ namespace ARX_Reloaded
             get { return cases; }
         }
 
-        public Case self(int index)
+        public Case Self(int index)
         {
             return cases[index];
         }
 
-        public Case upper(int index)
+        public Case Upper(int index)
         {
             if (index >= width)
             {
@@ -65,7 +65,7 @@ namespace ARX_Reloaded
             }
         }
 
-        public Case righter(int index)
+        public Case Righter(int index)
         {
             if (index % width < width - 1)
             {
@@ -77,7 +77,7 @@ namespace ARX_Reloaded
             }
         }
 
-        public Case lower(int index)
+        public Case Lower(int index)
         {
             if (index < (height-1) * width)
             {
@@ -89,7 +89,7 @@ namespace ARX_Reloaded
             }
         }
 
-        public Case lefter(int index)
+        public Case Lefter(int index)
         {
             if (index % width > 0)
             {
@@ -99,6 +99,46 @@ namespace ARX_Reloaded
             {
                 return null;
             }
+        }
+
+        public bool CanGoUp(int index)
+        {
+            if (Upper(index) != null && (Upper(index).State == ARX.State.Down || Upper(index).State == ARX.State.Cross))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CanGoRight(int index)
+        {
+            if (Righter(index) != null && (Self(index).State == ARX.State.Right || Self(index).State == ARX.State.Cross))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CanGoDown(int index)
+        {
+            if (Lower(index) != null && (Self(index).State == ARX.State.Down || Self(index).State == ARX.State.Cross))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CanGoLeft(int index)
+        {
+            if (Lefter(index) != null && (Lefter(index).State == ARX.State.Right || Lefter(index).State == ARX.State.Cross))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public virtual void GenerateMap(PictureBox elem, Label loading)
@@ -157,48 +197,48 @@ namespace ARX_Reloaded
                     //Advance each points 
                     foreach (int eachPoint in eachZone[0])
                     {
-                        if (upper(eachPoint) != null && upper(eachPoint).Zone == 0
-                            && (upper(eachPoint).State == ARX.State.Down || upper(eachPoint).State == ARX.State.Cross))
+                        if (Upper(eachPoint) != null && Upper(eachPoint).Zone == 0
+                            && (Upper(eachPoint).State == ARX.State.Down || Upper(eachPoint).State == ARX.State.Cross))
                         {
-                            upper(eachPoint).Zone = self(eachPoint).Zone;
+                            Upper(eachPoint).Zone = Self(eachPoint).Zone;
 
                             //Get actual case color orders
-                            upper(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
+                            Upper(eachPoint).ZoneColor = Self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(upper(eachPoint).Coord);
+                            eachZone[1].Add(Upper(eachPoint).Coord);
                         }
 
-                        if (righter(eachPoint) != null && righter(eachPoint).Zone == 0
-                            && (self(eachPoint).State == ARX.State.Right || self(eachPoint).State == ARX.State.Cross))
+                        if (Righter(eachPoint) != null && Righter(eachPoint).Zone == 0
+                            && (Self(eachPoint).State == ARX.State.Right || Self(eachPoint).State == ARX.State.Cross))
                         {
-                            righter(eachPoint).Zone = self(eachPoint).Zone;
+                            Righter(eachPoint).Zone = Self(eachPoint).Zone;
 
                             //Get actual case color orders
-                            righter(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
+                            Righter(eachPoint).ZoneColor = Self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(righter(eachPoint).Coord);
+                            eachZone[1].Add(Righter(eachPoint).Coord);
                         }
 
-                        if (lower(eachPoint) != null && lower(eachPoint).Zone == 0
-                            && (self(eachPoint).State == ARX.State.Down || self(eachPoint).State == ARX.State.Cross))
+                        if (Lower(eachPoint) != null && Lower(eachPoint).Zone == 0
+                            && (Self(eachPoint).State == ARX.State.Down || Self(eachPoint).State == ARX.State.Cross))
                         {
-                            lower(eachPoint).Zone = self(eachPoint).Zone;
+                            Lower(eachPoint).Zone = Self(eachPoint).Zone;
 
                             //Get actual case color orders
-                            lower(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
+                            Lower(eachPoint).ZoneColor = Self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(lower(eachPoint).Coord);
+                            eachZone[1].Add(Lower(eachPoint).Coord);
                         }
 
-                        if (lefter(eachPoint) != null && lefter(eachPoint).Zone == 0
-                            && (lefter(eachPoint).State == ARX.State.Right || lefter(eachPoint).State == ARX.State.Cross))
+                        if (Lefter(eachPoint) != null && Lefter(eachPoint).Zone == 0
+                            && (Lefter(eachPoint).State == ARX.State.Right || Lefter(eachPoint).State == ARX.State.Cross))
                         {
-                            lefter(eachPoint).Zone = self(eachPoint).Zone;
+                            Lefter(eachPoint).Zone = Self(eachPoint).Zone;
 
                             //Get actual case color orders
-                            lefter(eachPoint).ZoneColor = self(eachPoint).ZoneColor;
+                            Lefter(eachPoint).ZoneColor = Self(eachPoint).ZoneColor;
 
-                            eachZone[1].Add(lefter(eachPoint).Coord);
+                            eachZone[1].Add(Lefter(eachPoint).Coord);
                         }
                     }
 
@@ -252,32 +292,32 @@ namespace ARX_Reloaded
             {
                 foreach (int testAround in visits[0])
                 {
-                    if (upper(testAround) != null //If case exists
-                        && (!visits[1].Contains(upper(testAround).Coord)) && (!visited.Contains(upper(testAround).Coord)) //If case not visited or to visit
-                        && (upper(testAround).State == ARX.State.Down || upper(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (Upper(testAround) != null //If case exists
+                        && (!visits[1].Contains(Upper(testAround).Coord)) && (!visited.Contains(Upper(testAround).Coord)) //If case not visited or to visit
+                        && (Upper(testAround).State == ARX.State.Down || Upper(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(upper(testAround).Coord);
+                        visits[1].Add(Upper(testAround).Coord);
                     }
 
-                    if (righter(testAround) != null //If case exists
-                        && (!visits[1].Contains(righter(testAround).Coord)) && (!visited.Contains(righter(testAround).Coord)) //If case not visited or to visit
-                        && (self(testAround).State == ARX.State.Right || self(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (Righter(testAround) != null //If case exists
+                        && (!visits[1].Contains(Righter(testAround).Coord)) && (!visited.Contains(Righter(testAround).Coord)) //If case not visited or to visit
+                        && (Self(testAround).State == ARX.State.Right || Self(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(righter(testAround).Coord);
+                        visits[1].Add(Righter(testAround).Coord);
                     }
 
-                    if (lower(testAround) != null //If case exists
-                        && (!visits[1].Contains(lower(testAround).Coord)) && (!visited.Contains(lower(testAround).Coord)) //If case not visited or to visit
-                        && (self(testAround).State == ARX.State.Down || self(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (Lower(testAround) != null //If case exists
+                        && (!visits[1].Contains(Lower(testAround).Coord)) && (!visited.Contains(Lower(testAround).Coord)) //If case not visited or to visit
+                        && (Self(testAround).State == ARX.State.Down || Self(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(lower(testAround).Coord);
+                        visits[1].Add(Lower(testAround).Coord);
                     }
 
-                    if (lefter(testAround) != null //If case exists
-                        && (!visits[1].Contains(lefter(testAround).Coord)) && (!visited.Contains(lefter(testAround).Coord)) //If case not visited or to visit
-                        && (lefter(testAround).State == ARX.State.Right || lefter(testAround).State == ARX.State.Cross)) //If case is accessible
+                    if (Lefter(testAround) != null //If case exists
+                        && (!visits[1].Contains(Lefter(testAround).Coord)) && (!visited.Contains(Lefter(testAround).Coord)) //If case not visited or to visit
+                        && (Lefter(testAround).State == ARX.State.Right || Lefter(testAround).State == ARX.State.Cross)) //If case is accessible
                     {
-                        visits[1].Add(lefter(testAround).Coord);
+                        visits[1].Add(Lefter(testAround).Coord);
                     }
                 }
 
@@ -295,48 +335,48 @@ namespace ARX_Reloaded
                     //Affect cases not joinable from 0/0 if this part is the bigger
                     if ((!visited.Contains(eachCase)) && visited.Count > (width * height) / 2)
                     {
-                        if (upper(eachCase) != null && visited.Contains(upper(eachCase).Coord))
+                        if (Upper(eachCase) != null && visited.Contains(Upper(eachCase).Coord))
                         {
-                            if (upper(eachCase).State == ARX.State.Right)
+                            if (Upper(eachCase).State == ARX.State.Right)
                             {
-                                upper(eachCase).State = ARX.State.Cross;
+                                Upper(eachCase).State = ARX.State.Cross;
                             }
                             else
                             {
-                                upper(eachCase).State = ARX.State.Down;
+                                Upper(eachCase).State = ARX.State.Down;
                             }
                         }
-                        else if (righter(eachCase) != null && visited.Contains(righter(eachCase).Coord))
+                        else if (Righter(eachCase) != null && visited.Contains(Righter(eachCase).Coord))
                         {
-                            if (self(eachCase).State == ARX.State.Down)
+                            if (Self(eachCase).State == ARX.State.Down)
                             {
-                                self(eachCase).State = ARX.State.Cross;
+                                Self(eachCase).State = ARX.State.Cross;
                             }
                             else
                             {
-                                self(eachCase).State = ARX.State.Right;
+                                Self(eachCase).State = ARX.State.Right;
                             }
                         }
-                        else if (lower(eachCase) != null && visited.Contains(lower(eachCase).Coord))
+                        else if (Lower(eachCase) != null && visited.Contains(Lower(eachCase).Coord))
                         {
-                            if (self(eachCase).State == ARX.State.Right)
+                            if (Self(eachCase).State == ARX.State.Right)
                             {
-                                self(eachCase).State = ARX.State.Cross;
+                                Self(eachCase).State = ARX.State.Cross;
                             }
                             else
                             {
-                                self(eachCase).State = ARX.State.Down;
+                                Self(eachCase).State = ARX.State.Down;
                             }
                         }
-                        else if (lefter(eachCase) != null && visited.Contains(lefter(eachCase).Coord))
+                        else if (Lefter(eachCase) != null && visited.Contains(Lefter(eachCase).Coord))
                         {
-                            if (lefter(eachCase).State == ARX.State.Down)
+                            if (Lefter(eachCase).State == ARX.State.Down)
                             {
-                                lefter(eachCase).State = ARX.State.Cross;
+                                Lefter(eachCase).State = ARX.State.Cross;
                             }
                             else
                             {
-                                lefter(eachCase).State = ARX.State.Right;
+                                Lefter(eachCase).State = ARX.State.Right;
                             }
                         }
                     }
@@ -344,7 +384,7 @@ namespace ARX_Reloaded
                     //Affect cases joinable from 0/0 if this part is the smallest
                     else if (visited.Contains(eachCase) && visited.Count <= (width * height) / 2)
                     {
-                        self(eachCase).State = self(eachCase).NextPathState;
+                        Self(eachCase).State = Self(eachCase).NextPathState;
                     }
                 }
 

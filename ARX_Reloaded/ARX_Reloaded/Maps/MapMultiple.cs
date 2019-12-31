@@ -41,73 +41,73 @@ namespace ARX_Reloaded
                     foreach (ARX.Direction eachDirection in futurDirection)
                     {
                         //Expand the labyrinth to the up
-                        if (eachDirection == ARX.Direction.Up && !points[1].Contains(upper(currentActive).Coord))
+                        if (eachDirection == ARX.Direction.Up && !points[1].Contains(Upper(currentActive).Coord))
                         {
-                            if (upper(currentActive).State == ARX.State.Right)
+                            if (Upper(currentActive).State == ARX.State.Right)
                             {
-                                upper(currentActive).State = ARX.State.Cross;
+                                Upper(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                upper(currentActive).State = ARX.State.Down;
+                                Upper(currentActive).State = ARX.State.Down;
                             }
 
-                            points[1].Add(upper(currentActive).Coord);
+                            points[1].Add(Upper(currentActive).Coord);
                         }
 
                         //Expand the labyrinth to the right
-                        else if (eachDirection == ARX.Direction.Right && !points[1].Contains(righter(currentActive).Coord))
+                        else if (eachDirection == ARX.Direction.Right && !points[1].Contains(Righter(currentActive).Coord))
                         {
-                            if (self(currentActive).State == ARX.State.Down)
+                            if (Self(currentActive).State == ARX.State.Down)
                             {
-                                self(currentActive).State = ARX.State.Cross;
+                                Self(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                self(currentActive).State = ARX.State.Right;
+                                Self(currentActive).State = ARX.State.Right;
                             }
 
-                            if (righter(currentActive).State == ARX.State.Void)
+                            if (Righter(currentActive).State == ARX.State.Void)
                             {
-                                righter(currentActive).State = ARX.State.Point;
+                                Righter(currentActive).State = ARX.State.Point;
                             }
 
-                            points[1].Add(righter(currentActive).Coord);
+                            points[1].Add(Righter(currentActive).Coord);
                         }
 
                         //Expand the labyrinth to the down
-                        else if (eachDirection == ARX.Direction.Down && !points[1].Contains(lower(currentActive).Coord))
+                        else if (eachDirection == ARX.Direction.Down && !points[1].Contains(Lower(currentActive).Coord))
                         {
-                            if (self(currentActive).State == ARX.State.Right)
+                            if (Self(currentActive).State == ARX.State.Right)
                             {
-                                self(currentActive).State = ARX.State.Cross;
+                                Self(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                self(currentActive).State = ARX.State.Down;
+                                Self(currentActive).State = ARX.State.Down;
                             }
 
-                            if (lower(currentActive).State == ARX.State.Void)
+                            if (Lower(currentActive).State == ARX.State.Void)
                             {
-                                lower(currentActive).State = ARX.State.Point;
+                                Lower(currentActive).State = ARX.State.Point;
                             }
 
-                            points[1].Add(lower(currentActive).Coord);
+                            points[1].Add(Lower(currentActive).Coord);
                         }
 
                         //Expand the labyrinth to the left
-                        else if (eachDirection == ARX.Direction.Left && !points[1].Contains(lefter(currentActive).Coord))
+                        else if (eachDirection == ARX.Direction.Left && !points[1].Contains(Lefter(currentActive).Coord))
                         {
-                            if (lefter(currentActive).State == ARX.State.Down)
+                            if (Lefter(currentActive).State == ARX.State.Down)
                             {
-                                lefter(currentActive).State = ARX.State.Cross;
+                                Lefter(currentActive).State = ARX.State.Cross;
                             }
                             else
                             {
-                                lefter(currentActive).State = ARX.State.Right;
+                                Lefter(currentActive).State = ARX.State.Right;
                             }
 
-                            points[1].Add(lefter(currentActive).Coord);
+                            points[1].Add(Lefter(currentActive).Coord);
                         }
                     }
                 }
@@ -132,19 +132,19 @@ namespace ARX_Reloaded
             List<ARX.Direction> possibilities = new List<ARX.Direction> {
                 ARX.Direction.Up, ARX.Direction.Right, ARX.Direction.Down, ARX.Direction.Left };
 
-            if (!(upper(baseSearch) != null))
+            if (!(Upper(baseSearch) != null))
             {
                 possibilities.Remove(ARX.Direction.Up);
             }
-            if (!(righter(baseSearch) != null))
+            if (!(Righter(baseSearch) != null))
             {
                 possibilities.Remove(ARX.Direction.Right);
             }
-            if (!(lower(baseSearch) != null))
+            if (!(Lower(baseSearch) != null))
             {
                 possibilities.Remove(ARX.Direction.Down);
             }
-            if (!(lefter(baseSearch) != null))
+            if (!(Lefter(baseSearch) != null))
             {
                 possibilities.Remove(ARX.Direction.Left);
             }
