@@ -13,9 +13,10 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
-        Size labyrinthSize = new Size(20, 20);
+        Size labyrinthSize = new Size(8, 8);
         Player player;
 
+        //Random labyrinthRandom = new Random();
         Random labyrinthRandom = new Random(6);
 
         int nbZones = 5;
@@ -141,7 +142,9 @@ namespace ARX_Reloaded
         {
             if(map != null)
             {
-                DrawMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
+                //DrawMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
+                //DrawPacMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
+                DrawUltimeMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
             }
         }
 
