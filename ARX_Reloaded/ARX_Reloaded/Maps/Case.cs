@@ -17,17 +17,21 @@ namespace ARX_Reloaded
         private Color zoneColor;
 
         private int coord;
+        private int originDistance;
+        private int scoreDistance;
 
         public Case(int coord)
         {
             this.state = 0;
             this.visited = true;
-            this.accessible = false;
+            this.accessible = true;
 
             this.zone = 0;
             this.zoneColor = Color.White;
 
             this.coord = coord;
+            this.originDistance = -1;
+            this.scoreDistance = -1;
         }
 
         public ARX.State State
@@ -71,6 +75,17 @@ namespace ARX_Reloaded
             set { coord = value; }
         }
 
+        public int OriginDistance
+        {
+            get { return originDistance; }
+            set { originDistance = value; }
+        }
+
+        public int ScoreDistance
+        {
+            get { return scoreDistance; }
+            set { scoreDistance = value; }
+        }
 
         //Change state to another one (except void form)
         public ARX.State NextPathState

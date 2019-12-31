@@ -385,5 +385,168 @@ namespace ARX_Reloaded
 
             return true;
         }
+
+        /*public void ProcessPath(Point playerPos, Point exitPos)
+        {
+            int playerIndex = playerPos.Y * width + playerPos.X;
+            int exitIndex = exitPos.Y * width + exitPos.X;
+
+            Self(playerIndex).OriginDistance = 0;
+
+            List<int> bestPath = new List<int>();
+            bestPath.Add(0);
+
+            do
+            {
+                int minIndex = 0;
+                foreach (Case eachCase in cases)
+                {
+                    if (eachCase.OriginDistance != -1 && !bestPath.Contains(minIndex)
+                        && eachCase.OriginDistance < Self(bestPath.Last()).OriginDistance)
+                    {
+                        minIndex = eachCase.Coord;
+                    }
+                }
+                bestPath.Add(minIndex);
+
+                if (CanGoUp(minIndex)) //If case exists and is accessible
+                {
+                    Upper(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
+                }
+
+                if (CanGoRight(minIndex)) //If case exists and is accessible
+                {
+                    Righter(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
+                }
+
+                if (CanGoDown(minIndex)) //If case exists and is accessible
+                {
+                    Lower(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
+                }
+
+                if (CanGoLeft(minIndex)) //If case exists and is accessible
+                {
+                    Lefter(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
+                }
+            } while (bestPath.Last() != exitIndex);
+
+            foreach (int eachCase in bestPath)
+            {
+                Self(eachCase).Accessible = false;
+            }
+        }*/
+
+        public void ProcessPath(Point playerPos, Point exitPos)
+        {
+            int playerIndex = playerPos.Y * width + playerPos.X;
+            int exitIndex = exitPos.Y * width + exitPos.X;
+
+            //Self(playerIndex).OriginDistance = 0;
+
+            List<List<int>> points = new List<List<int>>();
+
+            points.Add(new List<int>());//Actuals
+            points.Add(new List<int>());//Futurs
+
+            points[0].Add(playerIndex);
+
+            while(!points[0].Contains(exitIndex))
+            {
+                foreach(int testAround in points[0])
+                {
+                    if (CanGoUp(testAround))
+                    {
+                        int score;
+                        if(Self(testAround).Zone == Upper(testAround).Zone) { score = 1; } else { score = cases.Count; }
+
+                        if(Upper(testAround).ScoreDistance < 0 || Upper(testAround).ScoreDistance > Self(testAround).ScoreDistance + score)
+                        {
+                            Upper(testAround).OriginDistance = Self(testAround).Coord;
+                            Upper(testAround).ScoreDistance = Self(testAround).ScoreDistance + score;
+                            points[1].Add(Upper(testAround).Coord);
+                        }
+                    }
+
+                    if (CanGoRight(testAround))
+                    {
+                        int score;
+                        if (Self(testAround).Zone == Righter(testAround).Zone) { score = 1; } else { score = cases.Count; }
+
+                        if (Righter(testAround).ScoreDistance < 0 || Righter(testAround).ScoreDistance > Self(testAround).ScoreDistance + score)
+                        {
+                            Righter(testAround).OriginDistance = Self(testAround).Coord;
+                            Righter(testAround).ScoreDistance = Self(testAround).ScoreDistance + score;
+                            points[1].Add(Righter(testAround).Coord);
+                        }
+                    }
+
+                    if (CanGoDown(testAround))
+                    {
+                        int score;
+                        if (Self(testAround).Zone == Lower(testAround).Zone) { score = 1; } else { score = cases.Count; }
+
+                        if (Lower(testAround).ScoreDistance < 0 || Lower(testAround).ScoreDistance > Self(testAround).ScoreDistance + score)
+                        {
+                            Lower(testAround).OriginDistance = Self(testAround).Coord;
+                            Lower(testAround).ScoreDistance = Self(testAround).ScoreDistance + score;
+                            points[1].Add(Lower(testAround).Coord);
+                        }
+                    }
+
+                    if (CanGoLeft(testAround))
+                    {
+                        int score;
+                        if (Self(testAround).Zone == Lefter(testAround).Zone) { score = 1; } else { score = cases.Count; }
+
+                        if (Lefter(testAround).ScoreDistance < 0 || Lefter(testAround).ScoreDistance > Self(testAround).ScoreDistance + score)
+                        {
+                            Lefter(testAround).OriginDistance = Self(testAround).Coord;
+                            Lefter(testAround).ScoreDistance = Self(testAround).ScoreDistance + score;
+                            points[1].Add(Lefter(testAround).Coord);
+                        }
+                    }
+
+
+
+
+                    /*
+                    if (CanGoUp(testAround) && Upper(testAround).OriginDistance == -1 && !points[1].Contains(testAround)) 
+                    {
+                        Upper(testAround).OriginDistance = Self(testAround).Coord;
+                        points[1].Add(Upper(testAround).Coord);
+                    }
+
+                    if (CanGoRight(testAround) && ((1 == 1) ||
+                        (Righter(testAround).OriginDistance == -1 && !points[1].Contains(testAround))))
+                    {
+                        Righter(testAround).OriginDistance = Self(testAround).Coord;
+                        points[1].Add(Righter(testAround).Coord);
+                    }
+
+                    if (CanGoDown(testAround) && Lower(testAround).OriginDistance == -1 && !points[1].Contains(testAround))
+                    {
+                        Lower(testAround).OriginDistance = Self(testAround).Coord;
+                        points[1].Add(Lower(testAround).Coord);
+                    }
+
+                    if (CanGoLeft(testAround) && Lefter(testAround).OriginDistance == -1 && !points[1].Contains(testAround))
+                    {
+                        Lefter(testAround).OriginDistance = Self(testAround).Coord;
+                        points[1].Add(Lefter(testAround).Coord);
+                    }*/
+                }
+
+                points[0] = new List<int>(points[1]);
+                points[1].Clear();
+            }
+
+            int currentPoint = exitIndex;
+            Self(currentPoint).Accessible = false;
+            while (playerIndex != currentPoint)
+            {
+                currentPoint = Self(currentPoint).OriginDistance;
+                Self(currentPoint).Accessible = false;
+            }
+        }
     }
 }
