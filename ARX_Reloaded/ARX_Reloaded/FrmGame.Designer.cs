@@ -79,7 +79,7 @@
             this.cmdGenChaos.Location = new System.Drawing.Point(138, 3);
             this.cmdGenChaos.Name = "cmdGenChaos";
             this.cmdGenChaos.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenChaos.TabIndex = 3;
+            this.cmdGenChaos.TabIndex = 1;
             this.cmdGenChaos.Text = "Generate chaotique";
             this.cmdGenChaos.UseVisualStyleBackColor = true;
             this.cmdGenChaos.Click += new System.EventHandler(this.cmdGenChaos_Click);
@@ -89,7 +89,7 @@
             this.cmdShowView.Location = new System.Drawing.Point(974, 1);
             this.cmdShowView.Name = "cmdShowView";
             this.cmdShowView.Size = new System.Drawing.Size(120, 23);
-            this.cmdShowView.TabIndex = 4;
+            this.cmdShowView.TabIndex = 7;
             this.cmdShowView.Text = "Afficher map";
             this.cmdShowView.UseVisualStyleBackColor = true;
             this.cmdShowView.Click += new System.EventHandler(this.cmdUpdateView_Click);
@@ -102,7 +102,7 @@
             this.chkPacmanMoves.Location = new System.Drawing.Point(869, 5);
             this.chkPacmanMoves.Name = "chkPacmanMoves";
             this.chkPacmanMoves.Size = new System.Drawing.Size(99, 17);
-            this.chkPacmanMoves.TabIndex = 5;
+            this.chkPacmanMoves.TabIndex = 6;
             this.chkPacmanMoves.Text = "Pacman moves";
             this.chkPacmanMoves.UseVisualStyleBackColor = true;
             // 
@@ -121,7 +121,7 @@
             this.cmdGenPourcent.Location = new System.Drawing.Point(390, 3);
             this.cmdGenPourcent.Name = "cmdGenPourcent";
             this.cmdGenPourcent.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenPourcent.TabIndex = 7;
+            this.cmdGenPourcent.TabIndex = 3;
             this.cmdGenPourcent.Text = "Generate Pourcent";
             this.cmdGenPourcent.UseVisualStyleBackColor = true;
             this.cmdGenPourcent.Click += new System.EventHandler(this.cmdGenPourcent_Click);
@@ -131,7 +131,7 @@
             this.cmdGenFaos.Location = new System.Drawing.Point(264, 3);
             this.cmdGenFaos.Name = "cmdGenFaos";
             this.cmdGenFaos.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenFaos.TabIndex = 8;
+            this.cmdGenFaos.TabIndex = 2;
             this.cmdGenFaos.Text = "Generate Fast Chaos";
             this.cmdGenFaos.UseVisualStyleBackColor = true;
             this.cmdGenFaos.Click += new System.EventHandler(this.cmdGenFaos_Click);
@@ -141,7 +141,7 @@
             this.cmdGenMultiple.Location = new System.Drawing.Point(516, 3);
             this.cmdGenMultiple.Name = "cmdGenMultiple";
             this.cmdGenMultiple.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenMultiple.TabIndex = 9;
+            this.cmdGenMultiple.TabIndex = 4;
             this.cmdGenMultiple.Text = "Generate Multiple";
             this.cmdGenMultiple.UseVisualStyleBackColor = true;
             this.cmdGenMultiple.Click += new System.EventHandler(this.cmdGenMultiple_Click);
@@ -151,7 +151,7 @@
             this.cmdGenLines.Location = new System.Drawing.Point(642, 3);
             this.cmdGenLines.Name = "cmdGenLines";
             this.cmdGenLines.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenLines.TabIndex = 10;
+            this.cmdGenLines.TabIndex = 5;
             this.cmdGenLines.Text = "Generate Lines";
             this.cmdGenLines.UseVisualStyleBackColor = true;
             this.cmdGenLines.Click += new System.EventHandler(this.cmdGenLines_Click);

@@ -176,6 +176,7 @@ namespace ARX_Reloaded
 
                     Case thisCase = map.Cases[h * map.Width + w];
                     Pen pathColor = new Pen(thisCase.ZoneColor);
+                    SolidBrush antiColor = new SolidBrush(thisCase.AntiColor);
 
                     if (map.Self(thisCase.Coord).Visited == true)
                     {
@@ -292,8 +293,17 @@ namespace ARX_Reloaded
 
                         if (!thisCase.Accessible)
                         {
-                            pictureElement.Graphics.FillPolygon(new SolidBrush(thisCase.AntiColor), notAccessCross);
+                            pictureElement.Graphics.FillPolygon(antiColor, notAccessCross);
                         }
+                    }
+
+                    if (thisCase.Coord == map.ExitIndex)
+                    {
+                        pictureElement.Graphics.FillEllipse(antiColor, new Rectangle(
+                            Convert.ToInt32(thisCaseX + mapPathWidth * 1),
+                            Convert.ToInt32(thisCaseY + mapPathHeight * 1),
+                            Convert.ToInt32(mapPathWidth*2),
+                            Convert.ToInt32(mapPathHeight*2)));
                     }
                 }
             }

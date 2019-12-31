@@ -23,8 +23,8 @@ namespace ARX_Reloaded
         public Case(int coord)
         {
             this.state = 0;
-            this.visited = true;
-            this.accessible = true;
+            this.visited = false;
+            this.accessible = false;
 
             this.zone = 0;
             this.zoneColor = Color.White;

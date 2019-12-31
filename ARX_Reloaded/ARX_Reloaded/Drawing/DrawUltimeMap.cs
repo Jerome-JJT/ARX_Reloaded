@@ -240,6 +240,15 @@ namespace ARX_Reloaded
 
                         pictureElement.Graphics.FillEllipse(backColor, outsideArc);
                     }
+
+                    if (thisCase.Coord == map.ExitIndex)
+                    {
+                        pictureElement.Graphics.FillEllipse(antiColor, new Rectangle(
+                            Convert.ToInt32(thisCaseX + mapPathWidth * 1),
+                            Convert.ToInt32(thisCaseY + mapPathHeight * 1),
+                            Convert.ToInt32(mapPathWidth * 2),
+                            Convert.ToInt32(mapPathHeight * 2)));
+                    }
                 }
             }
 

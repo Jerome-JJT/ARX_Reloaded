@@ -10,10 +10,12 @@ namespace ARX_Reloaded
 {
     public abstract class Map
     {
+        #region Class business
         protected int width;
         protected int height;
 
         protected List<Case> cases;
+        private int exitIndex;
 
         protected Random rand = new Random();
 
@@ -23,7 +25,6 @@ namespace ARX_Reloaded
             "e9967a", "9400d3", "ffd700", "008000", "4b0082",
             "ff00ff", "800000", "808000", "ffc0cb", "ff0000"
         };
-
 
         public Map(Size mapSize, Random mapRandom)
         {
@@ -48,6 +49,13 @@ namespace ARX_Reloaded
             get { return cases; }
         }
 
+        public int ExitIndex
+        {
+            get { return exitIndex; }
+        }
+        #endregion Class business
+
+        #region Cases management
         public Case Self(int index)
         {
             return cases[index];
@@ -139,6 +147,173 @@ namespace ARX_Reloaded
             }
 
             return false;
+        }
+
+
+        //Check for void case
+        protected bool restEmptyState()
+        {
+            return !cases.TrueForAll(eachCase => eachCase.State != ARX.State.Void);
+        }
+
+        //Check for non defined zone
+        protected bool restEmptyZone()
+        {
+            return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
+        }
+        #endregion Cases management
+
+        #region Verifications functions
+        private bool inZoneRadius(double ratio, List<List<List<int>>> allZones, int newPoint)
+        {
+            foreach (List<List<int>> eachZone in allZones)
+            {
+                int firstZonePoint = eachZone[0][0];
+                if (inRadius(ratio, firstZonePoint, newPoint))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool inRadius(double ratio, int oldPoint, int newPoint)
+        {
+            if (Math.Sqrt(Math.Pow(Math.Abs((oldPoint % width) - (newPoint % width)), 2) + Math.Pow(Math.Abs(Math.Floor((double)oldPoint / width) - Math.Floor((double)newPoint / width)), 2)) < ratio)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        protected bool pathsFinished()
+        {
+            //Store cases to visit and cases who will be visited
+            List<List<int>> visits = new List<List<int>>();
+            //Store every visited cases
+            List<int> visited = new List<int>();
+
+            visits.Add(new List<int>());//Actuals
+            visits.Add(new List<int>());//Futurs
+
+            //First case to visit and reference case
+            visits[0].Add(0);
+            visited.Add(0);
+
+            while (visits[0].Count > 0)
+            {
+                foreach (int testAround in visits[0])
+                {
+                    if (CanGoUp(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Upper(testAround).Coord)) && (!visited.Contains(Upper(testAround).Coord))) //If case not visited or to visit
+                    {
+                        visits[1].Add(Upper(testAround).Coord);
+                    }
+
+                    if (CanGoRight(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Righter(testAround).Coord)) && (!visited.Contains(Righter(testAround).Coord))) //If case not visited or to visit
+                    {
+                        visits[1].Add(Righter(testAround).Coord);
+                    }
+
+                    if (CanGoDown(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Lower(testAround).Coord)) && (!visited.Contains(Lower(testAround).Coord))) //If case not visited or to visit
+                    {
+                        visits[1].Add(Lower(testAround).Coord);
+                    }
+
+                    if (CanGoLeft(testAround) //If case exists and is accessible
+                        && (!visits[1].Contains(Lefter(testAround).Coord)) && (!visited.Contains(Lefter(testAround).Coord))) //If case not visited or to visit
+                    {
+                        visits[1].Add(Lefter(testAround).Coord);
+                    }
+                }
+
+                //Pass futur points to actual points and store them
+                visited.AddRange(new List<int>(visits[1]));
+                visits[0] = new List<int>(visits[1]);
+                visits[1].Clear();
+            }
+
+            //If the map is not in one part
+            if (visited.Count != width * height)
+            {
+                for (int eachCase = 0; eachCase < width * height; eachCase++)
+                {
+                    //Affect cases not joinable from 0/0 if this part is the bigger
+                    if ((!visited.Contains(eachCase)) && visited.Count > (width * height) / 2)
+                    {
+                        if (Upper(eachCase) != null && visited.Contains(Upper(eachCase).Coord))
+                        {
+                            if (Upper(eachCase).State == ARX.State.Right)
+                            {
+                                Upper(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                Upper(eachCase).State = ARX.State.Down;
+                            }
+                        }
+                        else if (Righter(eachCase) != null && visited.Contains(Righter(eachCase).Coord))
+                        {
+                            if (Self(eachCase).State == ARX.State.Down)
+                            {
+                                Self(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                Self(eachCase).State = ARX.State.Right;
+                            }
+                        }
+                        else if (Lower(eachCase) != null && visited.Contains(Lower(eachCase).Coord))
+                        {
+                            if (Self(eachCase).State == ARX.State.Right)
+                            {
+                                Self(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                Self(eachCase).State = ARX.State.Down;
+                            }
+                        }
+                        else if (Lefter(eachCase) != null && visited.Contains(Lefter(eachCase).Coord))
+                        {
+                            if (Lefter(eachCase).State == ARX.State.Down)
+                            {
+                                Lefter(eachCase).State = ARX.State.Cross;
+                            }
+                            else
+                            {
+                                Lefter(eachCase).State = ARX.State.Right;
+                            }
+                        }
+                    }
+
+                    //Affect cases joinable from 0/0 if this part is the smallest
+                    else if (visited.Contains(eachCase) && visited.Count <= (width * height) / 2)
+                    {
+                        Self(eachCase).State = Self(eachCase).NextPathState;
+                    }
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+        #endregion Verifications functions
+
+        public void PrepareMap(Point playerPos, int nbZones)
+        {
+            GenerateMap(null, null);
+            GenerateZones(null, null, nbZones);
+            GenerateEvents(playerPos);
+
+            UnlockZone(Self(playerPos.Y * width + playerPos.X).Zone);
+
+            //ProcessPath(playerPos, exitIndex);
         }
 
         public virtual void GenerateMap(PictureBox elem, Label loading)
@@ -245,203 +420,24 @@ namespace ARX_Reloaded
             }
         }
 
-        private bool inZoneRadius(double ratio, List<List<List<int>>> allZones, int newPoint)
+        public void GenerateEvents(Point playerPosition)
         {
-            foreach (List<List<int>> eachZone in allZones)
-            {
-                int firstZonePoint = eachZone[0][0];
-                if (Math.Sqrt(Math.Pow(Math.Abs((firstZonePoint % width) - (newPoint%width)), 2) + Math.Pow(Math.Abs(Math.Floor((double)firstZonePoint / width) - Math.Floor((double)newPoint/width)), 2)) < ratio)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+            int playerIndex = playerPosition.Y * width + playerPosition.X;
+            int ratio = (width + height) / 3;
 
-        //Check for void case
-        protected bool restEmptyState()
-        {
-            return !cases.TrueForAll(eachCase => eachCase.State != ARX.State.Void);
-        }
-
-        //Check for non defined zone
-        protected bool restEmptyZone()
-        {
-            return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
-        }
-
-        protected bool pathsFinished()
-        {
-            //Store cases to visit and cases who will be visited
-            List<List<int>> visits = new List<List<int>>();
-            //Store every visited cases
-            List<int> visited = new List<int>();
-
-            visits.Add(new List<int>());//Actuals
-            visits.Add(new List<int>());//Futurs
-
-            //First case to visit and reference case
-            visits[0].Add(0);
-            visited.Add(0);
-
-            while (visits[0].Count > 0)
-            {
-                foreach (int testAround in visits[0])
-                {
-                    if (CanGoUp(testAround) //If case exists and is accessible
-                        && (!visits[1].Contains(Upper(testAround).Coord)) && (!visited.Contains(Upper(testAround).Coord))) //If case not visited or to visit
-                    {
-                        visits[1].Add(Upper(testAround).Coord);
-                    }
-
-                    if (CanGoRight(testAround) //If case exists and is accessible
-                        && (!visits[1].Contains(Righter(testAround).Coord)) && (!visited.Contains(Righter(testAround).Coord))) //If case not visited or to visit
-                    {
-                        visits[1].Add(Righter(testAround).Coord);
-                    }
-
-                    if (CanGoDown(testAround) //If case exists and is accessible
-                        && (!visits[1].Contains(Lower(testAround).Coord)) && (!visited.Contains(Lower(testAround).Coord))) //If case not visited or to visit
-                    {
-                        visits[1].Add(Lower(testAround).Coord);
-                    }
-
-                    if (CanGoLeft(testAround) //If case exists and is accessible
-                        && (!visits[1].Contains(Lefter(testAround).Coord)) && (!visited.Contains(Lefter(testAround).Coord))) //If case not visited or to visit
-                    {
-                        visits[1].Add(Lefter(testAround).Coord);
-                    }
-                }
-
-                //Pass futur points to actual points and store them
-                visited.AddRange(new List<int>(visits[1]));
-                visits[0] = new List<int>(visits[1]);
-                visits[1].Clear();
-            } 
-
-            //If the map is not in one part
-            if (visited.Count != width * height)
-            {
-                for (int eachCase = 0; eachCase < width * height; eachCase++)
-                {
-                    //Affect cases not joinable from 0/0 if this part is the bigger
-                    if ((!visited.Contains(eachCase)) && visited.Count > (width * height) / 2)
-                    {
-                        if (Upper(eachCase) != null && visited.Contains(Upper(eachCase).Coord))
-                        {
-                            if (Upper(eachCase).State == ARX.State.Right)
-                            {
-                                Upper(eachCase).State = ARX.State.Cross;
-                            }
-                            else
-                            {
-                                Upper(eachCase).State = ARX.State.Down;
-                            }
-                        }
-                        else if (Righter(eachCase) != null && visited.Contains(Righter(eachCase).Coord))
-                        {
-                            if (Self(eachCase).State == ARX.State.Down)
-                            {
-                                Self(eachCase).State = ARX.State.Cross;
-                            }
-                            else
-                            {
-                                Self(eachCase).State = ARX.State.Right;
-                            }
-                        }
-                        else if (Lower(eachCase) != null && visited.Contains(Lower(eachCase).Coord))
-                        {
-                            if (Self(eachCase).State == ARX.State.Right)
-                            {
-                                Self(eachCase).State = ARX.State.Cross;
-                            }
-                            else
-                            {
-                                Self(eachCase).State = ARX.State.Down;
-                            }
-                        }
-                        else if (Lefter(eachCase) != null && visited.Contains(Lefter(eachCase).Coord))
-                        {
-                            if (Lefter(eachCase).State == ARX.State.Down)
-                            {
-                                Lefter(eachCase).State = ARX.State.Cross;
-                            }
-                            else
-                            {
-                                Lefter(eachCase).State = ARX.State.Right;
-                            }
-                        }
-                    }
-
-                    //Affect cases joinable from 0/0 if this part is the smallest
-                    else if (visited.Contains(eachCase) && visited.Count <= (width * height) / 2)
-                    {
-                        Self(eachCase).State = Self(eachCase).NextPathState;
-                    }
-                }
-
-                return false;
-            }
-
-            return true;
-        }
-
-        /*public void ProcessPath(Point playerPos, Point exitPos)
-        {
-            int playerIndex = playerPos.Y * width + playerPos.X;
-            int exitIndex = exitPos.Y * width + exitPos.X;
-
-            Self(playerIndex).OriginDistance = 0;
-
-            List<int> bestPath = new List<int>();
-            bestPath.Add(0);
-
+            int exitZone;
             do
             {
-                int minIndex = 0;
-                foreach (Case eachCase in cases)
-                {
-                    if (eachCase.OriginDistance != -1 && !bestPath.Contains(minIndex)
-                        && eachCase.OriginDistance < Self(bestPath.Last()).OriginDistance)
-                    {
-                        minIndex = eachCase.Coord;
-                    }
-                }
-                bestPath.Add(minIndex);
-
-                if (CanGoUp(minIndex)) //If case exists and is accessible
-                {
-                    Upper(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
-                }
-
-                if (CanGoRight(minIndex)) //If case exists and is accessible
-                {
-                    Righter(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
-                }
-
-                if (CanGoDown(minIndex)) //If case exists and is accessible
-                {
-                    Lower(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
-                }
-
-                if (CanGoLeft(minIndex)) //If case exists and is accessible
-                {
-                    Lefter(minIndex).OriginDistance = Self(minIndex).OriginDistance + 1;
-                }
-            } while (bestPath.Last() != exitIndex);
-
-            foreach (int eachCase in bestPath)
-            {
-                Self(eachCase).Accessible = false;
+                exitZone = rand.Next(0, width * height);
             }
-        }*/
+            while (inRadius(ratio, playerIndex, exitZone));
 
-        public void ProcessPath(Point playerPos, Point exitPos)
+            exitIndex = exitZone;
+        }
+
+        public void ProcessPath(Point playerPos, int exitZone)
         {
             int playerIndex = playerPos.Y * width + playerPos.X;
-            int exitIndex = exitPos.Y * width + exitPos.X;
-
-            //Self(playerIndex).OriginDistance = 0;
 
             List<List<int>> points = new List<List<int>>();
 
@@ -450,16 +446,16 @@ namespace ARX_Reloaded
 
             points[0].Add(playerIndex);
 
-            while(!points[0].Contains(exitIndex))
+            while (!points[0].Contains(exitZone))
             {
-                foreach(int testAround in points[0])
+                foreach (int testAround in points[0])
                 {
                     if (CanGoUp(testAround))
                     {
                         int score;
-                        if(Self(testAround).Zone == Upper(testAround).Zone) { score = 1; } else { score = cases.Count; }
+                        if (Self(testAround).Zone == Upper(testAround).Zone) { score = 1; } else { score = cases.Count; }
 
-                        if(Upper(testAround).ScoreDistance < 0 || Upper(testAround).ScoreDistance > Self(testAround).ScoreDistance + score)
+                        if (Upper(testAround).ScoreDistance < 0 || Upper(testAround).ScoreDistance > Self(testAround).ScoreDistance + score)
                         {
                             Upper(testAround).OriginDistance = Self(testAround).Coord;
                             Upper(testAround).ScoreDistance = Self(testAround).ScoreDistance + score;
@@ -505,47 +501,29 @@ namespace ARX_Reloaded
                             points[1].Add(Lefter(testAround).Coord);
                         }
                     }
-
-
-
-
-                    /*
-                    if (CanGoUp(testAround) && Upper(testAround).OriginDistance == -1 && !points[1].Contains(testAround)) 
-                    {
-                        Upper(testAround).OriginDistance = Self(testAround).Coord;
-                        points[1].Add(Upper(testAround).Coord);
-                    }
-
-                    if (CanGoRight(testAround) && ((1 == 1) ||
-                        (Righter(testAround).OriginDistance == -1 && !points[1].Contains(testAround))))
-                    {
-                        Righter(testAround).OriginDistance = Self(testAround).Coord;
-                        points[1].Add(Righter(testAround).Coord);
-                    }
-
-                    if (CanGoDown(testAround) && Lower(testAround).OriginDistance == -1 && !points[1].Contains(testAround))
-                    {
-                        Lower(testAround).OriginDistance = Self(testAround).Coord;
-                        points[1].Add(Lower(testAround).Coord);
-                    }
-
-                    if (CanGoLeft(testAround) && Lefter(testAround).OriginDistance == -1 && !points[1].Contains(testAround))
-                    {
-                        Lefter(testAround).OriginDistance = Self(testAround).Coord;
-                        points[1].Add(Lefter(testAround).Coord);
-                    }*/
                 }
 
                 points[0] = new List<int>(points[1]);
                 points[1].Clear();
             }
 
-            int currentPoint = exitIndex;
+            int currentPoint = exitZone;
             Self(currentPoint).Accessible = false;
             while (playerIndex != currentPoint)
             {
                 currentPoint = Self(currentPoint).OriginDistance;
                 Self(currentPoint).Accessible = false;
+            }
+        }
+
+        public void UnlockZone(int zoneToAffect)
+        {
+            foreach (Case eachCase in cases)
+            {
+                if(eachCase.Zone == zoneToAffect)
+                {
+                    eachCase.Accessible = true;
+                }
             }
         }
     }

@@ -78,29 +78,6 @@ namespace ARX_Reloaded
                         new Point(Convert.ToInt32(thisCaseX+mapPathWidth*1),   Convert.ToInt32(thisCaseY+mapPathHeight*4))
                     };
 
-
-                    /*Point[] notAccessCross = {
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*2.0),   Convert.ToInt32(thisCaseY+mapPathHeight*1.8)),
-
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*3.0),   Convert.ToInt32(thisCaseY+mapPathHeight*0.8)),
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*3.2),   Convert.ToInt32(thisCaseY+mapPathHeight*1.0)),
-
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*2.2),   Convert.ToInt32(thisCaseY+mapPathHeight*2.0)),
-
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*3.2),   Convert.ToInt32(thisCaseY+mapPathHeight*3.0)),
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*3.0),   Convert.ToInt32(thisCaseY+mapPathHeight*3.2)),
-
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*2),   Convert.ToInt32(thisCaseY+mapPathHeight*2.2)),
-
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*1.0),   Convert.ToInt32(thisCaseY+mapPathHeight*3.2)),
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*0.8),   Convert.ToInt32(thisCaseY+mapPathHeight*3)),
-
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*1.8),   Convert.ToInt32(thisCaseY+mapPathHeight*2)),
-
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*0.8),   Convert.ToInt32(thisCaseY+mapPathHeight*1.0)),
-                        new Point(Convert.ToInt32(thisCaseX+mapPathWidth*1.0),   Convert.ToInt32(thisCaseY+mapPathHeight*0.8))
-                    };*/
-
                     Point[] notAccessCross = {
                         new Point(Convert.ToInt32(thisCaseX+mapPathWidth*2.0),   Convert.ToInt32(thisCaseY+mapPathHeight*1.8)),
 
@@ -155,6 +132,15 @@ namespace ARX_Reloaded
                         {
                             pictureElement.Graphics.FillPolygon(antiColor, notAccessCross);
                         }
+                    }
+
+                    if(thisCase.Coord == map.ExitIndex)
+                    {
+                        pictureElement.Graphics.FillEllipse(antiColor, new Rectangle(
+                            Convert.ToInt32(thisCaseX + mapPathWidth * 1),
+                            Convert.ToInt32(thisCaseY + mapPathHeight * 1),
+                            Convert.ToInt32(mapPathWidth * 2),
+                            Convert.ToInt32(mapPathHeight * 2)));
                     }
                 }
             }

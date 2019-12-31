@@ -37,26 +37,16 @@ namespace ARX_Reloaded
 
             player = new Player(0,0,90);
 
-            map.GenerateMap(null, null);
-            //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, nbZones);
+            map.PrepareMap(player.Position, nbZones);
 
             Moving(ARX.Direction.Null);
-
-            map.ProcessPath(player.Position, new Point(29, 29));
         }
 
         private void cmdGenNormal_Click(object sender, EventArgs e)
         {
             map = new MapNormal(labyrinthSize, labyrinthRandom);
 
-            //map.GenerateMap(picMap, lblLoading);
-            map.GenerateMap(null, null);
-
-            //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, nbZones);
-
-            map.ProcessPath(player.Position, new Point(29, 29));
+            map.PrepareMap(player.Position, nbZones);
 
             Moving(ARX.Direction.Null);
         }
@@ -65,13 +55,7 @@ namespace ARX_Reloaded
         {
             map = new MapChaos(labyrinthSize, labyrinthRandom);
 
-            map.GenerateMap(picMap, lblLoading);
-            //map.GenerateMap(null, null);
-
-            //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, nbZones);
-
-            map.ProcessPath(player.Position, new Point(29, 29));
+            map.PrepareMap(player.Position, nbZones);
 
             Moving(ARX.Direction.Null);
         }
@@ -80,13 +64,7 @@ namespace ARX_Reloaded
         {
             map = new MapFastChaos(10, labyrinthSize, labyrinthRandom);
 
-            //map.GenerateMap(picMap, lblLoading);
-            map.GenerateMap(null, null);
-
-            //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, nbZones);
-
-            map.ProcessPath(player.Position, new Point(29, 29));
+            map.PrepareMap(player.Position, nbZones);
 
             Moving(ARX.Direction.Null);
         }
@@ -95,13 +73,7 @@ namespace ARX_Reloaded
         {
             map = new MapPourcent(20, labyrinthSize, labyrinthRandom);
 
-            //map.GenerateMap(picMap, lblLoading);
-            map.GenerateMap(null, null);
-
-            //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, nbZones);
-
-            map.ProcessPath(player.Position, new Point(29, 29));
+            map.PrepareMap(player.Position, nbZones);
 
             Moving(ARX.Direction.Null);
         }
@@ -110,13 +82,7 @@ namespace ARX_Reloaded
         {
             map = new MapMultiple(labyrinthSize, labyrinthRandom);
 
-            //map.GenerateMap(picMap, lblLoading);
-            map.GenerateMap(null, null);
-
-            //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, nbZones);
-
-            map.ProcessPath(player.Position, new Point(29, 29));
+            map.PrepareMap(player.Position, nbZones);
 
             Moving(ARX.Direction.Null);
         }
@@ -125,13 +91,7 @@ namespace ARX_Reloaded
         {
             map = new MapLines(labyrinthSize, labyrinthRandom);
 
-            //map.GenerateMap(picMap, lblLoading);
-            map.GenerateMap(null, null);
-
-            //map.GenerateZones(picMap, lblLoading);
-            map.GenerateZones(null, null, nbZones);
-
-            map.ProcessPath(player.Position, new Point(29, 29));
+            map.PrepareMap(player.Position, nbZones);
 
             Moving(ARX.Direction.Null);
         }
