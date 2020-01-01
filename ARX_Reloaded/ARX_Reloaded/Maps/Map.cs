@@ -148,8 +148,9 @@ namespace ARX_Reloaded
 
             return false;
         }
+        #endregion Cases management
 
-
+        #region Verifications functions
         //Check for void case
         protected bool restEmptyState()
         {
@@ -161,9 +162,7 @@ namespace ARX_Reloaded
         {
             return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
         }
-        #endregion Cases management
 
-        #region Verifications functions
         private bool inZoneRadius(double ratio, List<List<List<int>>> allZones, int newPoint)
         {
             foreach (List<List<int>> eachZone in allZones)
@@ -313,7 +312,8 @@ namespace ARX_Reloaded
 
             UnlockZone(Self(playerPos.Y * width + playerPos.X).Zone);
 
-            //ProcessPath(playerPos, exitIndex);
+            GenerateZoneKey(playerPos, exitIndex);
+            ProcessPath(playerPos, exitIndex);
         }
 
         public virtual void GenerateMap(PictureBox elem, Label loading)
@@ -435,18 +435,115 @@ namespace ARX_Reloaded
             exitIndex = exitZone;
         }
 
+        public void GenerateZoneKey(Point playerPos, int exitZone)
+        {
+            int playerIndex = playerPos.Y * width + playerPos.X;
+
+            setDistances(playerIndex);
+
+            //Get all zones in path
+            int currentPoint = exitZone;
+            List<int> zonesPath = new List<int>();
+            while (playerIndex != currentPoint)
+            {
+                if (!zonesPath.Contains(Self(currentPoint).Zone))
+                {
+                    zonesPath.Add(Self(currentPoint).Zone);
+                }
+                currentPoint = Self(currentPoint).OriginDistance;
+            }
+            zonesPath.Reverse();
+
+            List<List<int>> allUnions = getZonesUnions();
+
+            List<int> zonesKeyed = new List<int> { zonesPath[0] };
+
+            foreach (int oneZonePath in zonesPath)
+            {
+                List<List<int>> adjs = allUnions.Where(oneUnion => oneUnion[0] == oneZonePath || oneUnion[1] == oneZonePath).ToList();
+
+                foreach (List<int> adj in adjs)
+                {
+                    int newZone = adj.Where(oneZone => oneZone != oneZonePath).Single();
+                    if (!zonesKeyed.Contains(newZone))
+                    {
+                        addKeyToZone(oneZonePath, newZone);
+                        zonesKeyed.Add(newZone);
+                    }
+                    allUnions.Remove(adj);
+                }
+            }
+
+            while (allUnions.Any())
+            {
+                List<int> restUnion = allUnions.First();
+
+                if (zonesKeyed.Contains(restUnion[0]) && zonesKeyed.Contains(restUnion[1]))
+                {
+                    allUnions.Remove(restUnion);
+                }
+                else
+                {
+                    List<int> keyedZone = restUnion.Where(oneZone => zonesKeyed.Contains(oneZone)).ToList();
+
+                    if(!keyedZone.Any())
+                    {
+                        allUnions.Remove(restUnion);
+                        allUnions.Add(restUnion);
+                    }
+                    else
+                    {
+                        int nonKeyedZone = restUnion.Where(oneZone => oneZone != keyedZone.Single()).Single();
+                        addKeyToZone(keyedZone.Single(), nonKeyedZone);
+                        zonesKeyed.Add(nonKeyedZone);
+                        allUnions.Remove(restUnion);
+                    }
+                }
+            }
+        }
+
+        private void addKeyToZone(int keyZone, int zoneToOpen)
+        {
+            Console.WriteLine($"{keyZone} to {zoneToOpen}");
+        }
+
         public void ProcessPath(Point playerPos, int exitZone)
         {
             int playerIndex = playerPos.Y * width + playerPos.X;
 
+            setDistances(playerIndex);
+
+            //Trace path from player to end
+            int currentPoint = exitZone;
+            Self(currentPoint).Accessible = false;
+            while (playerIndex != currentPoint)
+            {
+                currentPoint = Self(currentPoint).OriginDistance;
+                Self(currentPoint).Accessible = false;
+            }
+        }
+
+        public void UnlockZone(int zoneToAffect)
+        {
+            foreach (Case eachCase in cases)
+            {
+                if(eachCase.Zone == zoneToAffect)
+                {
+                    eachCase.Accessible = true;
+                }
+            }
+        }
+
+        private void setDistances(int startIndex)
+        {
             List<List<int>> points = new List<List<int>>();
 
             points.Add(new List<int>());//Actuals
             points.Add(new List<int>());//Futurs
 
-            points[0].Add(playerIndex);
+            points[0].Add(startIndex);
 
-            while (!points[0].Contains(exitZone))
+            while (points[0].Count > 0)
             {
                 foreach (int testAround in points[0])
                 {
@@ -506,25 +603,52 @@ namespace ARX_Reloaded
                 points[0] = new List<int>(points[1]);
                 points[1].Clear();
             }
-
-            int currentPoint = exitZone;
-            Self(currentPoint).Accessible = false;
-            while (playerIndex != currentPoint)
-            {
-                currentPoint = Self(currentPoint).OriginDistance;
-                Self(currentPoint).Accessible = false;
-            }
         }
 
-        public void UnlockZone(int zoneToAffect)
+        private List<List<int>> getZonesUnions()
         {
+            List<List<int>> unions = new List<List<int>>();
             foreach (Case eachCase in cases)
             {
-                if(eachCase.Zone == zoneToAffect)
+                if (CanGoUp(eachCase.Coord) && eachCase.Zone != Upper(eachCase.Coord).Zone)
                 {
-                    eachCase.Accessible = true;
+                    List<int> oneUnion = new List<int> { eachCase.Zone, Upper(eachCase.Coord).Zone };
+                    oneUnion.Sort();
+                    if (unions.TrueForAll(eachUnion => !(oneUnion[0] == eachUnion[0] && oneUnion[1] == eachUnion[1])))
+                    {
+                        unions.Add(oneUnion);
+                    }
+                }
+                if (CanGoRight(eachCase.Coord) && eachCase.Zone != Righter(eachCase.Coord).Zone)
+                {
+                    List<int> oneUnion = new List<int> { eachCase.Zone, Righter(eachCase.Coord).Zone };
+                    oneUnion.Sort();
+                    if (unions.TrueForAll(eachUnion => !(oneUnion[0] == eachUnion[0] && oneUnion[1] == eachUnion[1])))
+                    {
+                        unions.Add(oneUnion);
+                    }
+                }
+                if (CanGoDown(eachCase.Coord) && eachCase.Zone != Lower(eachCase.Coord).Zone)
+                {
+                    List<int> oneUnion = new List<int> { eachCase.Zone, Lower(eachCase.Coord).Zone };
+                    oneUnion.Sort();
+                    if (unions.TrueForAll(eachUnion => !(oneUnion[0] == eachUnion[0] && oneUnion[1] == eachUnion[1])))
+                    {
+                        unions.Add(oneUnion);
+                    }
+                }
+                if (CanGoLeft(eachCase.Coord) && eachCase.Zone != Lefter(eachCase.Coord).Zone)
+                {
+                    List<int> oneUnion = new List<int> { eachCase.Zone, Lefter(eachCase.Coord).Zone };
+                    oneUnion.Sort();
+                    if (unions.TrueForAll(eachUnion => !(oneUnion[0] == eachUnion[0] && oneUnion[1] == eachUnion[1])))
+                    {
+                        unions.Add(oneUnion);
+                    }
                 }
             }
+
+            return unions;
         }
     }
 }

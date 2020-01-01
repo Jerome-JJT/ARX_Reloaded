@@ -158,6 +158,7 @@ namespace ARX_Reloaded
                     SolidBrush pathColor = new SolidBrush(thisCase.ZoneColor);
                     SolidBrush backColor = new SolidBrush(Color.Black);
                     SolidBrush antiColor = new SolidBrush(thisCase.AntiColor);
+                    SolidBrush contrastColor = new SolidBrush(thisCase.ContrastColor);
 
                     if (thisCase.Visited == true)
                     {
@@ -235,7 +236,7 @@ namespace ARX_Reloaded
 
                         if (!thisCase.Accessible)
                         {
-                            pictureElement.Graphics.FillPolygon(antiColor, notAccessCross);
+                            pictureElement.Graphics.FillPolygon(contrastColor, notAccessCross);
                         }
 
                         pictureElement.Graphics.FillEllipse(backColor, outsideArc);
@@ -249,6 +250,12 @@ namespace ARX_Reloaded
                             Convert.ToInt32(mapPathWidth * 2),
                             Convert.ToInt32(mapPathHeight * 2)));
                     }
+
+                    pictureElement.Graphics.DrawString(thisCase.Zone.ToString(), new Font(new FontFamily("Arial"), 8), contrastColor, new Rectangle(
+                            Convert.ToInt32(thisCaseX + mapPathWidth * 0.8),
+                            Convert.ToInt32(thisCaseY + mapPathHeight * 0.6),
+                            Convert.ToInt32(mapPathWidth * 3),
+                            Convert.ToInt32(mapPathHeight * 3)));
                 }
             }
 

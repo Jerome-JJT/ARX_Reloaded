@@ -23,8 +23,8 @@ namespace ARX_Reloaded
         public Case(int coord)
         {
             this.state = 0;
-            this.visited = false;
-            this.accessible = false;
+            this.visited = true;
+            this.accessible = true;
 
             this.zone = 0;
             this.zoneColor = Color.White;
@@ -67,6 +67,19 @@ namespace ARX_Reloaded
         public Color AntiColor
         {
             get { return Color.FromArgb(255 - zoneColor.R, 255 - zoneColor.G, 255 - zoneColor.B); }
+        }
+
+        public Color ContrastColor
+        {
+            get
+            {
+                int nThreshold = 105;
+                int bgDelta = Convert.ToInt32((zoneColor.R * 0.299) + (zoneColor.G * 0.587) +
+                                              (zoneColor.B * 0.114));
+
+                Color foreColor = (255 - bgDelta < nThreshold) ? Color.Black : Color.White;
+                return foreColor;
+            }
         }
 
         public int Coord

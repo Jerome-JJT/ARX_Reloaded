@@ -103,6 +103,7 @@ namespace ARX_Reloaded
                     Case thisCase = map.Self(h * map.Width + w);
                     SolidBrush pathColor = new SolidBrush(thisCase.ZoneColor);
                     SolidBrush antiColor = new SolidBrush(thisCase.AntiColor);
+                    SolidBrush contrastColor = new SolidBrush(thisCase.ContrastColor);
                     
                     if (thisCase.Visited == true)
                     {
@@ -130,7 +131,7 @@ namespace ARX_Reloaded
 
                         if(!thisCase.Accessible)
                         {
-                            pictureElement.Graphics.FillPolygon(antiColor, notAccessCross);
+                            pictureElement.Graphics.FillPolygon(contrastColor, notAccessCross);
                         }
                     }
 

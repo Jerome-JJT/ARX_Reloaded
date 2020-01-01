@@ -16,14 +16,14 @@ namespace ARX_Reloaded
         Size labyrinthSize = new Size(30, 30);
         Player player;
 
-        Random labyrinthRandom = new Random();
+        //Random labyrinthRandom = new Random();
         //Random labyrinthRandom = new Random(6);
-        //Random labyrinthRandom = new Random(7);
+        Random labyrinthRandom = new Random(5);
 
-        int nbZones = 5;
+        int nbZones = 6;
         int zoomLevel = 1;
         const int minZoomLevel = 1;
-        const int maxZoomLevel = 5;
+        const int maxCaseDisplay = 5;
 
         public FrmGame()
         {
@@ -33,7 +33,7 @@ namespace ARX_Reloaded
         private void FrmGame_Load(object sender, EventArgs e)
         {
             //map = new MapNormal(labyrinthSize, labyrinthRandom);
-            map = new MapChaos(labyrinthSize, labyrinthRandom);
+            map = new MapMultiple(labyrinthSize, labyrinthRandom);
 
             player = new Player(0,0,90);
 
@@ -62,7 +62,7 @@ namespace ARX_Reloaded
 
         private void cmdGenFaos_Click(object sender, EventArgs e)
         {
-            map = new MapFastChaos(10, labyrinthSize, labyrinthRandom);
+            map = new MapFastChaos(15, labyrinthSize, labyrinthRandom);
 
             map.PrepareMap(player.Position, nbZones);
 
@@ -183,7 +183,7 @@ namespace ARX_Reloaded
                     break;
 
                 case Keys.Add:
-                    if (zoomLevel < maxZoomLevel)
+                    if (Math.Min(map.Width, map.Height) / zoomLevel > maxCaseDisplay)
                     {
                         zoomLevel++;
                         picMap.Refresh();
