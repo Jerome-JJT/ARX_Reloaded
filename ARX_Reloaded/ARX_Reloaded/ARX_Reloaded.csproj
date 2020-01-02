@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ARX.cs" />
+    <Compile Include="Drawing\DrawNormalMap.cs" />
     <Compile Include="Drawing\DrawUltimeMap.cs" />
     <Compile Include="Drawing\DrawPacMap.cs" />
     <Compile Include="Maps\Case.cs" />

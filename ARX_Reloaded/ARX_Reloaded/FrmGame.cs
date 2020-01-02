@@ -116,9 +116,10 @@ namespace ARX_Reloaded
         {
             if(map != null)
             {
-                //DrawMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
-                //DrawPacMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
-                DrawUltimeMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
+                DrawMap.PrepareMap(e, picMap.Size, map, 1, player, zoomLevel);
+                //DrawNormalMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
+                DrawPacMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
+                //DrawUltimeMap.DrawTotalMap(e, picMap.Size, map, player, zoomLevel);
             }
         }
 
