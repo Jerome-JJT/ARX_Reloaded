@@ -10,7 +10,7 @@ namespace ARX_Reloaded
 {
     public static class DrawUltimeMap
     {
-        public static void DrawTotalMap(PaintEventArgs pictureElement, Size picBoxSize, Map map, Player player, int zoom)
+        public static void DrawTotalMap(PaintEventArgs pictureElement)
         {
             for (int h = DrawMap.MapDrawStart.Y; h < DrawMap.MapDrawStop.Y; h++)
             {
@@ -24,7 +24,7 @@ namespace ARX_Reloaded
 
                         #region Case pattern drawing
                         //Create internal angles
-                        if (!map.CanGoUp(DrawMap.ThisCase.Coord) && !map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 270, 90);
                         }
@@ -32,7 +32,7 @@ namespace ARX_Reloaded
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, InUpRight());
                         }
-                        if (!map.CanGoRight(DrawMap.ThisCase.Coord) && !map.CanGoDown(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 0, 90);
                         }
@@ -40,7 +40,7 @@ namespace ARX_Reloaded
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, InDownRight());
                         }
-                        if (!map.CanGoDown(DrawMap.ThisCase.Coord) && !map.CanGoLeft(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 90, 90);
                         }
@@ -48,7 +48,7 @@ namespace ARX_Reloaded
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, InDownLeft());
                         }
-                        if (!map.CanGoLeft(DrawMap.ThisCase.Coord) && !map.CanGoUp(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 180, 90);
                         }
@@ -58,37 +58,37 @@ namespace ARX_Reloaded
                         }
 
                         //Create path between cases
-                        if (map.CanGoUp(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathUp());
                         }
-                        if (map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathRight());
                         }
-                        if (map.CanGoDown(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathDown());
                         }
-                        if (map.CanGoLeft(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathLeft());
                         }
 
                         //Create externals angles
-                        if (map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, UpRightArc());
                         }
-                        if (map.CanGoRight(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DownRightArc());
                         }
-                        if (map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DownLeftArc());
                         }
-                        if (map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, UpLeftArc());
                         }
@@ -102,7 +102,7 @@ namespace ARX_Reloaded
                         }
                     }
 
-                    if (DrawMap.ThisCase.Coord == map.ExitIndex)
+                    if (DrawMap.ThisCase.Coord == DrawMap.Map.ExitIndex)
                     {
                         pictureElement.Graphics.FillEllipse(DrawMap.AntiBrush, new Rectangle(
                             Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),

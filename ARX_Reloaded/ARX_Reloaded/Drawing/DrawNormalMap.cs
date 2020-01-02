@@ -10,7 +10,7 @@ namespace ARX_Reloaded
 {
     public static class DrawNormalMap
     {
-        public static void DrawTotalMap(PaintEventArgs pictureElement, Size picBoxSize, Map map, Player player, int zoom)
+        public static void DrawTotalMap(PaintEventArgs pictureElement)
         {
             for (int h = DrawMap.MapDrawStart.Y; h < DrawMap.MapDrawStop.Y; h++)
             {
@@ -30,19 +30,19 @@ namespace ARX_Reloaded
                         }
 
                         //Externals paths draw
-                        if (map.CanGoUp(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathUp());
                         }
-                        if (map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathRight());
                         }
-                        if (map.CanGoDown(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathDown());
                         }
-                        if (map.CanGoLeft(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathLeft());
                         }
@@ -55,7 +55,7 @@ namespace ARX_Reloaded
                         }
                     }
 
-                    if(DrawMap.ThisCase.Coord == map.ExitIndex)
+                    if(DrawMap.ThisCase.Coord == DrawMap.Map.ExitIndex)
                     {
                         pictureElement.Graphics.FillEllipse(DrawMap.AntiBrush, new Rectangle(
                             Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),

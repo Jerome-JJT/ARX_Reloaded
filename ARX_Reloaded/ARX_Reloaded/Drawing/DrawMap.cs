@@ -37,13 +37,13 @@ namespace ARX_Reloaded
         public static SolidBrush ContrastBrush;
 
 
-        public static void PrepareMap(PaintEventArgs pictureElement, Size picBoxSize, Map map, int type, Player player, int zoom)
+        public static void PrepareMap(Size picBoxSize, Map map, int type, Player player)
         {
             Player = player;
             Map = map;
 
-            MapDrawLengthX = (double)map.Width / zoom;
-            MapDrawLengthY = (double)map.Height / zoom;
+            MapDrawLengthX = (double)map.Width / map.Zoom;
+            MapDrawLengthY = (double)map.Height / map.Zoom;
 
 
             MapDrawStart.X = (int)Math.Ceiling(((int)(player.X / MapDrawLengthX)) * MapDrawLengthX);
@@ -70,6 +70,7 @@ namespace ARX_Reloaded
 
             PathBrush = new SolidBrush(ThisCase.ZoneColor);
             PathPen = new Pen(ThisCase.ZoneColor);
+
             BackBrush = new SolidBrush(Color.Black);
             AntiBrush = new SolidBrush(ThisCase.AntiColor);
             ContrastBrush = new SolidBrush(ThisCase.ContrastColor);

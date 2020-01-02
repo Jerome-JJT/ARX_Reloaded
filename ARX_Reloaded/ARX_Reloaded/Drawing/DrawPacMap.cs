@@ -10,7 +10,7 @@ namespace ARX_Reloaded
 {
     public static class DrawPacMap
     {
-        public static void DrawTotalMap(PaintEventArgs pictureElement, Size picBoxSize, Map map, Player player, int zoom)
+        public static void DrawTotalMap(PaintEventArgs pictureElement)
         {
             for (int h = DrawMap.MapDrawStart.Y; h < DrawMap.MapDrawStop.Y; h++)
             {
@@ -18,115 +18,117 @@ namespace ARX_Reloaded
                 {
                     DrawMap.PrepareCase(w, h);
 
-                    if (map.Self(DrawMap.ThisCase.Coord).Visited == true)
+                    if (DrawMap.Map.Self(DrawMap.ThisCase.Coord).Visited == true)
                     {
+                        pictureElement.Graphics.FillRectangle(DrawMap.BackBrush, DrawMap.CaseBackground());
+
                         #region Case pattern drawing
-                        if (map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcUpRight(), 90, 90);
                         }
                         else
                         {
-                            if (map.CanGoUp(DrawMap.ThisCase.Coord))
+                            if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutUpRight());
                             }
-                            else if (map.CanGoRight(DrawMap.ThisCase.Coord))
+                            else if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutRightUp());
                             }
                         }
 
-                        if (map.CanGoRight(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcDownRight(), 180, 90);
                         }
                         else
                         {
-                            if (map.CanGoRight(DrawMap.ThisCase.Coord))
+                            if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutRightDown());
                             }
-                            else if (map.CanGoDown(DrawMap.ThisCase.Coord))
+                            else if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutDownRight());
                             }
                         }
 
-                        if (map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcDownLeft(), 270, 90);
                         }
                         else
                         {
-                            if (map.CanGoDown(DrawMap.ThisCase.Coord))
+                            if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutDownLeft());
                             }
-                            else if (map.CanGoLeft(DrawMap.ThisCase.Coord))
+                            else if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutLeftDown());
                             }
                         }
 
-                        if (map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord))
+                        if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcUpLeft(), 0, 90);
                         }
                         else
                         {
-                            if (map.CanGoLeft(DrawMap.ThisCase.Coord))
+                            if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutLeftUp());
                             }
-                            else if (map.CanGoUp(DrawMap.ThisCase.Coord))
+                            else if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                             {
                                 pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutUpLeft());
                             }
                         }
 
 
-                        if (!map.CanGoUp(DrawMap.ThisCase.Coord) && !map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 270, 90);
-                            if (map.CanGoLeft(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpLeft()); }
-                            if (map.CanGoDown(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightDown()); }
+                            if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpLeft()); }
+                            if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightDown()); }
                         }
-                        if (!map.CanGoRight(DrawMap.ThisCase.Coord) && !map.CanGoDown(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 0, 90);
-                            if (map.CanGoUp(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightUp()); }
-                            if (map.CanGoLeft(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownLeft()); }
+                            if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightUp()); }
+                            if (DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownLeft()); }
                         }
-                        if (!map.CanGoDown(DrawMap.ThisCase.Coord) && !map.CanGoLeft(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 90, 90);
-                            if (map.CanGoRight(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownRight()); }
-                            if (map.CanGoUp(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftUp()); }
+                            if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownRight()); }
+                            if (DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftUp()); }
                         }
-                        if (!map.CanGoLeft(DrawMap.ThisCase.Coord) && !map.CanGoUp(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord) && !DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 180, 90);
-                            if (map.CanGoDown(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftDown()); }
-                            if (map.CanGoRight(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpRight()); }
+                            if (DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftDown()); }
+                            if (DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpRight()); }
                         }
 
-                        if (!map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpLeft());
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpRight());
                         }
-                        if (!map.CanGoRight(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightUp());
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightDown());
                         }
-                        if (!map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownLeft());
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownRight());
                         }
-                        if (!map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord))
+                        if (!DrawMap.Map.CanGoLeft(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoDown(DrawMap.ThisCase.Coord) && DrawMap.Map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftUp());
                             pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftDown());
@@ -139,7 +141,7 @@ namespace ARX_Reloaded
                         }
                     }
 
-                    if (DrawMap.ThisCase.Coord == map.ExitIndex)
+                    if (DrawMap.ThisCase.Coord == DrawMap.Map.ExitIndex)
                     {
                         pictureElement.Graphics.FillEllipse(DrawMap.AntiBrush, new Rectangle(
                             Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),

@@ -14,6 +14,8 @@ namespace ARX_Reloaded
         protected int width;
         protected int height;
 
+        private int zoom;
+
         protected List<Case> cases;
         private int exitIndex;
 
@@ -31,6 +33,8 @@ namespace ARX_Reloaded
             width = mapSize.Width;
             height = mapSize.Height;
 
+            zoom = 1;
+
             rand = mapRandom;
         }
 
@@ -47,6 +51,12 @@ namespace ARX_Reloaded
         public List<Case> Cases
         {
             get { return cases; }
+        }
+
+        public int Zoom
+        {
+            get { return zoom; }
+            set { zoom = value; }
         }
 
         public int ExitIndex
@@ -502,26 +512,13 @@ namespace ARX_Reloaded
             }
         }
 
+
         private void addKeyToZone(int keyZone, int zoneToOpen)
         {
             Console.WriteLine($"{keyZone} to {zoneToOpen}");
         }
 
-        public void ProcessPath(Point playerPos, int exitZone)
-        {
-            int playerIndex = playerPos.Y * width + playerPos.X;
-
-            setDistances(playerIndex);
-
-            //Trace path from player to end
-            int currentPoint = exitZone;
-            Self(currentPoint).Accessible = false;
-            while (playerIndex != currentPoint)
-            {
-                currentPoint = Self(currentPoint).OriginDistance;
-                Self(currentPoint).Accessible = false;
-            }
-        }
+        
 
         public void UnlockZone(int zoneToAffect)
         {
@@ -649,6 +646,23 @@ namespace ARX_Reloaded
             }
 
             return unions;
+        }
+
+
+        public void ProcessPath(Point playerPos, int exitZone)
+        {
+            int playerIndex = playerPos.Y * width + playerPos.X;
+
+            setDistances(playerIndex);
+
+            //Trace path from player to end
+            int currentPoint = exitZone;
+            Self(currentPoint).Accessible = false;
+            while (playerIndex != currentPoint)
+            {
+                currentPoint = Self(currentPoint).OriginDistance;
+                Self(currentPoint).Accessible = false;
+            }
         }
     }
 }
