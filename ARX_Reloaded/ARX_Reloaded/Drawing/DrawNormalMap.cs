@@ -20,44 +20,44 @@ namespace ARX_Reloaded
 
                     if (DrawMap.ThisCase.Visited == true)
                     {
-                        pictureElement.Graphics.FillRectangle(DrawMap.BackColor, DrawMap.CaseBackground());
+                        pictureElement.Graphics.FillRectangle(DrawMap.BackBrush, DrawMap.CaseBackground());
 
                         #region Case pattern drawing
                         //Self path draw
                         if (DrawMap.ThisCase.State != ARX.State.Void)
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathInside());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathInside());
                         }
 
                         //Externals paths draw
                         if (map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathUp());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathUp());
                         }
                         if (map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathRight());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathRight());
                         }
                         if (map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathDown());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathDown());
                         }
                         if (map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathLeft());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathLeft());
                         }
                         #endregion
 
                         //Cross draw
                         if(!DrawMap.ThisCase.Accessible)
                         {
-                            pictureElement.Graphics.FillPolygon(DrawMap.ContrastColor, DrawMap.CrossPoints());
+                            pictureElement.Graphics.FillPolygon(DrawMap.ContrastBrush, DrawMap.CrossPoints());
                         }
                     }
 
                     if(DrawMap.ThisCase.Coord == map.ExitIndex)
                     {
-                        pictureElement.Graphics.FillEllipse(DrawMap.AntiColor, new Rectangle(
+                        pictureElement.Graphics.FillEllipse(DrawMap.AntiBrush, new Rectangle(
                             Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),
                             Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1),
                             Convert.ToInt32(DrawMap.MapPathWidth * 2),

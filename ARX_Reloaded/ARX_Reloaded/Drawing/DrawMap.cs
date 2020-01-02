@@ -10,30 +10,31 @@ namespace ARX_Reloaded
 {
     public static class DrawMap
     {
-        static public double MapDrawLengthX;
-        static public double MapDrawLengthY;
+        public static double MapDrawLengthX;
+        public static double MapDrawLengthY;
 
-        static public Point MapDrawStart = new Point();
-        static public Point MapDrawStop = new Point();
+        public static Point MapDrawStart = new Point();
+        public static Point MapDrawStop = new Point();
 
-        static public double MapCaseWidth;
-        static public double MapCaseHeight;
+        public static double MapCaseWidth;
+        public static double MapCaseHeight;
 
-        static public double MapPathWidth;
-        static public double MapPathHeight;
+        public static double MapPathWidth;
+        public static double MapPathHeight;
 
-        static public Map Map;
-        static public Player Player;
+        public static Map Map;
+        public static Player Player;
 
 
-        static public Case ThisCase;
-        static public double CasePosX;
-        static public double CasePosY;
+        public static Case ThisCase;
+        public static double CasePosX;
+        public static double CasePosY;
 
-        static public SolidBrush PathColor;
-        static public SolidBrush BackColor;
-        static public SolidBrush AntiColor;
-        static public SolidBrush ContrastColor;
+        public static Pen PathPen;
+        public static SolidBrush PathBrush;
+        public static SolidBrush BackBrush;
+        public static SolidBrush AntiBrush;
+        public static SolidBrush ContrastBrush;
 
 
         public static void PrepareMap(PaintEventArgs pictureElement, Size picBoxSize, Map map, int type, Player player, int zoom)
@@ -66,14 +67,16 @@ namespace ARX_Reloaded
             CasePosY = (indexY - MapDrawStart.Y) * MapCaseHeight;
 
             ThisCase = Map.Self(indexY * Map.Width + indexX);
-            PathColor = new SolidBrush(ThisCase.ZoneColor);
-            BackColor = new SolidBrush(Color.Black);
-            AntiColor = new SolidBrush(ThisCase.AntiColor);
-            ContrastColor = new SolidBrush(ThisCase.ContrastColor);
+
+            PathBrush = new SolidBrush(ThisCase.ZoneColor);
+            PathPen = new Pen(ThisCase.ZoneColor);
+            BackBrush = new SolidBrush(Color.Black);
+            AntiBrush = new SolidBrush(ThisCase.AntiColor);
+            ContrastBrush = new SolidBrush(ThisCase.ContrastColor);
         }
 
         #region Create map patterns
-        static public Rectangle CaseBackground()
+        public static Rectangle CaseBackground()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth* 0)),
@@ -83,7 +86,7 @@ namespace ARX_Reloaded
             );
         }
 
-        static public Rectangle PathUp()
+        public static Rectangle PathUp()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth * 1)),
@@ -93,7 +96,7 @@ namespace ARX_Reloaded
             );
         }
 
-        static public Rectangle PathRight()
+        public static Rectangle PathRight()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth * 3)),
@@ -103,7 +106,7 @@ namespace ARX_Reloaded
             );
         }
 
-        static public Rectangle PathDown()
+        public static Rectangle PathDown()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth * 1)),
@@ -113,7 +116,7 @@ namespace ARX_Reloaded
             );
         }
 
-        static public Rectangle PathLeft()
+        public static Rectangle PathLeft()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth * 0)),
@@ -123,7 +126,7 @@ namespace ARX_Reloaded
             );
         }
 
-        static public Rectangle PathInside()
+        public static Rectangle PathInside()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth * 1)),
@@ -135,7 +138,7 @@ namespace ARX_Reloaded
         #endregion Create map patterns
 
         #region Create events patterns
-        static public Point[] CrossPoints()
+        public static Point[] CrossPoints()
         {
             return new Point[] {
                 new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.0),   Convert.ToInt32(CasePosY+MapPathHeight*1.8)),
@@ -162,7 +165,7 @@ namespace ARX_Reloaded
         #endregion
 
         #region Create player pattern
-        static public Point[] PlayerPoints()
+        public static Point[] PlayerPoints()
         {
             Point[] playerCursor = new Point[] { };
 

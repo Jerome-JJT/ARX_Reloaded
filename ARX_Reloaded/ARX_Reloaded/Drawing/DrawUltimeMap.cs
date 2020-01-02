@@ -20,91 +20,91 @@ namespace ARX_Reloaded
 
                     if (DrawMap.ThisCase.Visited == true)
                     {
-                        pictureElement.Graphics.FillRectangle(DrawMap.BackColor, DrawMap.CaseBackground());
+                        pictureElement.Graphics.FillRectangle(DrawMap.BackBrush, DrawMap.CaseBackground());
 
                         #region Case pattern drawing
                         //Create internal angles
                         if (!map.CanGoUp(DrawMap.ThisCase.Coord) && !map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillPie(DrawMap.PathColor, DrawMap.PathInside(), 270, 90);
+                            pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 270, 90);
                         }
                         else
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, InUpRight());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, InUpRight());
                         }
                         if (!map.CanGoRight(DrawMap.ThisCase.Coord) && !map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillPie(DrawMap.PathColor, DrawMap.PathInside(), 0, 90);
+                            pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 0, 90);
                         }
                         else
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, InDownRight());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, InDownRight());
                         }
                         if (!map.CanGoDown(DrawMap.ThisCase.Coord) && !map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillPie(DrawMap.PathColor, DrawMap.PathInside(), 90, 90);
+                            pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 90, 90);
                         }
                         else
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, InDownLeft());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, InDownLeft());
                         }
                         if (!map.CanGoLeft(DrawMap.ThisCase.Coord) && !map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillPie(DrawMap.PathColor, DrawMap.PathInside(), 180, 90);
+                            pictureElement.Graphics.FillPie(DrawMap.PathBrush, DrawMap.PathInside(), 180, 90);
                         }
                         else
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, InUpLeft());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, InUpLeft());
                         }
 
                         //Create path between cases
                         if (map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathUp());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathUp());
                         }
                         if (map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathRight());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathRight());
                         }
                         if (map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathDown());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathDown());
                         }
                         if (map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DrawMap.PathLeft());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DrawMap.PathLeft());
                         }
 
                         //Create externals angles
                         if (map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, UpRightArc());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, UpRightArc());
                         }
                         if (map.CanGoRight(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DownRightArc());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DownRightArc());
                         }
                         if (map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, DownLeftArc());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, DownLeftArc());
                         }
                         if (map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillRectangle(DrawMap.PathColor, UpLeftArc());
+                            pictureElement.Graphics.FillRectangle(DrawMap.PathBrush, UpLeftArc());
                         }
 
-                        pictureElement.Graphics.FillEllipse(DrawMap.BackColor, OutsideArc());
+                        pictureElement.Graphics.FillEllipse(DrawMap.BackBrush, OutsideArc());
                         #endregion
 
                         if (!DrawMap.ThisCase.Accessible)
                         {
-                            pictureElement.Graphics.FillPolygon(DrawMap.ContrastColor, DrawMap.CrossPoints());
+                            pictureElement.Graphics.FillPolygon(DrawMap.ContrastBrush, DrawMap.CrossPoints());
                         }
                     }
 
                     if (DrawMap.ThisCase.Coord == map.ExitIndex)
                     {
-                        pictureElement.Graphics.FillEllipse(DrawMap.AntiColor, new Rectangle(
+                        pictureElement.Graphics.FillEllipse(DrawMap.AntiBrush, new Rectangle(
                             Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),
                             Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1),
                             Convert.ToInt32(DrawMap.MapPathWidth * 2),
@@ -125,7 +125,7 @@ namespace ARX_Reloaded
         }
 
         #region ARC drawing
-        static public Rectangle UpLeftArc()
+        public static Rectangle UpLeftArc()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 0)),
@@ -134,7 +134,7 @@ namespace ARX_Reloaded
                 Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight))
             );
         }
-        static public Rectangle UpRightArc()
+        public static Rectangle UpRightArc()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)),
@@ -143,7 +143,7 @@ namespace ARX_Reloaded
                 Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight))
             );
         }
-        static public Rectangle DownLeftArc()
+        public static Rectangle DownLeftArc()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 0)),
@@ -152,7 +152,7 @@ namespace ARX_Reloaded
                 Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight))
             );
         }
-        static public Rectangle DownRightArc()
+        public static Rectangle DownRightArc()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)),
@@ -163,7 +163,7 @@ namespace ARX_Reloaded
         }
 
         //Empty externals corners
-        static public Rectangle OutsideArc()
+        public static Rectangle OutsideArc()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * -1)),
@@ -175,7 +175,7 @@ namespace ARX_Reloaded
         #endregion
 
         #region Inside paths drawing
-        static public Rectangle InUpLeft()
+        public static Rectangle InUpLeft()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 1)),
@@ -184,7 +184,7 @@ namespace ARX_Reloaded
                 Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight))
             );
         }
-        static public Rectangle InUpRight()
+        public static Rectangle InUpRight()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 2)),
@@ -193,7 +193,7 @@ namespace ARX_Reloaded
                 Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight))
             );
         }
-        static public Rectangle InDownLeft()
+        public static Rectangle InDownLeft()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 1)),
@@ -202,7 +202,7 @@ namespace ARX_Reloaded
                 Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight))
             );
         }
-        static public Rectangle InDownRight()
+        public static Rectangle InDownRight()
         {
             return new Rectangle(
                 Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 2)),

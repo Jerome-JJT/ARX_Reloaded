@@ -16,249 +16,134 @@ namespace ARX_Reloaded
             {
                 for (int w = DrawMap.MapDrawStart.X; w < DrawMap.MapDrawStop.X; w++)
                 {
-                    double thisCaseX = (w - DrawMap.MapDrawStart.X) * DrawMap.MapCaseWidth;
-                    double thisCaseY = (h - DrawMap.MapDrawStart.Y) * DrawMap.MapCaseHeight;
+                    DrawMap.PrepareCase(w, h);
 
-                    Point[] upLeft = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*0)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                    };
-
-                    Point[] upRight = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*0)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                    };
-
-
-                    Point[] rightUp = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*4),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                    };
-
-                    Point[] rightDown = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*4),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                    };
-
-
-                    Point[] downLeft = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*4)),
-                    };
-
-                    Point[] downRight = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*4)),
-                    };
-
-
-                    Point[] leftUp = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*0),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                    };
-
-                    Point[] leftDown = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*0),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                    };
-
-
-
-                    Point[] inUpLeft = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*2),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                    };
-                    Point[] inUpRight = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*2),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                    };
-
-                    Point[] inRightUp = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*2)),
-                    };
-                    Point[] inRightDown = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*2)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                    };
-
-                    Point[] inDownLeft = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*2),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                    };
-                    Point[] inDownRight = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*2),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*3),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                    };
-
-                    Point[] inLeftUp = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*1)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*2)),
-                    };
-                    Point[] inLeftDown = {
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*2)),
-                        new Point(Convert.ToInt32(thisCaseX+DrawMap.MapPathWidth*1),   Convert.ToInt32(thisCaseY+DrawMap.MapPathHeight*3)),
-                    };
-
-
-                    Rectangle insideArc = new Rectangle(
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 1), Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 1),
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 3) - Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 1),
-                        Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 3) - Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 1)
-                    );
-
-
-                    Rectangle upLeftArc = new Rectangle(
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * -1), Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * -1),
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 1) - Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * -1),
-                        Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 1) - Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * -1)
-                    );
-                    Rectangle upRightArc = new Rectangle(
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 3), Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * -1),
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 5) - Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 3),
-                        Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 1) - Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * -1)
-                    );
-                    Rectangle downLeftArc = new Rectangle(
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * -1), Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 3),
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 1) - Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * -1),
-                        Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 5) - Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 3)
-                    );
-                    Rectangle downRightArc = new Rectangle(
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 3), Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 3),
-                        Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 5) - Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 3),
-                        Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 5) - Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 3)
-                    );
-
-
-                    Case thisCase = map.Cases[h * map.Width + w];
-                    Pen pathColor = new Pen(thisCase.ZoneColor);
-                    SolidBrush antiColor = new SolidBrush(thisCase.AntiColor);
-                    SolidBrush contrastColor = new SolidBrush(thisCase.ContrastColor);
-
-                    if (map.Self(thisCase.Coord).Visited == true)
+                    if (map.Self(DrawMap.ThisCase.Coord).Visited == true)
                     {
-                        if (map.CanGoUp(thisCase.Coord) && map.CanGoRight(thisCase.Coord))
+                        #region Case pattern drawing
+                        if (map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, upRightArc, 90, 90);
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcUpRight(), 90, 90);
                         }
                         else
                         {
-                            if (map.CanGoUp(thisCase.Coord))
+                            if (map.CanGoUp(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, upRight);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutUpRight());
                             }
-                            else if (map.CanGoRight(thisCase.Coord))
+                            else if (map.CanGoRight(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, rightUp);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutRightUp());
                             }
                         }
 
-                        if (map.CanGoRight(thisCase.Coord) && map.CanGoDown(thisCase.Coord))
+                        if (map.CanGoRight(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, downRightArc, 180, 90);
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcDownRight(), 180, 90);
                         }
                         else
                         {
-                            if (map.CanGoRight(thisCase.Coord))
+                            if (map.CanGoRight(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, rightDown);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutRightDown());
                             }
-                            else if (map.CanGoDown(thisCase.Coord))
+                            else if (map.CanGoDown(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, downRight);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutDownRight());
                             }
                         }
 
-                        if (map.CanGoDown(thisCase.Coord) && map.CanGoLeft(thisCase.Coord))
+                        if (map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, downLeftArc, 270, 90);
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcDownLeft(), 270, 90);
                         }
                         else
                         {
-                            if (map.CanGoDown(thisCase.Coord))
+                            if (map.CanGoDown(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, downLeft);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutDownLeft());
                             }
-                            else if (map.CanGoLeft(thisCase.Coord))
+                            else if (map.CanGoLeft(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, leftDown);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutLeftDown());
                             }
                         }
 
-                        if (map.CanGoLeft(thisCase.Coord) && map.CanGoUp(thisCase.Coord))
+                        if (map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, upLeftArc, 0, 90);
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, ArcUpLeft(), 0, 90);
                         }
                         else
                         {
-                            if (map.CanGoLeft(thisCase.Coord))
+                            if (map.CanGoLeft(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, leftUp);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutLeftUp());
                             }
-                            else if (map.CanGoUp(thisCase.Coord))
+                            else if (map.CanGoUp(DrawMap.ThisCase.Coord))
                             {
-                                pictureElement.Graphics.DrawPolygon(pathColor, upLeft);
+                                pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, OutUpLeft());
                             }
                         }
 
 
-                        if (!map.CanGoUp(thisCase.Coord) && !map.CanGoRight(thisCase.Coord))
+                        if (!map.CanGoUp(DrawMap.ThisCase.Coord) && !map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, insideArc, 270, 90);
-                            if (map.CanGoLeft(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inUpLeft); }
-                            if (map.CanGoDown(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inRightDown); }
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 270, 90);
+                            if (map.CanGoLeft(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpLeft()); }
+                            if (map.CanGoDown(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightDown()); }
                         }
-                        if (!map.CanGoRight(thisCase.Coord) && !map.CanGoDown(thisCase.Coord))
+                        if (!map.CanGoRight(DrawMap.ThisCase.Coord) && !map.CanGoDown(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, insideArc, 0, 90);
-                            if (map.CanGoUp(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inRightUp); }
-                            if (map.CanGoLeft(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inDownLeft); }
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 0, 90);
+                            if (map.CanGoUp(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightUp()); }
+                            if (map.CanGoLeft(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownLeft()); }
                         }
-                        if (!map.CanGoDown(thisCase.Coord) && !map.CanGoLeft(thisCase.Coord))
+                        if (!map.CanGoDown(DrawMap.ThisCase.Coord) && !map.CanGoLeft(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, insideArc, 90, 90);
-                            if (map.CanGoRight(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inDownRight); }
-                            if (map.CanGoUp(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inLeftUp); }
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 90, 90);
+                            if (map.CanGoRight(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownRight()); }
+                            if (map.CanGoUp(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftUp()); }
                         }
-                        if (!map.CanGoLeft(thisCase.Coord) && !map.CanGoUp(thisCase.Coord))
+                        if (!map.CanGoLeft(DrawMap.ThisCase.Coord) && !map.CanGoUp(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.DrawArc(pathColor, insideArc, 180, 90);
-                            if (map.CanGoDown(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inLeftDown); }
-                            if (map.CanGoRight(thisCase.Coord)) { pictureElement.Graphics.DrawPolygon(pathColor, inUpRight); }
-                        }
-
-                        if (!map.CanGoUp(thisCase.Coord) && map.CanGoLeft(thisCase.Coord) && map.CanGoRight(thisCase.Coord))
-                        {
-                            pictureElement.Graphics.DrawPolygon(pathColor, inUpLeft);
-                            pictureElement.Graphics.DrawPolygon(pathColor, inUpRight);
-                        }
-                        if (!map.CanGoRight(thisCase.Coord) && map.CanGoUp(thisCase.Coord) && map.CanGoDown(thisCase.Coord))
-                        {
-                            pictureElement.Graphics.DrawPolygon(pathColor, inRightUp);
-                            pictureElement.Graphics.DrawPolygon(pathColor, inRightDown);
-                        }
-                        if (!map.CanGoDown(thisCase.Coord) && map.CanGoLeft(thisCase.Coord) && map.CanGoRight(thisCase.Coord))
-                        {
-                            pictureElement.Graphics.DrawPolygon(pathColor, inDownLeft);
-                            pictureElement.Graphics.DrawPolygon(pathColor, inDownRight);
-                        }
-                        if (!map.CanGoLeft(thisCase.Coord) && map.CanGoDown(thisCase.Coord) && map.CanGoUp(thisCase.Coord))
-                        {
-                            pictureElement.Graphics.DrawPolygon(pathColor, inLeftUp);
-                            pictureElement.Graphics.DrawPolygon(pathColor, inLeftDown);
+                            pictureElement.Graphics.DrawArc(DrawMap.PathPen, InsideArc(), 180, 90);
+                            if (map.CanGoDown(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftDown()); }
+                            if (map.CanGoRight(DrawMap.ThisCase.Coord)) { pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpRight()); }
                         }
 
-                        if (!thisCase.Accessible)
+                        if (!map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
                         {
-                            pictureElement.Graphics.FillPolygon(contrastColor, DrawMap.CrossPoints());
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpLeft());
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InUpRight());
+                        }
+                        if (!map.CanGoRight(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord))
+                        {
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightUp());
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InRightDown());
+                        }
+                        if (!map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoRight(DrawMap.ThisCase.Coord))
+                        {
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownLeft());
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InDownRight());
+                        }
+                        if (!map.CanGoLeft(DrawMap.ThisCase.Coord) && map.CanGoDown(DrawMap.ThisCase.Coord) && map.CanGoUp(DrawMap.ThisCase.Coord))
+                        {
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftUp());
+                            pictureElement.Graphics.DrawPolygon(DrawMap.PathPen, InLeftDown());
+                        }
+                        #endregion
+
+                        if (!DrawMap.ThisCase.Accessible)
+                        {
+                            pictureElement.Graphics.FillPolygon(DrawMap.ContrastBrush, DrawMap.CrossPoints());
                         }
                     }
 
-                    if (thisCase.Coord == map.ExitIndex)
+                    if (DrawMap.ThisCase.Coord == map.ExitIndex)
                     {
-                        pictureElement.Graphics.FillEllipse(antiColor, new Rectangle(
-                            Convert.ToInt32(thisCaseX + DrawMap.MapPathWidth * 1),
-                            Convert.ToInt32(thisCaseY + DrawMap.MapPathHeight * 1),
+                        pictureElement.Graphics.FillEllipse(DrawMap.AntiBrush, new Rectangle(
+                            Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),
+                            Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1),
                             Convert.ToInt32(DrawMap.MapPathWidth*2),
                             Convert.ToInt32(DrawMap.MapPathHeight*2)));
                     }
@@ -268,5 +153,167 @@ namespace ARX_Reloaded
             pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Red), DrawMap.PlayerPoints());
             pictureElement.Graphics.DrawPolygon(new Pen(Color.Black), DrawMap.PlayerPoints());
         }
+
+        #region Inside walls
+        public static Point[] InUpLeft()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+            };
+        }
+        public static Point[] InUpRight()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+            };
+        }
+        public static Point[] InRightUp()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
+            };
+        }
+        public static Point[] InRightDown()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+            };
+        }
+        public static Point[] InDownLeft()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+            };
+        }
+        public static Point[] InDownRight()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+            };
+        }
+        public static Point[] InLeftUp()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
+            };
+        }
+        public static Point[] InLeftDown()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+            };
+        }
+        #endregion
+
+        #region Outside walls
+        public static Point[] OutUpLeft()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 0)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+            };
+        }
+        public static Point[] OutUpRight()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 0)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+            };
+        }
+        public static Point[] OutRightUp()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 4), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+            };
+        }
+
+        public static Point[] OutRightDown()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 4), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
+            };
+        }
+        public static Point[] OutDownLeft()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 4)),
+            };
+        }
+        public static Point[] OutDownRight()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*4)),
+            };
+        }
+        public static Point[] OutLeftUp()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*0),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+            };
+        }
+        public static Point[] OutLeftDown()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*0),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+            };
+        }
+        #endregion
+
+        #region Arc walls
+        public static Rectangle InsideArc()
+        {
+            return new Rectangle(
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1),
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),
+                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)
+            );
+        }
+        public static Rectangle ArcUpLeft()
+        {
+            return new Rectangle(
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1),
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1),
+                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1)
+            );
+        }
+        public static Rectangle ArcUpRight()
+        {
+            return new Rectangle(
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1),
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 5) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3),
+                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1)
+            );
+        }
+        public static Rectangle ArcDownLeft()
+        {
+            return new Rectangle(
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3),
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1),
+                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 5) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)
+            );
+        }
+        public static Rectangle ArcDownRight()
+        {
+            return new Rectangle(
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3),
+                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 5) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3),
+                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 5) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)
+            );
+        }
+        #endregion
     }
 }
