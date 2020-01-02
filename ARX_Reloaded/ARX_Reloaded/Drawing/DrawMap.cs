@@ -79,10 +79,10 @@ namespace ARX_Reloaded
         public static Rectangle CaseBackground()
         {
             return new Rectangle(
-                Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth* 0)),
-                Convert.ToInt32(Math.Ceiling(CasePosY + MapPathHeight* 0)),
-                Convert.ToInt32(Math.Ceiling(MapPathWidth* 4)), 
-                Convert.ToInt32(Math.Ceiling(MapPathHeight* 4))
+                Convert.ToInt32(Math.Ceiling(CasePosX + MapPathWidth * 0)),
+                Convert.ToInt32(Math.Ceiling(CasePosY + MapPathHeight * 0)),
+                Convert.ToInt32(Math.Ceiling(MapPathWidth * 4)), 
+                Convert.ToInt32(Math.Ceiling(MapPathHeight * 4))
             );
         }
 

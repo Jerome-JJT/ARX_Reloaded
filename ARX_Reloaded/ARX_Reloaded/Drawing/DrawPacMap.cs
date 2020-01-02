@@ -158,57 +158,73 @@ namespace ARX_Reloaded
         public static Point[] InUpLeft()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),  
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*2)),  
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1)))
             };
         }
         public static Point[] InUpRight()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*2)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1)))
             };
         }
         public static Point[] InRightUp()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*2)))
             };
         }
         public static Point[] InRightDown()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*2))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3)))
             };
         }
         public static Point[] InDownLeft()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*2)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3)))
             };
         }
         public static Point[] InDownRight()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*2),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*2)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3)))
             };
         }
         public static Point[] InLeftUp()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*2)))
             };
         }
         public static Point[] InLeftDown()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*2)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*2))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3)))
             };
         }
         #endregion
@@ -217,58 +233,74 @@ namespace ARX_Reloaded
         public static Point[] OutUpLeft()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 0)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 1)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 0))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 1)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)))
             };
         }
         public static Point[] OutUpRight()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 0)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 0))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)))
             };
         }
         public static Point[] OutRightUp()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 4), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 1))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 4)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)))
             };
         }
 
         public static Point[] OutRightDown()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 4), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 3))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 4)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)))
             };
         }
         public static Point[] OutDownLeft()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 4)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 1)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 3))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 1)), 
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 4)))
             };
         }
         public static Point[] OutDownRight()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*3),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*4)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth * 3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight * 3))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth * 3)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight * 4)))
             };
         }
         public static Point[] OutLeftUp()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*0),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*1)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*0)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*1))),
             };
         }
         public static Point[] OutLeftDown()
         {
             return new Point[] {
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*0),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
-                new Point(Convert.ToInt32(DrawMap.CasePosX+DrawMap.MapPathWidth*1),   Convert.ToInt32(DrawMap.CasePosY+DrawMap.MapPathHeight*3)),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*0)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3))),
+                new Point(Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX+DrawMap.MapPathWidth*1)),   
+                          Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY+DrawMap.MapPathHeight*3))),
             };
         }
         #endregion
@@ -277,41 +309,46 @@ namespace ARX_Reloaded
         public static Rectangle InsideArc()
         {
             return new Rectangle(
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1),
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1),
-                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 1)), 
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 1)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathWidth * 2)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight * 2))
             );
         }
         public static Rectangle ArcUpLeft()
         {
             return new Rectangle(
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1),
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1),
-                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1)
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * -1)), 
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * -1)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathWidth * 2)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight * 2))
             );
         }
         public static Rectangle ArcUpRight()
         {
             return new Rectangle(
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1),
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 5) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3),
-                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 1) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * -1)
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)), 
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * -1)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathWidth * 2)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight * 2))
             );
         }
         public static Rectangle ArcDownLeft()
         {
             return new Rectangle(
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3),
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 1) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * -1),
-                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 5) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * -1)), 
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathWidth * 2)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight * 2))
             );
         }
         public static Rectangle ArcDownRight()
         {
             return new Rectangle(
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3), Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3),
-                Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 5) - Convert.ToInt32(DrawMap.CasePosX + DrawMap.MapPathWidth * 3),
-                Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 5) - Convert.ToInt32(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosX + DrawMap.MapPathWidth * 3)), 
+                Convert.ToInt32(Math.Ceiling(DrawMap.CasePosY + DrawMap.MapPathHeight * 3)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathWidth * 2)),
+                Convert.ToInt32(Math.Ceiling(DrawMap.MapPathHeight * 2))
             );
         }
         #endregion
