@@ -137,7 +137,7 @@ namespace ARX_Reloaded
 
                         if (!DrawMap.ThisCase.Accessible)
                         {
-                            pictureElement.Graphics.FillPolygon(DrawMap.ContrastBrush, DrawMap.CrossPoints());
+                            pictureElement.Graphics.FillPolygon(DrawMap.AntiBrush, DrawMap.CrossPoints());
                         }
                     }
 

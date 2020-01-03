@@ -20,6 +20,8 @@ namespace ARX_Reloaded
         private int originDistance;
         private int scoreDistance;
 
+        private CaseEvent caseEvent;
+
         public Case(int coord)
         {
             this.state = 0;
@@ -32,6 +34,8 @@ namespace ARX_Reloaded
             this.coord = coord;
             this.originDistance = -1;
             this.scoreDistance = -1;
+
+            this.caseEvent = null;
         }
 
         public ARX.State State
@@ -85,7 +89,6 @@ namespace ARX_Reloaded
         public int Coord
         {
             get { return coord; }
-            set { coord = value; }
         }
 
         public int OriginDistance
@@ -104,6 +107,12 @@ namespace ARX_Reloaded
         public ARX.State NextPathState
         {
             get { return (ARX.State)((int)state % 4 + 1); }
+        }
+
+        public CaseEvent CaseEvent
+        {
+            get { return caseEvent; }
+            set { caseEvent = value; }
         }
     }
 }

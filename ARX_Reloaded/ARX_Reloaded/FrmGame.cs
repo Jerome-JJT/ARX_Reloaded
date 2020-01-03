@@ -118,8 +118,8 @@ namespace ARX_Reloaded
                 DrawMap.PrepareMap(picMap.Size, map, 1, player);
 
                 //DrawNormalMap.DrawTotalMap(e);
-                DrawPacMap.DrawTotalMap(e);
-                //DrawUltimeMap.DrawTotalMap(e);
+                //DrawPacMap.DrawTotalMap(e);
+                DrawUltimeMap.DrawTotalMap(e);
             }
         }
 
