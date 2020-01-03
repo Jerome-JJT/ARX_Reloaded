@@ -26,6 +26,21 @@ namespace ARX_Reloaded
             Cross = 4
         }
 
+        public enum MapType
+        {
+            Normal,
+            Pacman,
+            Fill
+        }
+
+        /*public enum CaseType
+        {
+            Normal,
+            Base,
+            Exit,
+            Key
+        }*/
+
         //Shuffle a list
         public static void Shuffle<T>(Random random, IList<T> list)
         {

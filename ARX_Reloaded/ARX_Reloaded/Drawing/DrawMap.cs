@@ -22,9 +22,10 @@ namespace ARX_Reloaded
         public static double MapPathWidth;
         public static double MapPathHeight;
 
-        public static Map Map;
+        public static PaintEventArgs PictureElement;
         public static Player Player;
-
+        public static Map Map;
+        
 
         public static Case ThisCase;
         public static double CasePosX;
@@ -37,8 +38,9 @@ namespace ARX_Reloaded
         public static SolidBrush ContrastBrush;
 
 
-        public static void PrepareMap(Size picBoxSize, Map map, int type, Player player)
+        public static void Draw(PaintEventArgs pictureElement, Size picBoxSize, Map map, Player player, ARX.MapType mapType)
         {
+            PictureElement = pictureElement;
             Player = player;
             Map = map;
 
@@ -59,6 +61,75 @@ namespace ARX_Reloaded
             MapPathWidth = MapCaseWidth / 4.0;
             MapPathHeight = MapCaseHeight / 4.0;
 
+
+            for (int h = MapDrawStart.Y; h < MapDrawStop.Y; h++)
+            {
+                for (int w = MapDrawStart.X; w < MapDrawStop.X; w++)
+                {
+                    PrepareCase(w, h);
+
+                    if (ThisCase.Visited == true)
+                    {
+                        pictureElement.Graphics.FillRectangle(BackBrush, CaseBackground());
+
+                        if (mapType == ARX.MapType.Normal)
+                        {
+                            DrawNormal.Draw();
+                        }
+                        else if (mapType == ARX.MapType.Pacman)
+                        {
+                            DrawPacman.Draw();
+                        }
+                        else if (mapType == ARX.MapType.Fill)
+                        {
+                            DrawFill.Draw();
+                        }
+
+                        //Cross draw
+                        if (!ThisCase.Accessible)
+                        {
+                            pictureElement.Graphics.FillPolygon(ContrastBrush, CrossPoints());
+                        }
+                    }
+
+                    /*if (ThisCase.Coord == map.ExitIndex)
+                    {
+                        pictureElement.Graphics.FillEllipse(AntiBrush, new Rectangle(
+                            Convert.ToInt32(CasePosX + MapPathWidth * 1),
+                            Convert.ToInt32(CasePosY + MapPathHeight * 1),
+                            Convert.ToInt32(MapPathWidth * 2),
+                            Convert.ToInt32(MapPathHeight * 2)));
+                    }*/
+                    if (ThisCase.CaseEvent.GetType() == typeof(BaseEvent))
+                    {
+                        pictureElement.Graphics.FillPolygon(AntiBrush, BasePoints());
+                    }
+                    else if (ThisCase.CaseEvent.GetType() == typeof(ExitEvent))
+                    {
+                        pictureElement.Graphics.FillPolygon(AntiBrush, UpStairsPoints());
+                    }
+                    else if (ThisCase.CaseEvent.GetType() == typeof(KeyEvent))
+                    {
+                        pictureElement.Graphics.FillPolygon(AntiBrush, KeyPoints());
+                        pictureElement.Graphics.DrawString(((KeyEvent)ThisCase.CaseEvent).ZoneToOpen.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
+                            Convert.ToInt32(CasePosX + MapPathWidth * 0.8),
+                            Convert.ToInt32(CasePosY + MapPathHeight * 0.6),
+                            Convert.ToInt32(MapPathWidth * 3),
+                            Convert.ToInt32(MapPathHeight * 3)));
+                    }
+                    /*else
+                    {
+                        pictureElement.Graphics.DrawString(ThisCase.Zone.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
+                            Convert.ToInt32(CasePosX + MapPathWidth * 0.8),
+                            Convert.ToInt32(CasePosY + MapPathHeight * 0.6),
+                            Convert.ToInt32(MapPathWidth * 3),
+                            Convert.ToInt32(MapPathHeight * 3)));
+                    }*/
+                }
+            }
+
+            pictureElement.Graphics.FillPolygon(new SolidBrush(Color.Red), PlayerPoints());
+            pictureElement.Graphics.DrawPolygon(new Pen(Color.Black), PlayerPoints());
         }
 
         public static void PrepareCase(int indexX, int indexY)
@@ -138,33 +209,6 @@ namespace ARX_Reloaded
         }
         #endregion Create map patterns
 
-        #region Create events patterns
-        public static Point[] CrossPoints()
-        {
-            return new Point[] {
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.0),   Convert.ToInt32(CasePosY+MapPathHeight*1.8)),
-
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.5),   Convert.ToInt32(CasePosY+MapPathHeight*1.3)),
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.7),   Convert.ToInt32(CasePosY+MapPathHeight*1.5)),
-                                                                                         
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*2.0)),
-                                                                                     
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.7),   Convert.ToInt32(CasePosY+MapPathHeight*2.5)),
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.5),   Convert.ToInt32(CasePosY+MapPathHeight*2.7)),
-                                                                            
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2),     Convert.ToInt32(CasePosY+MapPathHeight*2.2)),
-                                                                               
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.5),   Convert.ToInt32(CasePosY+MapPathHeight*2.7)),
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.3),   Convert.ToInt32(CasePosY+MapPathHeight*2.5)),
-                                                            
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.0)),
-
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.3),   Convert.ToInt32(CasePosY+MapPathHeight*1.5)),
-                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.5),   Convert.ToInt32(CasePosY+MapPathHeight*1.3))
-            };
-        }
-        #endregion
-
         #region Create player pattern
         public static Point[] PlayerPoints()
         {
@@ -207,6 +251,89 @@ namespace ARX_Reloaded
             }
 
             return null;
+        }
+        #endregion
+
+        #region Create events patterns
+        public static Point[] CrossPoints()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.0),   Convert.ToInt32(CasePosY+MapPathHeight*1.8)),
+
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.5),   Convert.ToInt32(CasePosY+MapPathHeight*1.3)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.7),   Convert.ToInt32(CasePosY+MapPathHeight*1.5)),
+                                                                                         
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*2.0)),
+                                                                                     
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.7),   Convert.ToInt32(CasePosY+MapPathHeight*2.5)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.5),   Convert.ToInt32(CasePosY+MapPathHeight*2.7)),
+                                                                            
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2),     Convert.ToInt32(CasePosY+MapPathHeight*2.2)),
+                                                                               
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.5),   Convert.ToInt32(CasePosY+MapPathHeight*2.7)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.3),   Convert.ToInt32(CasePosY+MapPathHeight*2.5)),
+                                                            
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.0)),
+
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.3),   Convert.ToInt32(CasePosY+MapPathHeight*1.5)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.5),   Convert.ToInt32(CasePosY+MapPathHeight*1.3))
+            };
+        }
+
+        public static Point[] KeyPoints()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.6),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.4),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.4),   Convert.ToInt32(CasePosY+MapPathHeight*2.0)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.0)),
+
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*2.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*2.4)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.4)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.6)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.4),   Convert.ToInt32(CasePosY+MapPathHeight*2.6)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.4),   Convert.ToInt32(CasePosY+MapPathHeight*2.8)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.6),   Convert.ToInt32(CasePosY+MapPathHeight*2.8)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.6),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+
+
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*1.4)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*1.4)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*1.8)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*1.8)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.8),   Convert.ToInt32(CasePosY+MapPathHeight*1.4))
+            };
+        }
+
+        public static Point[] UpStairsPoints()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.1),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.7),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.7),   Convert.ToInt32(CasePosY+MapPathHeight*1.7)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*1.7)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.2),   Convert.ToInt32(CasePosY+MapPathHeight*2.3)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.3)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.9)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.1),   Convert.ToInt32(CasePosY+MapPathHeight*2.9)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.1),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+            };
+        }
+
+        public static Point[] BasePoints()
+        {
+            return new Point[] {
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.6),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.4),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.8),   Convert.ToInt32(CasePosY+MapPathHeight*1.6)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.8),   Convert.ToInt32(CasePosY+MapPathHeight*2.4)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*2.4),   Convert.ToInt32(CasePosY+MapPathHeight*2.8)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.6),   Convert.ToInt32(CasePosY+MapPathHeight*2.8)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.2),   Convert.ToInt32(CasePosY+MapPathHeight*2.4)),
+                new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.2),   Convert.ToInt32(CasePosY+MapPathHeight*1.6)),
+            };
         }
         #endregion
     }

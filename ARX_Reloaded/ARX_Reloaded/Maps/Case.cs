@@ -28,14 +28,14 @@ namespace ARX_Reloaded
             this.visited = true;
             this.accessible = true;
 
-            this.zone = 0;
+            this.zone = -1;
             this.zoneColor = Color.White;
 
             this.coord = coord;
             this.originDistance = -1;
             this.scoreDistance = -1;
 
-            this.caseEvent = null;
+            this.caseEvent = new NoEvent();
         }
 
         public ARX.State State

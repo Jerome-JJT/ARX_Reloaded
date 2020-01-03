@@ -170,7 +170,7 @@ namespace ARX_Reloaded
         //Check for non defined zone
         protected bool restEmptyZone()
         {
-            return !cases.TrueForAll(eachCase => eachCase.Zone != 0);
+            return !cases.TrueForAll(eachCase => eachCase.Zone != -1);
         }
 
         private bool inZoneRadius(double ratio, List<List<List<int>>> allZones, int newPoint)
@@ -367,7 +367,7 @@ namespace ARX_Reloaded
                 zonesPoints[eachZone][0].Add(newCoord);
 
                 //Generate zones id and colors
-                cases[newCoord].Zone = eachZone + 1;
+                cases[newCoord].Zone = eachZone;
                 cases[newCoord].ZoneColor =
                     Color.FromArgb(int.Parse($"FF{colorValues[eachZone % colorValues.Count]}",
                     System.Globalization.NumberStyles.HexNumber));
@@ -382,7 +382,7 @@ namespace ARX_Reloaded
                     //Advance each points 
                     foreach (int eachPoint in eachZone[0])
                     {
-                        if (CanGoUp(eachPoint) && Upper(eachPoint).Zone == 0)
+                        if (CanGoUp(eachPoint) && Upper(eachPoint).Zone == -1)
                         {
                             Upper(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -392,7 +392,7 @@ namespace ARX_Reloaded
                             eachZone[1].Add(Upper(eachPoint).Coord);
                         }
 
-                        if (CanGoRight(eachPoint) && Righter(eachPoint).Zone == 0)
+                        if (CanGoRight(eachPoint) && Righter(eachPoint).Zone == -1)
                         {
                             Righter(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -402,7 +402,7 @@ namespace ARX_Reloaded
                             eachZone[1].Add(Righter(eachPoint).Coord);
                         }
 
-                        if (CanGoDown(eachPoint) && Lower(eachPoint).Zone == 0)
+                        if (CanGoDown(eachPoint) && Lower(eachPoint).Zone == -1)
                         {
                             Lower(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -412,7 +412,7 @@ namespace ARX_Reloaded
                             eachZone[1].Add(Lower(eachPoint).Coord);
                         }
 
-                        if (CanGoLeft(eachPoint) && Lefter(eachPoint).Zone == 0)
+                        if (CanGoLeft(eachPoint) && Lefter(eachPoint).Zone == -1)
                         {
                             Lefter(eachPoint).Zone = Self(eachPoint).Zone;
 
@@ -443,6 +443,9 @@ namespace ARX_Reloaded
             while (inRadius(ratio, playerIndex, exitZone));
 
             exitIndex = exitZone;
+
+            cases[playerIndex].CaseEvent = new BaseEvent();
+            cases[exitIndex].CaseEvent = new ExitEvent();
         }
 
         public void GenerateZoneKey(Point playerPos, int exitZone)
@@ -477,7 +480,7 @@ namespace ARX_Reloaded
                     int newZone = adj.Where(oneZone => oneZone != oneZonePath).Single();
                     if (!zonesKeyed.Contains(newZone))
                     {
-                        addKeyToZone(oneZonePath, newZone);
+                        putKeyInZone(oneZonePath, newZone);
                         zonesKeyed.Add(newZone);
                     }
                     allUnions.Remove(adj);
@@ -504,7 +507,7 @@ namespace ARX_Reloaded
                     else
                     {
                         int nonKeyedZone = restUnion.Where(oneZone => oneZone != keyedZone.Single()).Single();
-                        addKeyToZone(keyedZone.Single(), nonKeyedZone);
+                        putKeyInZone(keyedZone.Single(), nonKeyedZone);
                         zonesKeyed.Add(nonKeyedZone);
                         allUnions.Remove(restUnion);
                     }
@@ -513,9 +516,13 @@ namespace ARX_Reloaded
         }
 
 
-        private void addKeyToZone(int keyZone, int zoneToOpen)
+        private void putKeyInZone(int keyZone, int zoneToOpen)
         {
-            Console.WriteLine($"{keyZone} to {zoneToOpen}");
+            List<Case> possibilities = cases.Where(eachCase => eachCase.Zone == keyZone && eachCase.CaseEvent.GetType() == typeof(NoEvent)).ToList();
+            Case keyCase = possibilities[rand.Next(possibilities.Count)];
+
+            keyCase.CaseEvent = new KeyEvent(zoneToOpen);
+            keyCase.Visited = true;
         }
 
         

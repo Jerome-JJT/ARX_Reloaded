@@ -20,6 +20,8 @@ namespace ARX_Reloaded
         //Random labyrinthRandom = new Random(6);
         Random labyrinthRandom = new Random(5);
 
+        int drawType = 0;
+
         int nbZones = 6;
         const int minZoomLevel = 1;
         const int maxCaseDisplay = 5;
@@ -115,11 +117,18 @@ namespace ARX_Reloaded
         {
             if(map != null)
             {
-                DrawMap.PrepareMap(picMap.Size, map, 1, player);
-
-                //DrawNormalMap.DrawTotalMap(e);
-                //DrawPacMap.DrawTotalMap(e);
-                DrawUltimeMap.DrawTotalMap(e);
+                if (drawType == 0)
+                {
+                    DrawMap.Draw(e, picMap.Size, map, player, ARX.MapType.Normal);
+                }
+                else if (drawType == 1)
+                {
+                    DrawMap.Draw(e, picMap.Size, map, player, ARX.MapType.Pacman);
+                }
+                else if (drawType == 2)
+                {
+                    DrawMap.Draw(e, picMap.Size, map, player, ARX.MapType.Fill);
+                }
             }
         }
 
@@ -197,6 +206,11 @@ namespace ARX_Reloaded
                         map.Zoom--;
                         picMap.Refresh();
                     }
+                    break;
+
+                case Keys.Multiply:
+                    drawType = (drawType + 1) % 3;
+                    picMap.Refresh();
                     break;
 
                 default:

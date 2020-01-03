@@ -47,10 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ARX.cs" />
-    <Compile Include="Drawing\DrawNormalMap.cs" />
-    <Compile Include="Drawing\DrawUltimeMap.cs" />
-    <Compile Include="Drawing\DrawPacMap.cs" />
+    <Compile Include="Drawing\DrawNormal.cs" />
+    <Compile Include="Drawing\DrawFill.cs" />
+    <Compile Include="Drawing\DrawPacman.cs" />
+    <Compile Include="Events\NoEvent.cs" />
+    <Compile Include="Events\ExitEvent.cs" />
+    <Compile Include="Events\BaseEvent.cs" />
+    <Compile Include="Events\KeyEvent.cs" />
     <Compile Include="Maps\Case.cs" />
+    <Compile Include="Events\CaseEvent.cs" />
     <Compile Include="Maps\MapFastChaos.cs" />
     <Compile Include="Maps\MapLines.cs" />
     <Compile Include="Maps\MapMultiple.cs" />
@@ -95,5 +100,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

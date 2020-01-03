@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ARX_Reloaded
 {
-    public class CaseEvent
+    public class ExitEvent : CaseEvent
     {
+        public ExitEvent()
+        {
+        }
     }
 }
