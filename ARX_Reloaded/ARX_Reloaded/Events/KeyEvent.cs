@@ -19,5 +19,9 @@ namespace ARX_Reloaded
         {
             get { return zoneToOpen; }
         }
+
+        public override void Action()
+        {
+        }
     }
 }

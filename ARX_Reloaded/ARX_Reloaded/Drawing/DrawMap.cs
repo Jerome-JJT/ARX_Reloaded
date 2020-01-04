@@ -108,14 +108,14 @@ namespace ARX_Reloaded
                     {
                         pictureElement.Graphics.FillPolygon(AntiBrush, UpStairsPoints());
                     }
-                    else if (ThisCase.CaseEvent.GetType() == typeof(KeyEvent))
+                    else if (ThisCase.CaseEvent.GetType() == typeof(KeyEvent) && ThisCase.Accessible)
                     {
-                        pictureElement.Graphics.FillPolygon(AntiBrush, KeyPoints());
-                        pictureElement.Graphics.DrawString(((KeyEvent)ThisCase.CaseEvent).ZoneToOpen.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
+                        pictureElement.Graphics.FillPolygon(ContrastBrush, KeyPoints());
+                        /*pictureElement.Graphics.DrawString(((KeyEvent)ThisCase.CaseEvent).ZoneToOpen.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
                             Convert.ToInt32(CasePosX + MapPathWidth * 0.8),
                             Convert.ToInt32(CasePosY + MapPathHeight * 0.6),
                             Convert.ToInt32(MapPathWidth * 3),
-                            Convert.ToInt32(MapPathHeight * 3)));
+                            Convert.ToInt32(MapPathHeight * 3)));*/
                     }
                     /*else
                     {

@@ -42,27 +42,21 @@ namespace ARX_Reloaded
 
         private static void goForward(ref Player player, Map map)
         {
-            if (player.Rotation == 0 && player.Y > 0 &&
-                (map.Upper(player.Y * map.Width + player.X).State == ARX.State.Down ||
-                 map.Upper(player.Y * map.Width + player.X).State == ARX.State.Cross))
+            int playerIndex = player.Y * map.Width + player.X;
+
+            if (player.Rotation == 0 && player.Y > 0 && map.CanGoUp(playerIndex))
             {
                 player.Y -= 1;
             }
-            else if (player.Rotation == 90 && player.X < map.Width &&
-                (map.Self(player.Y * map.Width + player.X).State == ARX.State.Right ||
-                 map.Self(player.Y * map.Width + player.X).State == ARX.State.Cross))
+            else if (player.Rotation == 90 && player.X < map.Width && map.CanGoRight(playerIndex))
             {
                 player.X += 1;
             }
-            else if (player.Rotation == 180 && player.Y < map.Height &&
-                (map.Self(player.Y * map.Width + player.X).State == ARX.State.Down ||
-                 map.Self(player.Y * map.Width + player.X).State == ARX.State.Cross))
+            else if (player.Rotation == 180 && player.Y < map.Height && map.CanGoDown(playerIndex))
             {
                 player.Y += 1;
             }
-            else if (player.Rotation == 270 && player.X > 0 &&
-                (map.Lefter(player.Y * map.Width + player.X).State == ARX.State.Right ||
-                 map.Lefter(player.Y * map.Width + player.X).State == ARX.State.Cross))
+            else if (player.Rotation == 270 && player.X > 0 && map.CanGoLeft(playerIndex))
             {
                 player.X -= 1;
             }
@@ -70,6 +64,8 @@ namespace ARX_Reloaded
 
         public static void Goto(Player player, Map map, ARX.Direction direction, bool pacmanMode)
         {
+            int playerIndexBefore = player.Y * map.Width + player.X;
+
             if (pacmanMode)
             {
                 if (direction == ARX.Direction.Up)
@@ -162,21 +158,15 @@ namespace ARX_Reloaded
                     {
                         goForward(ref player, map);
                     }
-                    else if (player.Rotation == 90 && player.X < map.Width &&
-                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right ||
-                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                    else if (player.Rotation == 90 && player.X < map.Width && map.CanGoRight(playerIndexBefore))
                     {
                         player.X += 1;
                     }
-                    else if (player.Rotation == 180 && player.Y < map.Height &&
-                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down ||
-                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                    else if (player.Rotation == 180 && player.Y < map.Height && map.CanGoDown(playerIndexBefore))
                     {
                         player.Y += 1;
                     }
-                    else if (player.Rotation == 270 && player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right ||
-                         map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
+                    else if (player.Rotation == 270 && player.X > 0 && map.CanGoLeft(playerIndexBefore))
                     {
                         player.X -= 1;
                     }
@@ -187,27 +177,19 @@ namespace ARX_Reloaded
                 }
                 else if (direction == ARX.Direction.Down)
                 {
-                    if (player.Rotation == 0 && player.Y < map.Height &&
-                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down ||
-                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                    if (player.Rotation == 0 && player.Y < map.Height && map.CanGoDown(playerIndexBefore))
                     {
                         player.Y += 1;
                     }
-                    else if (player.Rotation == 90 && player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right ||
-                         map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
+                    else if (player.Rotation == 90 && player.X > 0 && map.CanGoLeft(playerIndexBefore))
                     {
                         player.X -= 1;
                     }
-                    else if (player.Rotation == 180 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down ||
-                         map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
+                    else if (player.Rotation == 180 && player.Y > 0 && map.CanGoUp(playerIndexBefore))
                     {
                         player.Y -= 1;
                     }
-                    else if (player.Rotation == 270 && player.Y < map.Width &&
-                        (map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right ||
-                         map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                    else if (player.Rotation == 270 && player.Y < map.Width && map.CanGoRight(playerIndexBefore))
                     {
                         player.X += 1;
                     }
@@ -218,6 +200,8 @@ namespace ARX_Reloaded
                 }
             }
 
+            int playerIndexAfter = player.Y * map.Width + player.X;
+
             canGoRight = false;
             canGoLeft = false;
 
@@ -226,42 +210,31 @@ namespace ARX_Reloaded
 
             if (player.Rotation == 0)
             {
-                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                if (map.CanGoRight(playerIndexAfter))
                 {
                     canGoRight = true;
                 }
 
-                if (player.X > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
+                if (map.CanGoLeft(playerIndexAfter))
                 {
                     canGoLeft = true;
                 }
 
-                if (player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
+                if (map.Upper(playerIndexAfter) != null && map.CanGoRight(map.Upper(playerIndexAfter).Coord))
                 {
                     couldGoRight = true;
                 }
 
-                if (player.X > 0 && player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Cross))
+                if (map.Upper(playerIndexAfter) != null && map.CanGoLeft(map.Upper(playerIndexAfter).Coord))
                 {
                     couldGoLeft = true;
                 }
 
-                if (player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
+                if (map.CanGoUp(playerIndexAfter))
                 {
                     vision = 1;
 
-                    if (player.Y > 1 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width * 2].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X - map.Width * 2].State == ARX.State.Cross))
+                    if (map.Upper(playerIndexAfter) != null && map.CanGoUp(map.Upper(playerIndexAfter).Coord))
                     {
                         vision = 2;
                     }
@@ -273,41 +246,31 @@ namespace ARX_Reloaded
             }
             else if (player.Rotation == 90)
             {
-                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                if (map.CanGoDown(playerIndexAfter))
                 {
                     canGoRight = true;
                 }
 
-                if (player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
+                if (map.CanGoUp(playerIndexAfter))
                 {
                     canGoLeft = true;
                 }
 
-                if (player.X < map.Width - 1 && 
-                    (map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Cross))
+                if (map.Righter(playerIndexAfter) != null && map.CanGoDown(map.Righter(playerIndexAfter).Coord))
                 {
                     couldGoRight = true;
                 }
 
-                if (player.X < map.Width - 1 && player.Y > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X - map.Width + 1].State == ARX.State.Cross))
+                if (map.Righter(playerIndexAfter) != null && map.CanGoUp(map.Righter(playerIndexAfter).Coord))
                 {
                     couldGoLeft = true;
                 }
 
-                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                if (map.CanGoRight(playerIndexAfter))
                 {
                     vision = 1;
 
-                    if (player.X < map.Width - 1 &&
-                    (map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X + 1].State == ARX.State.Cross))
+                    if (map.CanGoRight(map.Righter(playerIndexAfter).Coord))
                     {
                         vision = 2;
                     }
@@ -319,41 +282,31 @@ namespace ARX_Reloaded
             }
             else if (player.Rotation == 180)
             {
-                if (player.X > 0 &&
-                    (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
+                if (map.CanGoLeft(playerIndexAfter))
                 {
                     canGoRight = true;
                 }
 
-                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                if (map.CanGoRight(playerIndexAfter))
                 {
                     canGoLeft = true;
                 }
 
-                if (player.X > 0 && player.Y < map.Height - 1 &&
-                    (map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X + map.Width - 1].State == ARX.State.Cross))
+                if (map.Lower(playerIndexAfter) != null && map.CanGoLeft(map.Lower(playerIndexAfter).Coord))
                 {
                     couldGoRight = true;
                 }
 
-                if (player.Y < map.Height - 1 &&
-                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Right 
-                    || map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Cross))
+                if (map.Lower(playerIndexAfter) != null && map.CanGoRight(map.Lower(playerIndexAfter).Coord))
                 {
                     couldGoLeft = true;
                 }
 
-                if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                if (map.CanGoDown(playerIndexAfter))
                 {
                     vision = 1;
 
-                    if (player.Y < map.Height &&
-                    (map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Down 
-                    || map.Cases[player.Y * map.Width + player.X + map.Width].State == ARX.State.Cross))
+                    if (map.Lower(playerIndexAfter) != null && map.CanGoDown(map.Lower(playerIndexAfter).Coord))
                     {
                         vision = 2;
                     }
@@ -367,42 +320,31 @@ namespace ARX_Reloaded
             {
                 if (player.Rotation == 270)
                 {
-                    if (player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Down 
-                        || map.Cases[player.Y * map.Width + player.X - map.Width].State == ARX.State.Cross))
+                    if (map.CanGoUp(playerIndexAfter))
                     {
                         canGoRight = true;
                     }
 
-                    if ((map.Cases[player.Y * map.Width + player.X].State == ARX.State.Down 
-                        || map.Cases[player.Y * map.Width + player.X].State == ARX.State.Cross))
+                    if (map.CanGoDown(playerIndexAfter))
                     {
                         canGoLeft = true;
                     }
 
-                    if (player.X > 0 && player.Y > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Down 
-                        || map.Cases[player.Y * map.Width + player.X - map.Width - 1].State == ARX.State.Cross))
+                    if (map.Lefter(playerIndexAfter) != null && map.CanGoUp(map.Lefter(playerIndexAfter).Coord))
                     {
                         couldGoRight = true;
                     }
 
-                    if (player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Down 
-                        || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
+                    if (map.Lefter(playerIndexAfter) != null && map.CanGoDown(map.Lefter(playerIndexAfter).Coord))
                     {
                         couldGoLeft = true;
                     }
 
-                    if (player.X > 0 &&
-                        (map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Right 
-                        || map.Cases[player.Y * map.Width + player.X - 1].State == ARX.State.Cross))
+                    if (map.CanGoLeft(playerIndexAfter))
                     {
                         vision = 1;
 
-                        if (player.X > 1 &&
-                        (map.Cases[player.Y * map.Width + player.X - 2].State == ARX.State.Right 
-                        || map.Cases[player.Y * map.Width + player.X - 2].State == ARX.State.Cross))
+                        if (map.Lefter(playerIndexAfter) != null && map.CanGoLeft(map.Lefter(playerIndexAfter).Coord))
                         {
                             vision = 2;
                         }

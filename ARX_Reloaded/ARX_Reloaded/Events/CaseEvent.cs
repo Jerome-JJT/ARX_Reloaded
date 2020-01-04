@@ -12,5 +12,7 @@ namespace ARX_Reloaded
         public CaseEvent()
         {
         }
+
+        public abstract void Action();
     }
 }

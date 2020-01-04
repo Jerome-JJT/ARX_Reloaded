@@ -40,16 +40,17 @@ namespace ARX_Reloaded
 
             map.PrepareMap(player.Position, nbZones);
 
-            Moving(ARX.Direction.Null);
+            moving(ARX.Direction.Null);
         }
 
+        #region Buttons
         private void cmdGenNormal_Click(object sender, EventArgs e)
         {
             map = new MapNormal(labyrinthSize, labyrinthRandom);
 
             map.PrepareMap(player.Position, nbZones);
 
-            Moving(ARX.Direction.Null);
+            moving(ARX.Direction.Null);
         }
 
         private void cmdGenChaos_Click(object sender, EventArgs e)
@@ -58,7 +59,7 @@ namespace ARX_Reloaded
 
             map.PrepareMap(player.Position, nbZones);
 
-            Moving(ARX.Direction.Null);
+            moving(ARX.Direction.Null);
         }
 
         private void cmdGenFaos_Click(object sender, EventArgs e)
@@ -67,7 +68,7 @@ namespace ARX_Reloaded
 
             map.PrepareMap(player.Position, nbZones);
 
-            Moving(ARX.Direction.Null);
+            moving(ARX.Direction.Null);
         }
 
         private void cmdGenPourcent_Click(object sender, EventArgs e)
@@ -76,7 +77,7 @@ namespace ARX_Reloaded
 
             map.PrepareMap(player.Position, nbZones);
 
-            Moving(ARX.Direction.Null);
+            moving(ARX.Direction.Null);
         }
 
         private void cmdGenMultiple_Click(object sender, EventArgs e)
@@ -85,7 +86,7 @@ namespace ARX_Reloaded
 
             map.PrepareMap(player.Position, nbZones);
 
-            Moving(ARX.Direction.Null);
+            moving(ARX.Direction.Null);
         }
 
         private void cmdGenLines_Click(object sender, EventArgs e)
@@ -94,7 +95,7 @@ namespace ARX_Reloaded
 
             map.PrepareMap(player.Position, nbZones);
 
-            Moving(ARX.Direction.Null);
+            moving(ARX.Direction.Null);
         }
 
         private void cmdUpdateView_Click(object sender, EventArgs e)
@@ -105,9 +106,11 @@ namespace ARX_Reloaded
             }
 
             picMap.Refresh();
+            picView.Refresh();
         }
+        #endregion
 
-
+        #region Drawings
         private void picView_Paint(object sender, PaintEventArgs e)
         {
             DrawView.DrawTotalView(e, picView.Size, Movement.CanGoLeft, Movement.CanGoRight, Movement.CouldGoLeft, Movement.CouldGoRight, Movement.Vision);
@@ -131,8 +134,9 @@ namespace ARX_Reloaded
                 }
             }
         }
+        #endregion
 
-        private void Moving(ARX.Direction direction)
+        private void moving(ARX.Direction direction)
         {
             Movement.Goto(player, map, direction, chkPacmanMoves.Checked);
 
@@ -153,6 +157,12 @@ namespace ARX_Reloaded
             picView.Refresh();
         }
 
+        private void action()
+        {
+
+        }
+
+        #region User inputs
         private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             switchKeys(e.KeyCode);
@@ -174,22 +184,27 @@ namespace ARX_Reloaded
             {
                 case Keys.W:
                 case Keys.Up:
-                    Moving(ARX.Direction.Up);
+                    moving(ARX.Direction.Up);
                     break;
 
                 case Keys.A:
                 case Keys.Left:
-                    Moving(ARX.Direction.Left);
+                    moving(ARX.Direction.Left);
                     break;
 
                 case Keys.D:
                 case Keys.Right:
-                    Moving(ARX.Direction.Right);
+                    moving(ARX.Direction.Right);
                     break;
 
                 case Keys.S:
                 case Keys.Down:
-                    Moving(ARX.Direction.Down);
+                    moving(ARX.Direction.Down);
+                    break;
+
+                case Keys.Enter:
+                case Keys.Space:
+                    action();
                     break;
 
                 case Keys.Add:
@@ -218,5 +233,6 @@ namespace ARX_Reloaded
             }
             return true;
         }
+        #endregion
     }
 }

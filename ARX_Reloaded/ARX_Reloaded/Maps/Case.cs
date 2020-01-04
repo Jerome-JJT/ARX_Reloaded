@@ -26,7 +26,7 @@ namespace ARX_Reloaded
         {
             this.state = 0;
             this.visited = true;
-            this.accessible = true;
+            this.accessible = false;
 
             this.zone = -1;
             this.zoneColor = Color.White;

@@ -11,5 +11,10 @@ namespace ARX_Reloaded
         public ExitEvent()
         {
         }
+
+        public override void Action()
+        {
+
+        }
     }
 }

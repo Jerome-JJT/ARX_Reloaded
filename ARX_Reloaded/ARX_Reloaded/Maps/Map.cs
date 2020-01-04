@@ -323,7 +323,7 @@ namespace ARX_Reloaded
             UnlockZone(Self(playerPos.Y * width + playerPos.X).Zone);
 
             GenerateZoneKey(playerPos, exitIndex);
-            ProcessPath(playerPos, exitIndex);
+            //ProcessPath(playerPos, exitIndex);
         }
 
         public virtual void GenerateMap(PictureBox elem, Label loading)
@@ -522,7 +522,6 @@ namespace ARX_Reloaded
             Case keyCase = possibilities[rand.Next(possibilities.Count)];
 
             keyCase.CaseEvent = new KeyEvent(zoneToOpen);
-            keyCase.Visited = true;
         }
 
         
