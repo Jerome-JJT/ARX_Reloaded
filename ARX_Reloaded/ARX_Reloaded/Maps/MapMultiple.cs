@@ -14,9 +14,9 @@ namespace ARX_Reloaded
         {
         }
 
-        public override void GenerateMap(PictureBox elem, Label loading)
+        protected override void generatePaths()
         {
-            base.GenerateMap(elem, loading);
+            base.generatePaths();
 
             List<List<int>> points = new List<List<int>>
             {
@@ -120,7 +120,7 @@ namespace ARX_Reloaded
             {
                 if (eachTry == 100)
                 {
-                    GenerateMap(elem, loading);
+                    generatePaths();
                 }
             }
         }

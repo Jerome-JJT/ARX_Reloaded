@@ -13,18 +13,24 @@ namespace ARX_Reloaded
     public partial class FrmGame : Form
     {
         Map map;
-        Size labyrinthSize = new Size(30, 30);
         Player player;
 
-        //Random labyrinthRandom = new Random();
-        //Random labyrinthRandom = new Random(6);
-        Random labyrinthRandom = new Random(5);
+        Size labyrinthSize = new Size(30, 30);
+        int nbZones = 6;
 
         int drawType = 0;
 
-        int nbZones = 6;
         const int minZoomLevel = 1;
         const int maxCaseDisplay = 5;
+
+        int stageLevel = 0;
+        int coinsAmount = 0;
+
+        Random labyrinthRandom = new Random();
+        //Random labyrinthRandom = new Random(6);
+        //Random labyrinthRandom = new Random(5);
+
+        
 
         public FrmGame()
         {
@@ -33,84 +39,72 @@ namespace ARX_Reloaded
 
         private void FrmGame_Load(object sender, EventArgs e)
         {
-            //map = new MapNormal(labyrinthSize, labyrinthRandom);
-            map = new MapMultiple(labyrinthSize, labyrinthRandom);
+            player = new Player(0, 0, 90);
 
-            player = new Player(0,0,90);
+            CreateMap();
 
-            map.PrepareMap(player.Position, nbZones);
-
-            moving(ARX.Direction.Null);
+            display();
         }
 
         #region Buttons
-        private void cmdGenNormal_Click(object sender, EventArgs e)
+        private void CreateMap()
         {
-            map = new MapNormal(labyrinthSize, labyrinthRandom);
+            switch (labyrinthRandom.Next(10))
+            {
+                case 0:
+                    map = new MapNormal(labyrinthSize, labyrinthRandom);
+                    break;
 
-            map.PrepareMap(player.Position, nbZones);
+                case 1:
+                case 2:
+                    map = new MapChaos(labyrinthSize, labyrinthRandom);
+                    break;
 
-            moving(ARX.Direction.Null);
-        }
+                case 3:
+                case 4:
+                    map = new MapFastChaos(15, labyrinthSize, labyrinthRandom);
+                    break;
 
-        private void cmdGenChaos_Click(object sender, EventArgs e)
-        {
-            map = new MapChaos(labyrinthSize, labyrinthRandom);
+                case 5:
+                case 6:
+                    map = new MapPourcent(20, labyrinthSize, labyrinthRandom);
+                    break;
 
-            map.PrepareMap(player.Position, nbZones);
+                case 7:
+                case 8:
+                case 9:
+                    map = new MapMultiple(labyrinthSize, labyrinthRandom);
+                    break;
 
-            moving(ARX.Direction.Null);
-        }
+                case 10:
+                    map = new MapLines(labyrinthSize, labyrinthRandom);
+                    break;
 
-        private void cmdGenFaos_Click(object sender, EventArgs e)
-        {
-            map = new MapFastChaos(15, labyrinthSize, labyrinthRandom);
+                default:
+                    map = new MapFastChaos(15, labyrinthSize, labyrinthRandom);
+                    break; 
+            }
 
-            map.PrepareMap(player.Position, nbZones);
-
-            moving(ARX.Direction.Null);
-        }
-
-        private void cmdGenPourcent_Click(object sender, EventArgs e)
-        {
-            map = new MapPourcent(20, labyrinthSize, labyrinthRandom);
-
-            map.PrepareMap(player.Position, nbZones);
-
-            moving(ARX.Direction.Null);
-        }
-
-        private void cmdGenMultiple_Click(object sender, EventArgs e)
-        {
-            map = new MapMultiple(labyrinthSize, labyrinthRandom);
-
-            map.PrepareMap(player.Position, nbZones);
-
-            moving(ARX.Direction.Null);
-        }
-
-        private void cmdGenLines_Click(object sender, EventArgs e)
-        {
-            map = new MapLines(labyrinthSize, labyrinthRandom);
-
-            map.PrepareMap(player.Position, nbZones);
+            map.Generate(player.Position, nbZones);
 
             moving(ARX.Direction.Null);
         }
 
         private void cmdUpdateView_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < map.Cases.Count(); i++)
-            {
-                map.Cases[i].Visited = true;
-            }
+            map.Cases.ForEach(eachCase => eachCase.Visible = true);
 
-            picMap.Refresh();
-            picView.Refresh();
+            display();
         }
         #endregion
 
         #region Drawings
+        private void display()
+        {
+            picView.Refresh();
+            picMap.Refresh();
+        }
+
         private void picView_Paint(object sender, PaintEventArgs e)
         {
             DrawView.DrawTotalView(e, picView.Size, Movement.CanGoLeft, Movement.CanGoRight, Movement.CouldGoLeft, Movement.CouldGoRight, Movement.Vision);
@@ -140,26 +134,48 @@ namespace ARX_Reloaded
         {
             Movement.Goto(player, map, direction, chkPacmanMoves.Checked);
 
-            map.Self(player.Y * map.Width + player.X).Visited = true;
+            map.Self(player.Y * map.Width + player.X).Visible = true;
 
             //Mark visited 3x3 case radius from player, catch NullReferenceException if case is null (outside the map)
-            try { map.Upper(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
-            try { map.Righter(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
-            try { map.Lower(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
-            try { map.Lefter(player.Y * map.Width + player.X).Visited = true; } catch (NullReferenceException) { }
+            try { map.Upper(player.Y * map.Width + player.X).Visible = true; } catch (NullReferenceException) { }
+            try { map.Righter(player.Y * map.Width + player.X).Visible = true; } catch (NullReferenceException) { }
+            try { map.Lower(player.Y * map.Width + player.X).Visible = true; } catch (NullReferenceException) { }
+            try { map.Lefter(player.Y * map.Width + player.X).Visible = true; } catch (NullReferenceException) { }
 
-            try { map.Lefter(map.Upper(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
-            try { map.Righter(map.Upper(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
-            try { map.Lefter(map.Lower(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
-            try { map.Righter(map.Lower(player.Y * map.Width + player.X).Coord).Visited = true; } catch (NullReferenceException) { }
+            try { map.Lefter(map.Upper(player.Y * map.Width + player.X).Coord).Visible = true; } catch (NullReferenceException) { }
+            try { map.Righter(map.Upper(player.Y * map.Width + player.X).Coord).Visible = true; } catch (NullReferenceException) { }
+            try { map.Lefter(map.Lower(player.Y * map.Width + player.X).Coord).Visible = true; } catch (NullReferenceException) { }
+            try { map.Righter(map.Lower(player.Y * map.Width + player.X).Coord).Visible = true; } catch (NullReferenceException) { }
 
-            picMap.Refresh();
-            picView.Refresh();
+            display();
         }
 
         private void action()
         {
+            Case playerCase = map.Cases[player.Y * map.Width + player.X];
 
+            if (playerCase.CaseEvent.GetType() == typeof(ExitEvent))
+            {
+                stageLevel++;
+                lblStageScore.Text = $"Étage : {stageLevel}";
+                map = new MapMultiple(labyrinthSize, labyrinthRandom);
+                map.Generate(player.Position, nbZones);
+
+                moving(ARX.Direction.Null);
+            }
+            else if (playerCase.CaseEvent.GetType() == typeof(KeyEvent))
+            {
+                map.UnlockZone(((KeyEvent)playerCase.CaseEvent).ZoneToOpen);
+                playerCase.CaseEvent = new NoEvent();
+            }
+            else if (playerCase.CaseEvent.GetType() == typeof(CoinEvent))
+            {
+                coinsAmount++;
+                lblCoinScore.Text = $"Points : {coinsAmount}";
+                playerCase.CaseEvent = new NoEvent();
+            }
+
+            display();
         }
 
         #region User inputs
@@ -211,7 +227,7 @@ namespace ARX_Reloaded
                     if (Math.Min(map.Width, map.Height) / map.Zoom > maxCaseDisplay)
                     {
                         map.Zoom++;
-                        picMap.Refresh();
+                        display();
                     }
                     break;
 
@@ -219,13 +235,13 @@ namespace ARX_Reloaded
                     if (map.Zoom > minZoomLevel)
                     {
                         map.Zoom--;
-                        picMap.Refresh();
+                        display();
                     }
                     break;
 
                 case Keys.Multiply:
                     drawType = (drawType + 1) % 3;
-                    picMap.Refresh();
+                    display();
                     break;
 
                 default:

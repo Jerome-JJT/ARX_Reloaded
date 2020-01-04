@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ARX_Reloaded
 {
-    public class ExitEvent : CaseEvent
+    public class CoinEvent : CaseEvent
     {
-        public ExitEvent()
+        public CoinEvent()
         {
         }
     }

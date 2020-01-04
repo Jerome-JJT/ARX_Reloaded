@@ -17,9 +17,9 @@ namespace ARX_Reloaded
             this.ratio = ratio;
         }
 
-        public override void GenerateMap(PictureBox elem, Label loading)
+        protected override void generatePaths()
         {
-            base.GenerateMap(elem, loading);
+            base.generatePaths();
 
             foreach(Case eachCase in cases)
             {

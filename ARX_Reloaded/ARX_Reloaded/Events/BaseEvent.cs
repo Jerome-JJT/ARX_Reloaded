@@ -11,10 +11,5 @@ namespace ARX_Reloaded
         public BaseEvent()
         {
         }
-
-        public override void Action()
-        {
-
-        }
     }
 }

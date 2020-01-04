@@ -10,7 +10,7 @@ namespace ARX_Reloaded
     public class Case
     {
         private ARX.State state;
-        private bool visited;
+        private bool visible;
         private bool accessible;
 
         private int zone;
@@ -25,7 +25,7 @@ namespace ARX_Reloaded
         public Case(int coord)
         {
             this.state = 0;
-            this.visited = true;
+            this.visible = false;
             this.accessible = false;
 
             this.zone = -1;
@@ -44,10 +44,10 @@ namespace ARX_Reloaded
             set { state = value; }
         }
 
-        public bool Visited
+        public bool Visible
         {
-            get { return visited; }
-            set { visited = value; }
+            get { return visible; }
+            set { visible = value; }
         }
 
         public bool Accessible
@@ -77,9 +77,9 @@ namespace ARX_Reloaded
         {
             get
             {
-                int nThreshold = 105;
-                int bgDelta = Convert.ToInt32((zoneColor.R * 0.299) + (zoneColor.G * 0.587) +
-                                              (zoneColor.B * 0.114));
+                //int nThreshold = 105;
+                int nThreshold = 145;
+                int bgDelta = Convert.ToInt32((zoneColor.R * 0.299) + (zoneColor.G * 0.587) + (zoneColor.B * 0.114));
 
                 Color foreColor = (255 - bgDelta < nThreshold) ? Color.Black : Color.White;
                 return foreColor;

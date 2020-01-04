@@ -11,10 +11,5 @@ namespace ARX_Reloaded
         public NoEvent()
         {
         }
-
-        public override void Action()
-        {
-
-        }
     }
 }

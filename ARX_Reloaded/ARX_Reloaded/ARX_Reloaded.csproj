@@ -50,6 +50,7 @@
     <Compile Include="Drawing\DrawNormal.cs" />
     <Compile Include="Drawing\DrawFill.cs" />
     <Compile Include="Drawing\DrawPacman.cs" />
+    <Compile Include="Events\CoinEvent.cs" />
     <Compile Include="Events\NoEvent.cs" />
     <Compile Include="Events\ExitEvent.cs" />
     <Compile Include="Events\BaseEvent.cs" />

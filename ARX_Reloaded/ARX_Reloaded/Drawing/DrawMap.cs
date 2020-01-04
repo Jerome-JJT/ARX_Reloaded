@@ -68,7 +68,7 @@ namespace ARX_Reloaded
                 {
                     PrepareCase(w, h);
 
-                    if (ThisCase.Visited == true)
+                    if (ThisCase.Visible == true)
                     {
                         pictureElement.Graphics.FillRectangle(BackBrush, CaseBackground());
 
@@ -90,33 +90,51 @@ namespace ARX_Reloaded
                         {
                             pictureElement.Graphics.FillPolygon(ContrastBrush, CrossPoints());
                         }
+                        //Only if case is accessible
+                        else
+                        {
+                            if (ThisCase.CaseEvent.GetType() == typeof(KeyEvent))
+                            {
+                                pictureElement.Graphics.FillPolygon(ContrastBrush, KeyPoints());
+                            }
+                            else if (ThisCase.CaseEvent.GetType() == typeof(CoinEvent))
+                            {
+                                pictureElement.Graphics.FillEllipse(new SolidBrush(Color.Yellow), CoinPoints());
+                                pictureElement.Graphics.DrawEllipse(new Pen(Color.Black, 1), CoinPoints());
+                            }
+                        }
+
+                        
+                        if (ThisCase.CaseEvent.GetType() == typeof(ExitEvent))
+                        {
+                            pictureElement.Graphics.FillPolygon(ContrastBrush, ExitPoints());
+                        }
+                    }
+                    //Display if case if not visited
+                    else
+                    {
+                        if (ThisCase.CaseEvent.GetType() == typeof(KeyEvent) && ThisCase.Accessible)
+                        {
+                            pictureElement.Graphics.FillPolygon(AntiBrush, KeyPoints());
+                        }
+                        else if (ThisCase.CaseEvent.GetType() == typeof(ExitEvent))
+                        {
+                            pictureElement.Graphics.FillPolygon(AntiBrush, ExitPoints());
+                        }
                     }
 
-                    /*if (ThisCase.Coord == map.ExitIndex)
-                    {
-                        pictureElement.Graphics.FillEllipse(AntiBrush, new Rectangle(
-                            Convert.ToInt32(CasePosX + MapPathWidth * 1),
-                            Convert.ToInt32(CasePosY + MapPathHeight * 1),
-                            Convert.ToInt32(MapPathWidth * 2),
-                            Convert.ToInt32(MapPathHeight * 2)));
-                    }*/
                     if (ThisCase.CaseEvent.GetType() == typeof(BaseEvent))
                     {
                         pictureElement.Graphics.FillPolygon(AntiBrush, BasePoints());
                     }
-                    else if (ThisCase.CaseEvent.GetType() == typeof(ExitEvent))
-                    {
-                        pictureElement.Graphics.FillPolygon(AntiBrush, UpStairsPoints());
-                    }
-                    else if (ThisCase.CaseEvent.GetType() == typeof(KeyEvent) && ThisCase.Accessible)
-                    {
-                        pictureElement.Graphics.FillPolygon(ContrastBrush, KeyPoints());
-                        /*pictureElement.Graphics.DrawString(((KeyEvent)ThisCase.CaseEvent).ZoneToOpen.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
-                            Convert.ToInt32(CasePosX + MapPathWidth * 0.8),
-                            Convert.ToInt32(CasePosY + MapPathHeight * 0.6),
-                            Convert.ToInt32(MapPathWidth * 3),
-                            Convert.ToInt32(MapPathHeight * 3)));*/
-                    }
+                    
+                    /*pictureElement.Graphics.DrawString(((KeyEvent)ThisCase.CaseEvent).ZoneToOpen.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
+                        Convert.ToInt32(CasePosX + MapPathWidth * 0.8),
+                        Convert.ToInt32(CasePosY + MapPathHeight * 0.6),
+                        Convert.ToInt32(MapPathWidth * 3),
+                        Convert.ToInt32(MapPathHeight * 3)));*/
+
+
                     /*else
                     {
                         pictureElement.Graphics.DrawString(ThisCase.Zone.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
@@ -307,7 +325,7 @@ namespace ARX_Reloaded
             };
         }
 
-        public static Point[] UpStairsPoints()
+        public static Point[] ExitPoints()
         {
             return new Point[] {
                 new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.1),   Convert.ToInt32(CasePosY+MapPathHeight*1.2)),
@@ -334,6 +352,16 @@ namespace ARX_Reloaded
                 new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.2),   Convert.ToInt32(CasePosY+MapPathHeight*2.4)),
                 new Point(Convert.ToInt32(CasePosX+MapPathWidth*1.2),   Convert.ToInt32(CasePosY+MapPathHeight*1.6)),
             };
+        }
+
+        public static Rectangle CoinPoints()
+        {
+            return new Rectangle (
+                Convert.ToInt32(CasePosX+MapPathWidth*1.3),   
+                Convert.ToInt32(CasePosY+MapPathHeight*1.3),
+                Convert.ToInt32(MapPathWidth*1.4),   
+                Convert.ToInt32(MapPathHeight*1.4)
+            );
         }
         #endregion
     }

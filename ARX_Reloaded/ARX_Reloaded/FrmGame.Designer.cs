@@ -28,30 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmdGenNormal = new System.Windows.Forms.Button();
             this.picView = new System.Windows.Forms.PictureBox();
             this.picMap = new System.Windows.Forms.PictureBox();
-            this.cmdGenChaos = new System.Windows.Forms.Button();
             this.cmdShowView = new System.Windows.Forms.Button();
             this.chkPacmanMoves = new System.Windows.Forms.CheckBox();
-            this.lblLoading = new System.Windows.Forms.Label();
-            this.cmdGenPourcent = new System.Windows.Forms.Button();
-            this.cmdGenFaos = new System.Windows.Forms.Button();
-            this.cmdGenMultiple = new System.Windows.Forms.Button();
-            this.cmdGenLines = new System.Windows.Forms.Button();
+            this.lblStageScore = new System.Windows.Forms.Label();
+            this.lblCoinScore = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMap)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cmdGenNormal
-            // 
-            this.cmdGenNormal.Location = new System.Drawing.Point(12, 3);
-            this.cmdGenNormal.Name = "cmdGenNormal";
-            this.cmdGenNormal.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenNormal.TabIndex = 0;
-            this.cmdGenNormal.Text = "Generate normal";
-            this.cmdGenNormal.UseVisualStyleBackColor = true;
-            this.cmdGenNormal.Click += new System.EventHandler(this.cmdGenNormal_Click);
             // 
             // picView
             // 
@@ -74,19 +59,9 @@
             this.picMap.TabStop = false;
             this.picMap.Paint += new System.Windows.Forms.PaintEventHandler(this.picMap_Paint);
             // 
-            // cmdGenChaos
-            // 
-            this.cmdGenChaos.Location = new System.Drawing.Point(138, 3);
-            this.cmdGenChaos.Name = "cmdGenChaos";
-            this.cmdGenChaos.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenChaos.TabIndex = 1;
-            this.cmdGenChaos.Text = "Generate chaotique";
-            this.cmdGenChaos.UseVisualStyleBackColor = true;
-            this.cmdGenChaos.Click += new System.EventHandler(this.cmdGenChaos_Click);
-            // 
             // cmdShowView
             // 
-            this.cmdShowView.Location = new System.Drawing.Point(974, 1);
+            this.cmdShowView.Location = new System.Drawing.Point(1095, 1);
             this.cmdShowView.Name = "cmdShowView";
             this.cmdShowView.Size = new System.Drawing.Size(120, 23);
             this.cmdShowView.TabIndex = 7;
@@ -99,79 +74,45 @@
             this.chkPacmanMoves.AutoSize = true;
             this.chkPacmanMoves.Checked = true;
             this.chkPacmanMoves.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPacmanMoves.Location = new System.Drawing.Point(869, 5);
+            this.chkPacmanMoves.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkPacmanMoves.Location = new System.Drawing.Point(966, 3);
             this.chkPacmanMoves.Name = "chkPacmanMoves";
-            this.chkPacmanMoves.Size = new System.Drawing.Size(99, 17);
+            this.chkPacmanMoves.Size = new System.Drawing.Size(123, 21);
             this.chkPacmanMoves.TabIndex = 6;
             this.chkPacmanMoves.Text = "Pacman moves";
             this.chkPacmanMoves.UseVisualStyleBackColor = true;
             // 
-            // lblLoading
+            // lblStageScore
             // 
-            this.lblLoading.AutoSize = true;
-            this.lblLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoading.Location = new System.Drawing.Point(1096, 3);
-            this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(71, 17);
-            this.lblLoading.TabIndex = 6;
-            this.lblLoading.Text = "Iteration : ";
+            this.lblStageScore.AutoSize = true;
+            this.lblStageScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStageScore.Location = new System.Drawing.Point(23, 5);
+            this.lblStageScore.Name = "lblStageScore";
+            this.lblStageScore.Size = new System.Drawing.Size(65, 17);
+            this.lblStageScore.TabIndex = 8;
+            this.lblStageScore.Text = "Étage : 0";
             // 
-            // cmdGenPourcent
+            // lblCoinScore
             // 
-            this.cmdGenPourcent.Location = new System.Drawing.Point(390, 3);
-            this.cmdGenPourcent.Name = "cmdGenPourcent";
-            this.cmdGenPourcent.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenPourcent.TabIndex = 3;
-            this.cmdGenPourcent.Text = "Generate Pourcent";
-            this.cmdGenPourcent.UseVisualStyleBackColor = true;
-            this.cmdGenPourcent.Click += new System.EventHandler(this.cmdGenPourcent_Click);
-            // 
-            // cmdGenFaos
-            // 
-            this.cmdGenFaos.Location = new System.Drawing.Point(264, 3);
-            this.cmdGenFaos.Name = "cmdGenFaos";
-            this.cmdGenFaos.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenFaos.TabIndex = 2;
-            this.cmdGenFaos.Text = "Generate Fast Chaos";
-            this.cmdGenFaos.UseVisualStyleBackColor = true;
-            this.cmdGenFaos.Click += new System.EventHandler(this.cmdGenFaos_Click);
-            // 
-            // cmdGenMultiple
-            // 
-            this.cmdGenMultiple.Location = new System.Drawing.Point(516, 3);
-            this.cmdGenMultiple.Name = "cmdGenMultiple";
-            this.cmdGenMultiple.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenMultiple.TabIndex = 4;
-            this.cmdGenMultiple.Text = "Generate Multiple";
-            this.cmdGenMultiple.UseVisualStyleBackColor = true;
-            this.cmdGenMultiple.Click += new System.EventHandler(this.cmdGenMultiple_Click);
-            // 
-            // cmdGenLines
-            // 
-            this.cmdGenLines.Location = new System.Drawing.Point(642, 3);
-            this.cmdGenLines.Name = "cmdGenLines";
-            this.cmdGenLines.Size = new System.Drawing.Size(120, 23);
-            this.cmdGenLines.TabIndex = 5;
-            this.cmdGenLines.Text = "Generate Lines";
-            this.cmdGenLines.UseVisualStyleBackColor = true;
-            this.cmdGenLines.Click += new System.EventHandler(this.cmdGenLines_Click);
+            this.lblCoinScore.AutoSize = true;
+            this.lblCoinScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCoinScore.Location = new System.Drawing.Point(112, 5);
+            this.lblCoinScore.Name = "lblCoinScore";
+            this.lblCoinScore.Size = new System.Drawing.Size(67, 17);
+            this.lblCoinScore.TabIndex = 9;
+            this.lblCoinScore.Text = "Points : 0";
             // 
             // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1227, 660);
-            this.Controls.Add(this.cmdGenLines);
-            this.Controls.Add(this.cmdGenMultiple);
-            this.Controls.Add(this.cmdGenFaos);
-            this.Controls.Add(this.cmdGenPourcent);
-            this.Controls.Add(this.lblLoading);
+            this.Controls.Add(this.lblCoinScore);
+            this.Controls.Add(this.lblStageScore);
             this.Controls.Add(this.chkPacmanMoves);
             this.Controls.Add(this.cmdShowView);
-            this.Controls.Add(this.cmdGenChaos);
             this.Controls.Add(this.picMap);
             this.Controls.Add(this.picView);
-            this.Controls.Add(this.cmdGenNormal);
             this.KeyPreview = true;
             this.Name = "FrmGame";
             this.Text = "ARX Reloaded";
@@ -185,18 +126,12 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button cmdGenNormal;
         private System.Windows.Forms.PictureBox picView;
         private System.Windows.Forms.PictureBox picMap;
-        private System.Windows.Forms.Button cmdGenChaos;
         private System.Windows.Forms.Button cmdShowView;
         private System.Windows.Forms.CheckBox chkPacmanMoves;
-        private System.Windows.Forms.Label lblLoading;
-        private System.Windows.Forms.Button cmdGenPourcent;
-        private System.Windows.Forms.Button cmdGenFaos;
-        private System.Windows.Forms.Button cmdGenMultiple;
-        private System.Windows.Forms.Button cmdGenLines;
+        private System.Windows.Forms.Label lblStageScore;
+        private System.Windows.Forms.Label lblCoinScore;
     }
 }
 

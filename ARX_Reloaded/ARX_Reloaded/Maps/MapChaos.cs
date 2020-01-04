@@ -14,9 +14,9 @@ namespace ARX_Reloaded
         {
         }
 
-        public override void GenerateMap(PictureBox elem, Label loading)
+        protected override void generatePaths()
         {
-            base.GenerateMap(elem, loading);
+            base.generatePaths();
 
             cases.First().State = ARX.State.Cross;
             cases.Last().State = ARX.State.Point;
@@ -106,7 +106,7 @@ namespace ARX_Reloaded
             {
                 if(eachTry == 100)
                 {
-                    GenerateMap(elem, loading);
+                    generatePaths();
                 }
             }
         }

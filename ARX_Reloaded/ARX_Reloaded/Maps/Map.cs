@@ -314,19 +314,19 @@ namespace ARX_Reloaded
         }
         #endregion Verifications functions
 
-        public void PrepareMap(Point playerPos, int nbZones)
+        public void Generate(Point playerPos, int nbZones)
         {
-            GenerateMap(null, null);
-            GenerateZones(null, null, nbZones);
-            GenerateEvents(playerPos);
+            generatePaths();
+            generateZones(nbZones);
+            generateEvents(playerPos);
 
             UnlockZone(Self(playerPos.Y * width + playerPos.X).Zone);
 
-            GenerateZoneKey(playerPos, exitIndex);
             //ProcessPath(playerPos, exitIndex);
         }
 
-        public virtual void GenerateMap(PictureBox elem, Label loading)
+        #region Generation
+        protected virtual void generatePaths()
         {
             cases = new List<Case>();
 
@@ -337,7 +337,7 @@ namespace ARX_Reloaded
             }
         }
 
-        public void GenerateZones(PictureBox elem, Label loading, int nbZones)
+        private void generateZones(int nbZones)
         {
             double ratio = Math.Sqrt(((width * height) / nbZones) / Math.PI);
 
@@ -430,11 +430,12 @@ namespace ARX_Reloaded
             }
         }
 
-        public void GenerateEvents(Point playerPosition)
+        private void generateEvents(Point playerPosition)
         {
             int playerIndex = playerPosition.Y * width + playerPosition.X;
             int ratio = (width + height) / 3;
 
+            //Create exit point
             int exitZone;
             do
             {
@@ -444,100 +445,19 @@ namespace ARX_Reloaded
 
             exitIndex = exitZone;
 
+            //Create start and end events on cases
             cases[playerIndex].CaseEvent = new BaseEvent();
             cases[exitIndex].CaseEvent = new ExitEvent();
+
+            generateZonesKey(playerIndex, exitIndex);
+
+            cases.ForEach(eachCase => { if (rand.Next(100) < 15 && eachCase.CaseEvent.GetType() == typeof(NoEvent)) { eachCase.CaseEvent = new CoinEvent(); } });
         }
-
-        public void GenerateZoneKey(Point playerPos, int exitZone)
-        {
-            int playerIndex = playerPos.Y * width + playerPos.X;
-
-            setDistances(playerIndex);
-
-            //Get all zones in path
-            int currentPoint = exitZone;
-            List<int> zonesPath = new List<int>();
-            while (playerIndex != currentPoint)
-            {
-                if (!zonesPath.Contains(Self(currentPoint).Zone))
-                {
-                    zonesPath.Add(Self(currentPoint).Zone);
-                }
-                currentPoint = Self(currentPoint).OriginDistance;
-            }
-            zonesPath.Reverse();
-
-            List<List<int>> allUnions = getZonesUnions();
-
-            List<int> zonesKeyed = new List<int> { zonesPath[0] };
-
-            foreach (int oneZonePath in zonesPath)
-            {
-                List<List<int>> adjs = allUnions.Where(oneUnion => oneUnion[0] == oneZonePath || oneUnion[1] == oneZonePath).ToList();
-
-                foreach (List<int> adj in adjs)
-                {
-                    int newZone = adj.Where(oneZone => oneZone != oneZonePath).Single();
-                    if (!zonesKeyed.Contains(newZone))
-                    {
-                        putKeyInZone(oneZonePath, newZone);
-                        zonesKeyed.Add(newZone);
-                    }
-                    allUnions.Remove(adj);
-                }
-            }
-
-            while (allUnions.Any())
-            {
-                List<int> restUnion = allUnions.First();
-
-                if (zonesKeyed.Contains(restUnion[0]) && zonesKeyed.Contains(restUnion[1]))
-                {
-                    allUnions.Remove(restUnion);
-                }
-                else
-                {
-                    List<int> keyedZone = restUnion.Where(oneZone => zonesKeyed.Contains(oneZone)).ToList();
-
-                    if(!keyedZone.Any())
-                    {
-                        allUnions.Remove(restUnion);
-                        allUnions.Add(restUnion);
-                    }
-                    else
-                    {
-                        int nonKeyedZone = restUnion.Where(oneZone => oneZone != keyedZone.Single()).Single();
-                        putKeyInZone(keyedZone.Single(), nonKeyedZone);
-                        zonesKeyed.Add(nonKeyedZone);
-                        allUnions.Remove(restUnion);
-                    }
-                }
-            }
-        }
+        #endregion
 
 
-        private void putKeyInZone(int keyZone, int zoneToOpen)
-        {
-            List<Case> possibilities = cases.Where(eachCase => eachCase.Zone == keyZone && eachCase.CaseEvent.GetType() == typeof(NoEvent)).ToList();
-            Case keyCase = possibilities[rand.Next(possibilities.Count)];
-
-            keyCase.CaseEvent = new KeyEvent(zoneToOpen);
-        }
-
-        
-
-        public void UnlockZone(int zoneToAffect)
-        {
-            foreach (Case eachCase in cases)
-            {
-                if(eachCase.Zone == zoneToAffect)
-                {
-                    eachCase.Accessible = true;
-                }
-            }
-        }
-
-        private void setDistances(int startIndex)
+        #region Path management
+        private void processDistances(int startIndex)
         {
             List<List<int>> points = new List<List<int>>();
 
@@ -608,6 +528,28 @@ namespace ARX_Reloaded
             }
         }
 
+        private List<int> zonesInPath(int startPoint, int endPoint)
+        {
+            List<int> result = new List<int>();
+
+            //Start with the end point and check previous path's case, add case's zone once in result
+            int currentPoint = endPoint;
+            while (startPoint != currentPoint)
+            {
+                if (!result.Contains(Self(currentPoint).Zone))
+                {
+                    result.Add(Self(currentPoint).Zone);
+                }
+                currentPoint = Self(currentPoint).OriginDistance;
+            }
+            result.Reverse();
+
+            return result;
+        }
+        #endregion
+
+
+        #region Key management
         private List<List<int>> getZonesUnions()
         {
             List<List<int>> unions = new List<List<int>>();
@@ -654,12 +596,130 @@ namespace ARX_Reloaded
             return unions;
         }
 
+        private void generateZonesKey(int playerIndex, int exitZone)
+        {
+            processDistances(playerIndex);
+
+            //Get all zones in minimum path
+            List<int> zonesPath = zonesInPath(playerIndex, exitZone);
+
+            //Get all crossing zones who haven't been checked
+            List<List<int>> allUnions = getZonesUnions();
+
+            //Contains zone who already have their key generated
+            //First zone in path (player's zone) doesn't need a key
+            List<int> zonesKeyed = new List<int> { zonesPath[0] };
+
+            //Check all zones in player's path
+            foreach (int oneZonePath in zonesPath)
+            {
+                //Get all unions linked to the zone being checked
+                List<List<int>> zoneUnion = allUnions.Where(oneUnion => oneUnion[0] == oneZonePath || oneUnion[1] == oneZonePath).ToList();
+
+                //Try to generate a key for each unions from this zone
+                foreach (List<int> oneUnion in zoneUnion)
+                {
+                    //Filter this union from external union
+                    int newZone = oneUnion.Where(oneZone => oneZone != oneZonePath).Single();
+
+                    //If there's no key for this zone, create one
+                    if (!zonesKeyed.Contains(newZone))
+                    {
+                        putKeyInZone(oneZonePath, newZone);
+                        zonesKeyed.Add(newZone);
+                    }
+                    allUnions.Remove(oneUnion);
+                }
+            }
+
+            //Unions who are not next to a zone in player's path
+            while (allUnions.Any())
+            {
+                //Get the first union from the list
+                List<int> restUnion = allUnions.First();
+
+                //If key have already been generated (special cases)
+                if (zonesKeyed.Contains(restUnion[0]) && zonesKeyed.Contains(restUnion[1]))
+                {
+                    allUnions.Remove(restUnion);
+                }
+                else
+                {
+                    //Check which zone already have a key
+                    List<int> keyedZone = restUnion.Where(oneZone => zonesKeyed.Contains(oneZone)).ToList();
+
+                    //If neither zone already have a key, if so remove union from list and readd it at the end
+                    if(!keyedZone.Any())
+                    {
+                        allUnions.Remove(restUnion);
+                        allUnions.Add(restUnion);
+                    }
+                    else
+                    {
+                        //Choose the zone without a key and add it
+                        int nonKeyedZone = restUnion.Where(oneZone => oneZone != keyedZone.Single()).Single();
+                        putKeyInZone(keyedZone.Single(), nonKeyedZone);
+                        zonesKeyed.Add(nonKeyedZone);
+                        allUnions.Remove(restUnion);
+                    }
+                }
+            }
+        }
+
+        private void putKeyInZone(int keyZone, int zoneToOpen)
+        {
+            List<Case> possibilities = cases.Where(eachCase => eachCase.Zone == keyZone && eachCase.CaseEvent.GetType() == typeof(NoEvent)).ToList();
+            Case keyCase = possibilities[rand.Next(possibilities.Count)];
+
+            keyCase.CaseEvent = new KeyEvent(zoneToOpen);
+        }
+        #endregion
+
+
+        #region Zone management
+        private void showZoneAccessible(int zoneToShow)
+        {
+            foreach(Case zoneCase in cases.Where(eachCase => eachCase.Zone == zoneToShow))
+            {
+                if (CanGoUp(zoneCase.Coord) && Upper(zoneCase.Coord).Accessible == true)
+                {
+                    zoneCase.Visible = true;
+                }
+                if (CanGoRight(zoneCase.Coord) && Righter(zoneCase.Coord).Accessible == true)
+                {
+                    zoneCase.Visible = true;
+                }
+                if (CanGoDown(zoneCase.Coord) && Lower(zoneCase.Coord).Accessible == true)
+                {
+                    zoneCase.Visible = true;
+                }
+                if (CanGoLeft(zoneCase.Coord) && Lefter(zoneCase.Coord).Accessible == true)
+                {
+                    zoneCase.Visible = true;
+                }
+            }
+        }
+
+        public void UnlockZone(int zoneToAffect)
+        {
+            showZoneAccessible(zoneToAffect);
+
+            foreach (Case eachCase in cases)
+            {
+                if(eachCase.Zone == zoneToAffect)
+                {
+                    eachCase.Accessible = true;
+                }
+            }
+        }
+        #endregion
+
 
         public void ProcessPath(Point playerPos, int exitZone)
         {
             int playerIndex = playerPos.Y * width + playerPos.X;
 
-            setDistances(playerIndex);
+            processDistances(playerIndex);
 
             //Trace path from player to end
             int currentPoint = exitZone;

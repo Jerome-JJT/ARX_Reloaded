@@ -33,14 +33,6 @@ namespace ARX_Reloaded
             Fill
         }
 
-        /*public enum CaseType
-        {
-            Normal,
-            Base,
-            Exit,
-            Key
-        }*/
-
         //Shuffle a list
         public static void Shuffle<T>(Random random, IList<T> list)
         {

@@ -40,23 +40,23 @@ namespace ARX_Reloaded
             get { return vision; }
         }
 
-        private static void goForward(ref Player player, Map map)
+        private static void goForward(Player player, Map map)
         {
             int playerIndex = player.Y * map.Width + player.X;
 
-            if (player.Rotation == 0 && player.Y > 0 && map.CanGoUp(playerIndex))
+            if (player.Rotation == 0 && map.CanGoUp(playerIndex) && map.Upper(playerIndex).Accessible)
             {
                 player.Y -= 1;
             }
-            else if (player.Rotation == 90 && player.X < map.Width && map.CanGoRight(playerIndex))
+            else if (player.Rotation == 90 && map.CanGoRight(playerIndex) && map.Righter(playerIndex).Accessible)
             {
                 player.X += 1;
             }
-            else if (player.Rotation == 180 && player.Y < map.Height && map.CanGoDown(playerIndex))
+            else if (player.Rotation == 180 && map.CanGoDown(playerIndex) && map.Lower(playerIndex).Accessible)
             {
                 player.Y += 1;
             }
-            else if (player.Rotation == 270 && player.X > 0 && map.CanGoLeft(playerIndex))
+            else if (player.Rotation == 270 && map.CanGoLeft(playerIndex) && map.Lefter(playerIndex).Accessible)
             {
                 player.X -= 1;
             }
@@ -86,7 +86,7 @@ namespace ARX_Reloaded
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
 
-                    goForward(ref player, map);
+                    goForward(player, map);
                 }
                 else if (direction == ARX.Direction.Right)
                 {
@@ -106,7 +106,7 @@ namespace ARX_Reloaded
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
 
-                    goForward(ref player, map);
+                    goForward(player, map);
                 }
                 else if (direction == ARX.Direction.Down)
                 {
@@ -126,7 +126,7 @@ namespace ARX_Reloaded
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
 
-                    goForward(ref player, map);
+                    goForward(player, map);
                 }
                 else if (direction == ARX.Direction.Left)
                 {
@@ -146,7 +146,7 @@ namespace ARX_Reloaded
                         player.Rotation = (player.Rotation + 90) % 360;
                     }
 
-                    goForward(ref player, map);
+                    goForward(player, map);
                 }
             }
 
@@ -154,19 +154,19 @@ namespace ARX_Reloaded
             {
                 if (direction == ARX.Direction.Up)
                 {
-                    if (player.Rotation == 0)
+                    if (player.Rotation == 0 && map.Upper(playerIndexBefore).Accessible)
                     {
-                        goForward(ref player, map);
+                        goForward(player, map);
                     }
-                    else if (player.Rotation == 90 && player.X < map.Width && map.CanGoRight(playerIndexBefore))
+                    else if (player.Rotation == 90 && map.CanGoRight(playerIndexBefore) && map.Righter(playerIndexBefore).Accessible)
                     {
                         player.X += 1;
                     }
-                    else if (player.Rotation == 180 && player.Y < map.Height && map.CanGoDown(playerIndexBefore))
+                    else if (player.Rotation == 180 && map.CanGoDown(playerIndexBefore) && map.Lower(playerIndexBefore).Accessible)
                     {
                         player.Y += 1;
                     }
-                    else if (player.Rotation == 270 && player.X > 0 && map.CanGoLeft(playerIndexBefore))
+                    else if (player.Rotation == 270 && map.CanGoLeft(playerIndexBefore) && map.Lefter(playerIndexBefore).Accessible)
                     {
                         player.X -= 1;
                     }
@@ -177,19 +177,19 @@ namespace ARX_Reloaded
                 }
                 else if (direction == ARX.Direction.Down)
                 {
-                    if (player.Rotation == 0 && player.Y < map.Height && map.CanGoDown(playerIndexBefore))
+                    if (player.Rotation == 0 && map.CanGoDown(playerIndexBefore) && map.Lower(playerIndexBefore).Accessible)
                     {
                         player.Y += 1;
                     }
-                    else if (player.Rotation == 90 && player.X > 0 && map.CanGoLeft(playerIndexBefore))
+                    else if (player.Rotation == 90 && map.CanGoLeft(playerIndexBefore) && map.Lefter(playerIndexBefore).Accessible)
                     {
                         player.X -= 1;
                     }
-                    else if (player.Rotation == 180 && player.Y > 0 && map.CanGoUp(playerIndexBefore))
+                    else if (player.Rotation == 180 && map.CanGoUp(playerIndexBefore) && map.Upper(playerIndexBefore).Accessible)
                     {
                         player.Y -= 1;
                     }
-                    else if (player.Rotation == 270 && player.Y < map.Width && map.CanGoRight(playerIndexBefore))
+                    else if (player.Rotation == 270 && map.CanGoRight(playerIndexBefore) && map.Righter(playerIndexBefore).Accessible)
                     {
                         player.X += 1;
                     }
