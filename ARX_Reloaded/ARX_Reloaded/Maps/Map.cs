@@ -314,13 +314,13 @@ namespace ARX_Reloaded
         }
         #endregion Verifications functions
 
-        public void Generate(Point playerPos, int nbZones)
+        public void Generate(int startZone, int nbZones)
         {
             generatePaths();
             generateZones(nbZones);
-            generateEvents(playerPos);
+            generateEvents(startZone);
 
-            UnlockZone(Self(playerPos.Y * width + playerPos.X).Zone);
+            UnlockZone(Self(startZone).Zone);
 
             //ProcessPath(playerPos, exitIndex);
         }
@@ -430,9 +430,8 @@ namespace ARX_Reloaded
             }
         }
 
-        private void generateEvents(Point playerPosition)
+        private void generateEvents(int startIndex)
         {
-            int playerIndex = playerPosition.Y * width + playerPosition.X;
             int ratio = (width + height) / 3;
 
             //Create exit point
@@ -441,15 +440,15 @@ namespace ARX_Reloaded
             {
                 exitZone = rand.Next(0, width * height);
             }
-            while (inRadius(ratio, playerIndex, exitZone));
+            while (inRadius(ratio, startIndex, exitZone));
 
             exitIndex = exitZone;
 
             //Create start and end events on cases
-            cases[playerIndex].CaseEvent = new BaseEvent();
+            cases[startIndex].CaseEvent = new BaseEvent();
             cases[exitIndex].CaseEvent = new ExitEvent();
 
-            generateZonesKey(playerIndex, exitIndex);
+            generateZonesKey(startIndex, exitIndex);
 
             cases.ForEach(eachCase => { if (rand.Next(100) < 15 && eachCase.CaseEvent.GetType() == typeof(NoEvent)) { eachCase.CaseEvent = new CoinEvent(); } });
         }

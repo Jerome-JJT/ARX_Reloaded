@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,20 +19,18 @@ namespace ARX_Reloaded
         Size labyrinthSize = new Size(30, 30);
         int nbZones = 6;
 
-        int drawType = 0;
-
         const int minZoomLevel = 1;
         const int maxCaseDisplay = 5;
 
-        int stageLevel = 0;
-        int coinsAmount = 0;
-
-        Random labyrinthRandom = new Random();
+        Random labyrinthSeed = new Random();
+        Random labyrinthRandom;
         //Random labyrinthRandom = new Random(6);
         //Random labyrinthRandom = new Random(5);
 
-        
+        JsonManagement jsonFile = new JsonManagement();
+        JsonData data;
 
+        #region Form events
         public FrmGame()
         {
             InitializeComponent();
@@ -39,16 +38,59 @@ namespace ARX_Reloaded
 
         private void FrmGame_Load(object sender, EventArgs e)
         {
-            player = new Player(0, 0, 90);
+            try
+            {
+                data = jsonFile.ExtractData();
+            }
+            catch (FileNotFoundException)
+            {
+                //If file doesn't exist
+                data = new JsonData();
+                jsonFile.InsertData(data);
+            }
+            catch (NullReferenceException)
+            {
+                //If the json file is empty
+                data = new JsonData();
+                jsonFile.InsertData(data);
+            }
+
+            data.RandomSeed = data.RandomSeed != -1 ? data.RandomSeed : labyrinthSeed.Next();
+            player = new Player(data.Player.X, data.Player.Y, 0);
 
             CreateMap();
 
+            map.Zoom = data.ZoomLevel;
+            
+            this.Location = data.WindowLocation;
+            this.Size = data.WindowSize;
+
+            responsive();
             display();
+            scores();
         }
 
-        #region Buttons
+        private void FrmGame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            data.ZoomLevel = map.Zoom;
+
+            data.WindowLocation = this.Location;
+            data.WindowSize = this.Size;
+
+            jsonFile.InsertData(data);
+        }
+
+        private void FrmGame_SizeChanged(object sender, EventArgs e)
+        {
+            responsive();
+            display();
+        }
+        #endregion
+
         private void CreateMap()
         {
+            labyrinthRandom = new Random(data.RandomSeed);
+
             switch (labyrinthRandom.Next(10))
             {
                 case 0:
@@ -82,23 +124,55 @@ namespace ARX_Reloaded
 
                 default:
                     map = new MapFastChaos(15, labyrinthSize, labyrinthRandom);
-                    break; 
+                    break;
             }
 
-            map.Generate(player.Position, nbZones);
+            map.Generate(player.Y * map.Width + player.X, nbZones);
 
             moving(ARX.Direction.Null);
         }
 
+        #region Buttons
         private void cmdUpdateView_Click(object sender, EventArgs e)
         {
             map.Cases.ForEach(eachCase => eachCase.Visible = true);
 
             display();
         }
+
+        private void cmdReset_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
 
-        #region Drawings
+        #region Display
+        private void scores()
+        {
+            lblStageScore.Text = $"Étage : {data.StageLevel}";
+            lblCoinScore.Text = $"Points : {data.CoinAmount}";
+        }
+
+        private void responsive()
+        {
+            picView.Size = new Size(
+                Convert.ToInt32(Math.Min(Size.Width / 2.0 - 40, Size.Height - 100)),
+                Convert.ToInt32(Math.Min(Size.Width / 2.0 - 40, Size.Height - 100)));
+
+            picView.Location = new Point(
+                Convert.ToInt32(Size.Width / 2.0 - 30 - Math.Min(Size.Width / 2.0 - 40, Size.Height - 100)),
+                Convert.ToInt32(30));
+
+
+            picMap.Size = new Size(
+                Convert.ToInt32(Math.Min(Size.Width / 2.0 - 40, Size.Height - 100)),
+                Convert.ToInt32(Math.Min(Size.Width / 2.0 - 40, Size.Height - 100)));
+
+            picMap.Location = new Point(
+                Convert.ToInt32(Size.Width / 2.0 + 10),
+                Convert.ToInt32(30));
+        }
+
         private void display()
         {
             picView.Refresh();
@@ -114,21 +188,22 @@ namespace ARX_Reloaded
         {
             if(map != null)
             {
-                if (drawType == 0)
+                if (data.DrawType == 0)
                 {
                     DrawMap.Draw(e, picMap.Size, map, player, ARX.MapType.Normal);
                 }
-                else if (drawType == 1)
+                else if (data.DrawType == 1)
                 {
                     DrawMap.Draw(e, picMap.Size, map, player, ARX.MapType.Pacman);
                 }
-                else if (drawType == 2)
+                else if (data.DrawType == 2)
                 {
                     DrawMap.Draw(e, picMap.Size, map, player, ARX.MapType.Fill);
                 }
             }
         }
         #endregion
+
 
         private void moving(ARX.Direction direction)
         {
@@ -156,12 +231,12 @@ namespace ARX_Reloaded
 
             if (playerCase.CaseEvent.GetType() == typeof(ExitEvent))
             {
-                stageLevel++;
-                lblStageScore.Text = $"Étage : {stageLevel}";
-                map = new MapMultiple(labyrinthSize, labyrinthRandom);
-                map.Generate(player.Position, nbZones);
-
-                moving(ARX.Direction.Null);
+                data.StageLevel++;
+                scores();
+                
+                data.RandomSeed = labyrinthSeed.Next();
+                data.Player = new Point(player.X, player.Y);
+                CreateMap();
             }
             else if (playerCase.CaseEvent.GetType() == typeof(KeyEvent))
             {
@@ -170,13 +245,16 @@ namespace ARX_Reloaded
             }
             else if (playerCase.CaseEvent.GetType() == typeof(CoinEvent))
             {
-                coinsAmount++;
-                lblCoinScore.Text = $"Points : {coinsAmount}";
+                data.CoinAmount++;
+                scores();
+
                 playerCase.CaseEvent = new NoEvent();
             }
 
             display();
         }
+
+        
 
         #region User inputs
         private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -240,7 +318,7 @@ namespace ARX_Reloaded
                     break;
 
                 case Keys.Multiply:
-                    drawType = (drawType + 1) % 3;
+                    data.DrawType = (data.DrawType + 1) % 3;
                     display();
                     break;
 
