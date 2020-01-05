@@ -15,6 +15,8 @@ namespace ARX_Reloaded
         private int zoomLevel = 1;
         private int drawType = 0;
 
+        private bool pacmanMode = true;
+
         private Point windowLocation = new Point(200, 200);
         private Size windowSize = new Size(1250, 700);
 
@@ -45,6 +47,11 @@ namespace ARX_Reloaded
             set { drawType = value; }
         }
 
+        public bool PacmanMode
+        {
+            get { return pacmanMode; }
+            set { pacmanMode = value; }
+        }
 
         public Point WindowLocation
         {

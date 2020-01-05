@@ -69,7 +69,7 @@
             this.cmdShowView.Name = "cmdShowView";
             this.cmdShowView.Size = new System.Drawing.Size(120, 23);
             this.cmdShowView.TabIndex = 7;
-            this.cmdShowView.Text = "Afficher map";
+            this.cmdShowView.Text = "(Cheat) Afficher map";
             this.cmdShowView.UseVisualStyleBackColor = true;
             this.cmdShowView.Click += new System.EventHandler(this.cmdUpdateView_Click);
             // 

@@ -38,6 +38,11 @@ namespace ARX_Reloaded
 
         private void FrmGame_Load(object sender, EventArgs e)
         {
+            formLoading();
+        }
+
+        private void formLoading()
+        {
             try
             {
                 data = jsonFile.ExtractData();
@@ -61,7 +66,8 @@ namespace ARX_Reloaded
             CreateMap();
 
             map.Zoom = data.ZoomLevel;
-            
+            chkPacmanMoves.Checked = data.PacmanMode;
+
             this.Location = data.WindowLocation;
             this.Size = data.WindowSize;
 
@@ -73,6 +79,7 @@ namespace ARX_Reloaded
         private void FrmGame_FormClosing(object sender, FormClosingEventArgs e)
         {
             data.ZoomLevel = map.Zoom;
+            data.PacmanMode = chkPacmanMoves.Checked;
 
             data.WindowLocation = this.Location;
             data.WindowSize = this.Size;
@@ -142,7 +149,9 @@ namespace ARX_Reloaded
 
         private void cmdReset_Click(object sender, EventArgs e)
         {
+            jsonFile.InsertData(new JsonData());
 
+            formLoading();
         }
         #endregion
 
