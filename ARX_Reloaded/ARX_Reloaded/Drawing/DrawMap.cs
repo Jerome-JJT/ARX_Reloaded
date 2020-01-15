@@ -137,9 +137,9 @@ namespace ARX_Reloaded
 
                     /*else
                     {
-                        pictureElement.Graphics.DrawString(ThisCase.Zone.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
-                            Convert.ToInt32(CasePosX + MapPathWidth * 0.8),
-                            Convert.ToInt32(CasePosY + MapPathHeight * 0.6),
+                        pictureElement.Graphics.DrawString(ThisCase.ScoreDistance.ToString(), new Font(new FontFamily("Arial"), 8), ContrastBrush, new Rectangle(
+                            Convert.ToInt32(CasePosX + MapPathWidth * 1.2),
+                            Convert.ToInt32(CasePosY + MapPathHeight * 1.0),
                             Convert.ToInt32(MapPathWidth * 3),
                             Convert.ToInt32(MapPathHeight * 3)));
                     }*/
